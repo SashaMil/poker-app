@@ -6,7 +6,7 @@
 const mongoose = require('mongoose');
 
 /* Mongo Connection */
-let mongoURI = '';
+let mongoURI = 'mongodb://localhost:27017/pokerApp';
 
 // process.env.MONGODB_URI will only be defined if you are running on Heroku
 if (process.env.MONGODB_URI) {
@@ -15,7 +15,7 @@ if (process.env.MONGODB_URI) {
   mongoURI = process.env.MONGODB_URI;
 } else {
   // use the local database server
-  mongoURI = 'mongodb://localhost:27017/prime_app';
+  mongoURI = 'mongodb://localhost:27017/pokerApp';
 }
 
 mongoose.connect(mongoURI);
