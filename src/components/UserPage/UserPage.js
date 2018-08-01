@@ -24,7 +24,7 @@ class UserPage extends Component {
 
   logout = () => {
     this.props.dispatch(triggerLogout());
-    // this.props.history.push('home');
+    this.props.history.push('home');
   }
 
   render() {
@@ -59,4 +59,3 @@ class UserPage extends Component {
 
 // this allows us to use <App /> in index.js
 export default connect(mapStateToProps)(UserPage);
-
