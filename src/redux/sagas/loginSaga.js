@@ -36,6 +36,7 @@ function* loginUser(action) {
 // worker Saga: will be fired on "LOGOUT" actions
 function* logoutUser(action) {
   try {
+    console.log('hello2');
     yield callLogout(action);
     yield put({
       type: USER_ACTIONS.UNSET_USER,

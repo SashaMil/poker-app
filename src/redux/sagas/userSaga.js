@@ -6,12 +6,14 @@ import { callUser } from '../requests/userRequests';
 function* fetchUser() {
   try {
     yield put({ type: USER_ACTIONS.REQUEST_START });
+    console.log('hello');
     const user = yield callUser();
     console.log(user);
     yield put({
       type: USER_ACTIONS.SET_USER,
       user,
     });
+    console.log('dinosaur');
     yield put({
       type: USER_ACTIONS.REQUEST_DONE,
     });
@@ -25,10 +27,10 @@ function* fetchUser() {
     });
   }
 }
-/*
-  Starts fetchUser on each dispatched `FETCH_USER` action.
-  Allows concurrent fetches of user.
-*/
+
+  // Starts fetchUser on each dispatched `FETCH_USER` action.
+  // Allows concurrent fetches of user.
+
 // function* userSaga() {
 //   yield takeEvery('FETCH_USER', fetchUser);
 // }

@@ -27,23 +27,23 @@ class UserPage extends Component {
     this.props.history.push('home');
   }
 
+  routeToView = (viewName) => {
+    viewName = viewName.toLowerCase().replace(/\s/g, '');
+    window.location.href = `#/${viewName}`;
+  }
+
   render() {
     let content = null;
 
     if (this.props.user.userName) {
       content = (
         <div>
-          <h1
-            id="welcome"
-          >
+          <h1 id="welcome">
             Welcome, { this.props.user.userName }!
           </h1>
           <p>Your ID is: {this.props.user.id}</p>
-          <button
-            onClick={this.logout}
-          >
-            Log Out
-          </button>
+          <button onClick={() => this.routeToView('game')}>New Game</button>
+          <button onClick={this.logout}>Log Out</button>
         </div>
       );
     }
