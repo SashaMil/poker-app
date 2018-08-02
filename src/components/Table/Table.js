@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 
 import Log from '../Log/Log';
 
+import './Table.css';
+import Paper from '@material-ui/core/Paper';
+
 const mapStateToProps = state => ({
   user: state.user,
 });
@@ -14,9 +17,8 @@ class Table extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Heres the table</h1>
-        <Log />
+      <div className="wrapper">
+        <Log id="paper" />
       </div>
     )
   }

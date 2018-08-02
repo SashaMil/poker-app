@@ -4,3 +4,13 @@
   height: 200px;
   width: 200px;
 }
+
+#paper {
+  background-color: black;
+  height: 200px;
+  width: 200px;
+}
+
+#logText {
+  color: white;
+}
