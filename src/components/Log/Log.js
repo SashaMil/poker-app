@@ -3,6 +3,8 @@ import './Log.css';
 
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -10,17 +12,13 @@ const mapStateToProps = state => ({
 
 class Log extends Component {
 
-  state = {
-
-  }
-
   render() {
     return (
-      <div>
-        <h2>Heres the Log</h2>
-        <Paper elevation={5}>
-          <p id="logText">PokerBot Raises 3 X</p>
-        </Paper>
+      <div style={{maxHeight: 200, overflow: 'auto'}}>
+        <h3>Log Here</h3>
+        <List>
+         Player Folds
+        </List>
       </div>
     )
   }
