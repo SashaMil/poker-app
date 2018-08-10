@@ -31,117 +31,111 @@ router.get('/shuffle', (req, res) => {
 router.post('/checkGame', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    data.games =     {
-          hands: [
-            {
-              cards: {
-                computerCards: {
-                  card1: String,
-                  card2: String
-                },
-                playerCards: {
-                  card1: String,
-                  card2: String
-                },
-                flop: {
-                  card1: String,
-                  card2: String,
-                  card3: String
-                },
-                turn: {
-                  card1: String,
-                },
-                river: {
-                  card1: String,
-                },
+    data.games = {
+      hands: [
+          {
+            cards: {
+              computerCards: {
+                card1: String,
+                card2: String,
               },
-              actions: {
-                computerActions: [
-                  {
-                    preflop: [
-                      {
-                        action: {
-                          type: String,
-                          bet: Number,
-                        }
-                      }
-                    ],
-                    flop: [
-                      {
-                        action: {
-                          type: String,
-                          bet: Number,
-                        }
-                      }
-                    ],
-                    turn: [
-                      {
-                        action: {
-                          type: String,
-                          bet: Number,
-                        }
-                      }
-                    ],
-                    river: [
-                      {
-                        action: {
-                          type: String,
-                          bet: Number,
-                        }
-                      }
-                    ]
-                  }
-                ],
-                playerActions: [
-                  {
-                    preflop: [
-                      {
-                        action: {
-                          type: String,
-                          bet: Number,
-                        }
-                      }
-                    ],
-                    flop: [
-                      {
-                        action: {
-                          type: String,
-                          bet: Number,
-                        }
-                      }
-                    ],
-                    turn: [
-                      {
-                        action: {
-                          type: String,
-                          bet: Number,
-                        }
-                      }
-                    ],
-                    river: [
-                      {
-                        action: {
-                          type: String,
-                          bet: Number,
-                        }
-                      }
-                    ]
-                  }
-                ]
+              playerCards: {
+                card1: String,
+                card2: String,
               },
-              player_sb: Boolean,
-              createdAt: Date,
-              updatedAt: Date
+              flop: {
+                card1: String,
+                card2: String,
+                card3: String,
+              },
+              turn: {
+                  card1: String,
+              },
+              river: {
+                  card1: String,
+              },
             },
-            {
-              pot: Number
-            }
-
+            actions: {
+              computerActions: [
+                {
+                  preflop: [
+                    {
+                      action: {
+                        type: String,
+                        bet: Number,
+                      }
+                    }
+                  ],
+                  flop: [
+                    {
+                      action: {
+                        type: String,
+                        bet: Number,
+                      }
+                    }
+                  ],
+                  turn: [
+                    {
+                      action: {
+                        type: String,
+                        bet: Number,
+                      }
+                    }
+                  ],
+                  river: [
+                    {
+                      action: {
+                        type: String,
+                        bet: Number,
+                      }
+                    }
+                  ]
+                }
+              ],
+              playerActions: [
+                {
+                  preflop: [
+                    {
+                      action: {
+                      type: String,
+                      bet: Number,
+                      }
+                    }
+                  ],
+                  flop: [
+                    {
+                      action: {
+                        type: String,
+                        bet: Number,
+                      }
+                    }
+                  ],
+                  turn: [
+                    {
+                      action: {
+                        type: String,
+                        bet: Number,
+                      }
+                    }
+                  ],
+                  river: [
+                    {
+                      action: {
+                          type: String,
+                          bet: Number,
+                      }
+                    },
+                  ],
+                },
+              ],
+            },
+          }
           ],
-          player_chips: Number,
-          computer_chips: Number,
-          game_completed: Boolean,
-
+          player_sb: false,
+          player_chips: 0,
+          computer_chips: 1500,
+          game_completed: false,
+          pot: 0,
         };
 
       data.save(function(err) {
