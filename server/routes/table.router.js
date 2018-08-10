@@ -33,7 +33,7 @@ router.post('/checkGame', (req, res) => {
     console.log(data);
     if (err) throw err;
     console.log(data.games[data.games.length-1].game_completed);
-    if (data.games.length === 0 || !data.games[data.games.length-1].game_completed)
+    if (data.games.length === 0 || data.games[data.games.length-1].game_completed)
       data.games.push({
         hands: [
             {
