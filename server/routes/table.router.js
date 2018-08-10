@@ -28,8 +28,128 @@ router.get('/shuffle', (req, res) => {
 /**
  * POST route template
  */
-router.post('/', (req, res) => {
+router.post('/checkGame', (req, res) => {
+  Person.findById(req.user._id, function(err, data) {
+    if (err) throw err;
+    data.games =     {
+          hands: [
+            {
+              cards: {
+                computerCards: {
+                  card1: String,
+                  card2: String
+                },
+                playerCards: {
+                  card1: String,
+                  card2: String
+                },
+                flop: {
+                  card1: String,
+                  card2: String,
+                  card3: String
+                },
+                turn: {
+                  card1: String,
+                },
+                river: {
+                  card1: String,
+                },
+              },
+              actions: {
+                computerActions: [
+                  {
+                    preflop: [
+                      {
+                        action: {
+                          type: String,
+                          bet: Number,
+                        }
+                      }
+                    ],
+                    flop: [
+                      {
+                        action: {
+                          type: String,
+                          bet: Number,
+                        }
+                      }
+                    ],
+                    turn: [
+                      {
+                        action: {
+                          type: String,
+                          bet: Number,
+                        }
+                      }
+                    ],
+                    river: [
+                      {
+                        action: {
+                          type: String,
+                          bet: Number,
+                        }
+                      }
+                    ]
+                  }
+                ],
+                playerActions: [
+                  {
+                    preflop: [
+                      {
+                        action: {
+                          type: String,
+                          bet: Number,
+                        }
+                      }
+                    ],
+                    flop: [
+                      {
+                        action: {
+                          type: String,
+                          bet: Number,
+                        }
+                      }
+                    ],
+                    turn: [
+                      {
+                        action: {
+                          type: String,
+                          bet: Number,
+                        }
+                      }
+                    ],
+                    river: [
+                      {
+                        action: {
+                          type: String,
+                          bet: Number,
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              player_sb: Boolean,
+              createdAt: Date,
+              updatedAt: Date
+            },
+            {
+              pot: Number
+            }
 
+          ],
+          player_chips: Number,
+          computer_chips: Number,
+          game_completed: Boolean,
+
+        };
+
+      data.save(function(err) {
+        if (err) throw err;
+
+        console.log('Games array updated successfully');
+      });
+  })
 });
 
 module.exports = router;

@@ -6,3 +6,10 @@ export function shuffleRequest() {
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });
 }
+
+export function checkGameStatusRequest() {
+  return axios.post('/api/table/checkGame', {
+  })
+    .then(response => response.data)
+    .catch((error) => { throw error.response || error; });
+}

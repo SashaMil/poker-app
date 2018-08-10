@@ -9,12 +9,12 @@ import './Table.css';
 import Paper from '@material-ui/core/Paper';
 
 import { shuffle } from '../../redux/actions/tableActions';
+import { checkGameStatus } from '../../redux/actions/tableActions';
+
 
 const mapStateToProps = state => ({
   user: state.user,
 });
-
-
 
 class Table extends Component {
 
@@ -29,7 +29,8 @@ class Table extends Component {
   }
 
   componentDidMount = () => {
-    this.props.dispatch(shuffle());
+    // this.props.dispatch(shuffle());
+    this.props.dispatch(checkGameStatus());
   }
 
   render() {
