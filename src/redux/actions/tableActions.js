@@ -1,6 +1,7 @@
 export const TABLE_ACTIONS = {
   SHUFFLE: 'SHUFFLE',
   CHECK_GAME_STATUS: 'CHECK_GAME_STATUS',
+  SET_GAME: 'SET_GAME',
 };
 
 export const shuffle = () => ({

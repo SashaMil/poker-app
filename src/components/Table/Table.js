@@ -4,6 +4,7 @@ import { compose } from 'redux';
 
 import Log from '../Log/Log';
 import Deck from '../Deck/Deck';
+import PlayerHand from '../PlayerHand/PlayerHand';
 
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +15,7 @@ import { checkGameStatus } from '../../redux/actions/tableActions';
 
 const mapStateToProps = state => ({
   user: state.user,
+  table: state.table,
 });
 
 class Table extends Component {
@@ -28,9 +30,15 @@ class Table extends Component {
     })
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.table !== prevProps.table) {
+      console.log('Hello');
+    }
+  }
+
   componentDidMount = () => {
-    // this.props.dispatch(shuffle());
     this.props.dispatch(checkGameStatus());
+    console.log(this.props.table);
   }
 
   render() {
@@ -42,6 +50,9 @@ class Table extends Component {
           </div>
           <div>
             <Deck shuffle={this.handleShuffle} />
+          </div>
+          <div>
+            <PlayerHand />
           </div>
         </div>
       </div>
