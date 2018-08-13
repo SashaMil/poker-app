@@ -9,17 +9,21 @@ const Actions = new Schema({
   bet: Number,
 });
 
+const Cards = new Schema({
+  card1: String,
+  card2: String,
+});
+
 const Hands = new Schema({
-  playerCard1: String,
-  playerCard2: String,
-  computerCard1: String,
-  computerCard2: String,
+  playerCards: [Cards],
+  computerCards: [Cards],
   player_sb: Boolean,
   player_chips: Number,
   computer_chips: Number,
   pot: Number,
   playerActions: [Actions],
   computerActions: [Actions],
+  current_hand_completed: Boolean,
 });
 
 const PersonSchema = new Schema({

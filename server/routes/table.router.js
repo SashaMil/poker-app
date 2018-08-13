@@ -37,11 +37,29 @@ router.put('/shuffle', (req, res) => {
 
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    console.log('elephant', data.games[data.games.length-1]);
-     data.games[data.games.length-1].playerCard1 = playerCard1;
-     data.games[data.games.length-1].playerCard2 = playerCard2;
-     data.games[data.games.length-1].computerCard1 = computerCard1;
-     data.games[data.games.length-1].computerCard2 = computerCard2;
+    let currentGame = data.games[data.games.length-1];
+     currentGame.playerCards.push({card1: playerCard1, card2: playerCard2});
+     currentGame.computerCards.push({card1: computerCard1, card2: computerCard2});
+
+     console.log('giraffe', data.games[data.games.length-1].player_sb);
+
+     if (currentGame.player_sb) {
+       currentGame.playerActions.push({type: 'sb', bet: 5});
+       currentGame.player_chips -= 5
+       currentGame.computerActions.push({type: 'bb', bet: 10});
+       currentGame.computer_chips -= 10;
+
+     } else {
+       currentGame.playerActions.push({type: 'bb', bet: 10});
+       currentGame.player_chips -= 10;
+       currentGame.computerActions.push({type: 'sb', bet: 5});
+       currentGame.player_chips -= 5;
+
+     }
+
+     data.games[data.games.length-1].pot += 15;
+
+
 
      data.save(function(err) {
        if (err) throw err;
@@ -50,25 +68,28 @@ router.put('/shuffle', (req, res) => {
      });
   });
 
-
 });
 
 router.get('/gameInfo', (req, res) => {
+
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
     let currentGame = data.games[data.games.length-1];
     console.log('yaayy', data.games[data.games.length-1]);
+    console.log(currentGame.playerCards[currentGame.playerCards.length-1]);
     let gameInfo = {
       player_sb: currentGame.player_sb,
-      playerCard1: currentGame.playerCard1,
-      playerCard2: currentGame.playerCard2,
+      playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
       playerChips: currentGame.player_chips,
       computerChips: currentGame.computer_chips,
       computerActions: currentGame.computerActions,
       playerActions: currentGame.playerActions,
+      computerActions: currentGame.computerActions,
+      pot: currentGame.pot,
     }
     res.send(gameInfo);
   })
+
 })
 
 /**

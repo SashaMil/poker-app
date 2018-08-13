@@ -7,6 +7,7 @@ import Deck from '../Deck/Deck';
 import PlayerHand from '../PlayerHand/PlayerHand';
 import ComputerHand from '../ComputerHand/ComputerHand';
 import Controller from '../Controller/Controller';
+import Pot from '../Pot/Pot';
 
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
@@ -65,8 +66,12 @@ class Table extends Component {
               </div>
               <div>
                 <PlayerHand
-                  card1={this.props.table.state.playerCard1}
-                  card2={this.props.table.state.playerCard2}
+                  cards={this.props.table.state.playerCards}
+                />
+              </div>
+              <div>
+                <Pot
+                  pot={this.props.table.state.pot}
                 />
               </div>
               <div>

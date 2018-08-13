@@ -14,11 +14,11 @@ class PlayerHand extends Component {
   render() {
     return (
         <div>
-          <Slide direction="right" in={this.props.card1 !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/${this.props.card1}.png`} />
+          <Slide direction="right" in={this.props.cards.card1 !== undefined} mountOnEnter unmountOnExit>
+            <img width='120px' src={`images/Cards/${this.props.cards.card1}.png`} />
           </Slide>
-          <Slide direction="right" in={this.props.card2 !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/${this.props.card2}.png`} />
+          <Slide direction="right" in={this.props.cards.card1 !== undefined} mountOnEnter unmountOnExit>
+            <img width='120px' src={`images/Cards/${this.props.cards.card2}.png`} />
           </Slide>
           <p style={{color: 'white'}}>Computer Action</p>
         </div>
