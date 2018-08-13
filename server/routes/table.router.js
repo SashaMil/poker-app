@@ -44,15 +44,15 @@ router.put('/shuffle', (req, res) => {
      console.log('giraffe', data.games[data.games.length-1].player_sb);
 
      if (currentGame.player_sb) {
-       currentGame.playerActions.push({type: 'sb', bet: 5, act_next: true});
+       currentGame.playerActions.push({type: 'sb', bet: 5, act_next: true, facing_bet: 5});
        currentGame.player_chips -= 5
-       currentGame.computerActions.push({type: 'bb', bet: 10, act_next: false});
+       currentGame.computerActions.push({type: 'bb', bet: 10, act_next: false, facing_bet: 0});
        currentGame.computer_chips -= 10;
 
      } else {
-       currentGame.playerActions.push({type: 'bb', bet: 10, act_next: false});
+       currentGame.playerActions.push({type: 'bb', bet: 10, act_next: false, facing_bet: 0});
        currentGame.player_chips -= 10;
-       currentGame.computerActions.push({type: 'sb', bet: 5, act_next: true});
+       currentGame.computerActions.push({type: 'sb', bet: 5, act_next: true, facing_bet: 5});
        currentGame.computer_chips -= 5;
 
      }

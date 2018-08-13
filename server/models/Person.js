@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 const Actions = new Schema({
   type: String,
   bet: Number,
+  facing_bet: Number,
   act_next: Boolean,
 });
 
