@@ -12,9 +12,15 @@ const mapStateToProps = state => ({
 
 class Controller extends Component {
 
+  componentDidMount() {
+    console.log(this.props.playerSb);
+    console.log(this.props.playerAction);
+  }
+
   render() {
     return (
       <div>
+
       </div>
     )
   }

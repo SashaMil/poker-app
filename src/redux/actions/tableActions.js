@@ -10,4 +10,4 @@ export const shuffle = () => ({
 
 export const checkGameStatus = () => ({
   type: TABLE_ACTIONS.CHECK_GAME_STATUS
-})
+});

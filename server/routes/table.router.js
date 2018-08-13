@@ -44,22 +44,21 @@ router.put('/shuffle', (req, res) => {
      console.log('giraffe', data.games[data.games.length-1].player_sb);
 
      if (currentGame.player_sb) {
-       currentGame.playerActions.push({type: 'sb', bet: 5});
+       currentGame.playerActions.push({type: 'sb', bet: 5, act_next: true});
        currentGame.player_chips -= 5
-       currentGame.computerActions.push({type: 'bb', bet: 10});
+       currentGame.computerActions.push({type: 'bb', bet: 10, act_next: false});
        currentGame.computer_chips -= 10;
 
      } else {
-       currentGame.playerActions.push({type: 'bb', bet: 10});
+       currentGame.playerActions.push({type: 'bb', bet: 10, act_next: false});
        currentGame.player_chips -= 10;
-       currentGame.computerActions.push({type: 'sb', bet: 5});
-       currentGame.player_chips -= 5;
+       currentGame.computerActions.push({type: 'sb', bet: 5, act_next: true});
+       currentGame.computer_chips -= 5;
 
      }
 
-     data.games[data.games.length-1].pot += 15;
-
-
+     currentGame.pot = 0;
+     currentGame.pot += 15;
 
      data.save(function(err) {
        if (err) throw err;
@@ -75,7 +74,6 @@ router.get('/gameInfo', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
     let currentGame = data.games[data.games.length-1];
-    console.log('yaayy', data.games[data.games.length-1]);
     console.log(currentGame.playerCards[currentGame.playerCards.length-1]);
     let gameInfo = {
       player_sb: currentGame.player_sb,
@@ -98,14 +96,15 @@ router.get('/gameInfo', (req, res) => {
 router.post('/checkGameStatus', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    if (data.games.length === 0 || data.current_game_completed) {
+    if (data.games.length === 0 || data.games[data.games.length-1].game_completed) {
       let arr = [true, false];
       let bool = arr[Math.floor(Math.random() * (2))];
       data.games.push({
         player_sb: bool,
         player_chips: 1500,
         computer_chips: 1500,
-        pot: 0
+        pot: 0,
+        game_completed: false,
       });
       data.save(function(err) {
         if (err) throw err;
@@ -115,28 +114,7 @@ router.post('/checkGameStatus', (req, res) => {
     else {
       res.send('Game still active');
     }
-    // if (data.games.length === 0 || data.games[data.games.length-1].game_completed) {
-    //   let arr = [true, false];
-    //   let bool = arr[Math.floor(Math.random() * (2))];
-    //   data.games.push({
-    //     hands: [],
-    //     player_sb: bool,
-    //     player_chips: 1500,
-    //     computer_chips: 1500,
-    //     game_completed: false,
-    //     pot: 0,
-    //   });
-    //
-    //
-    //   data.save(function(err) {
-    //     if (err) throw err;
-    //     res.send('Added new Game Array');
-    //     console.log('Games array updated successfully');
-    //   });
-    // }
-    // else {
-    //   res.send('Game still active');
-    // }
+
   })
 });
 

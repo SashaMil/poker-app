@@ -78,7 +78,7 @@ class Table extends Component {
                 <Controller
                   playerSb={this.props.table.state.player_sb}
                   handleBet={this.handleChange}
-                  playerAction={this.playerAction}
+                  playerAction={this.props.table.state.playerActions[this.props.table.state.playerActions.length-1].act_next}
                 />
               </div>
             </div>
