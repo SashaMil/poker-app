@@ -5,6 +5,8 @@ import { compose } from 'redux';
 import Log from '../Log/Log';
 import Deck from '../Deck/Deck';
 import PlayerHand from '../PlayerHand/PlayerHand';
+import ComputerHand from '../ComputerHand/ComputerHand';
+import Controller from '../Controller/Controller';
 
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
@@ -22,6 +24,7 @@ class Table extends Component {
 
   state = {
     shuffle: false,
+    bet: 0,
   }
 
   handleShuffle = () => {
@@ -30,32 +33,55 @@ class Table extends Component {
     })
   }
 
+  playerAction = () => {
+    console.log('Hey there!');
+  }
+
+  handleChange = (name) => event => {
+    this.setState({
+      [name]: event.target.value
+    })
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.table !== prevProps.table) {
-      console.log('Hello');
+      console.log(this.props.table);
     }
   }
 
   componentDidMount = () => {
     this.props.dispatch(checkGameStatus());
-    console.log(this.props.table);
+    console.log(this.props.table.state);
   }
 
   render() {
     return (
-      <div>
-        <div className="wrapper">
-          <div>
-            <Log actions={this.props.actions} />
-          </div>
-          <div>
-            <Deck shuffle={this.handleShuffle} />
-          </div>
-          <div>
-            <PlayerHand />
-          </div>
+        <div>
+          {this.props.table.state ? (
+            <div>
+              <div>
+                <ComputerHand
+                />
+              </div>
+              <div>
+                <PlayerHand
+                  card1={this.props.table.state.playerCard1}
+                  card2={this.props.table.state.playerCard2}
+                />
+              </div>
+              <div>
+                <Controller
+                  playerSb={this.props.table.state.player_sb}
+                  handleBet={this.handleChange}
+                  playerAction={this.playerAction}
+                />
+              </div>
+            </div>
+          ) : (
+            null
+          )
+        }
         </div>
-      </div>
     )
   }
 }

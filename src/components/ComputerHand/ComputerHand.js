@@ -9,16 +9,16 @@ const mapStateToProps = state => ({
   table: state.table,
 });
 
-class PlayerHand extends Component {
+class ComputerHand extends Component {
 
   render() {
     return (
         <div>
-          <Slide direction="right" in={this.props.card1 !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/${this.props.card1}.png`} />
+          <Slide direction="right" in={this.props.table.state !== undefined} mountOnEnter unmountOnExit>
+            <img width='120px' src={`images/Cards/purple_back.png`} />
           </Slide>
-          <Slide direction="right" in={this.props.card2 !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/${this.props.card2}.png`} />
+          <Slide direction="right" in={this.props.table.state !== undefined} mountOnEnter unmountOnExit>
+            <img width='120px' src={`images/Cards/purple_back.png`} />
           </Slide>
           <p style={{color: 'white'}}>Computer Action</p>
         </div>
@@ -34,4 +34,4 @@ Slide.defaultProps = {
 };
 
 
-export default compose(connect(mapStateToProps))(PlayerHand);
+export default compose(connect(mapStateToProps))(ComputerHand);
