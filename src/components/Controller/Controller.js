@@ -14,19 +14,19 @@ const mapStateToProps = state => ({
 });
 
 class Controller extends Component {
-
+  
   componentDidMount() {
     if (!this.props.currentAction.player_act_next) {
       this.props.dispatch(computerDecision());
     }
   }
 
-  componentDidUpdate() {
-    if (!this.props.playerAction) {
-      console.log('dragon');
-      this.props.dispatch(computerDecision())
-    }
-  }
+  // componentDidUpdate() {
+  //   if (!this.props.currentAction.player_act_next) {
+  //     console.log('dragon');
+  //     this.props.dispatch(computerDecision())
+  //   }
+  // }
 
   render() {
     return (
@@ -34,23 +34,34 @@ class Controller extends Component {
         {this.props.currentAction.bet > 0 ? (
           <div>
             <div>
-              <Button onClick={this.fold} variant="contained" color="secondary">
+              <Button onClick={this.props.fold} variant="contained" color="secondary">
                 Fold
               </Button>
             </div>
             <div>
-              <Button onClick={this.call} variant="contained" color="default">
+              <Button onClick={this.props.call} variant="contained" color="default">
                 Call
               </Button>
             </div>
             <div>
-              <Button variant="contained" color="primary" onClick={this.bet}>
+              <Button onClick={this.props.bet} variant="contained" color="primary">
                 Raise
               </Button>
             </div>
           </div>
         ) : (
-          null
+          <div>
+            <div>
+              <Button onClick={this.fold} variant="contained" color="secondary">
+                Check
+              </Button>
+            </div>
+            <div>
+              <Button onClick={this.fold} variant="contained" color="secondary">
+                Bet
+              </Button>
+            </div>
+          </div>
         )
       }
         <div>

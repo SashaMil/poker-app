@@ -6,6 +6,7 @@ import { checkGameStatusRequest } from '../requests/tableRequests';
 import { getGameInfoRequest } from '../requests/tableRequests';
 import { computerDecisionRequest } from '../requests/tableRequests';
 import { getStreetRequest } from '../requests/tableRequests';
+import { playerFoldRequest } from '../requests/tableRequests'
 
 let playerCards = '';
 let gameInfo = '';
@@ -17,7 +18,6 @@ function* checkGameStatus() {
     console.log('dinosaur');
     yield shuffleRequest();
     gameInfo = yield getGameInfoRequest();
-    console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
@@ -43,9 +43,30 @@ function* computerDecision() {
   }
 }
 
+function* playerFold() {
+  try {
+    console.log('giraffe');
+    yield playerFoldRequest();
+    console.log('mooo');
+    gameInfo = yield getGameInfoRequest();
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    })
+    yield shuffleRequest();
+    gameInfo = yield getGameInfoRequest();
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    })
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
 function* getStreet() {
   try {
-    console.log('whatever');
     street = yield getStreetRequest();
     console.log(street);
   }

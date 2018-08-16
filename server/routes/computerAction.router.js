@@ -4,7 +4,7 @@ const Person = require('../models/Person');
 const computerLogic = require('../modules/computerLogic.js')
 
 
-router.post('/computerDecision', (req, res) => {
+router.post('/', (req, res) => {
 
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;

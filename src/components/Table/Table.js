@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { shuffle } from '../../redux/actions/tableActions';
 import { checkGameStatus } from '../../redux/actions/tableActions';
+import { playerFold } from '../../redux/actions/tableActions';
 
 
 const mapStateToProps = state => ({
@@ -36,16 +37,22 @@ class Table extends Component {
     street: null,
   };
 
-  handleShuffle = () => {
-    this.setState({
-      shuffle: !this.state.shuffle,
-    })
-  }
-
   handleChange = (name) => event => {
     this.setState({
       [name]: event.target.value
     })
+  }
+
+  fold = () => {
+    this.props.dispatch(playerFold());
+  }
+
+  call = () => {
+
+  }
+
+  raise = () => {
+
   }
 
   componentDidUpdate(prevProps) {
@@ -64,7 +71,6 @@ class Table extends Component {
 
   componentDidMount = () => {
     this.props.dispatch(checkGameStatus());
-    console.log(this.props.table);
   }
 
 
@@ -99,6 +105,7 @@ class Table extends Component {
                   currentAction={this.state.currentAction}
                   playerSb={this.state.playerSb}
                   handleChange={this.handleChange}
+                  fold={this.fold}
                 />
               </div>
             </div>

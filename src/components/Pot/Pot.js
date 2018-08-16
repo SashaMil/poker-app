@@ -13,15 +13,14 @@ const mapStateToProps = state => ({
 
 class Pot extends Component {
 
+  componentDidMount() {
+    console.log(this.props.pot);
+  }
+
   render() {
     return (
         <div>
-          {this.props.pot ? (
-            <h2>{this.props.pot}</h2>
-          ) : (
-            null
-          )
-        }
+          <h2>{this.props.pot}</h2>
         </div>
     )
   }

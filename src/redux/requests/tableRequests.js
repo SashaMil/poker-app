@@ -22,7 +22,7 @@ export function getGameInfoRequest() {
 }
 
 export function computerDecisionRequest() {
-  return axios.post('/api/logic/computerDecision', {
+  return axios.post('/api/computerAction/', {
   })
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });
@@ -31,6 +31,13 @@ export function computerDecisionRequest() {
 export function getStreetRequest() {
   return axios.get('/api/table/street', {
 
+  })
+    .then(response => response.data)
+    .catch((error) => { throw error.response || error; });
+}
+
+export function playerFoldRequest() {
+  return axios.post('/api/playerAction/fold', {
   })
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });
