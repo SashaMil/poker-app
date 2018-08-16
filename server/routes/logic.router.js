@@ -37,6 +37,18 @@ router.post('/computerDecision', (req, res) => {
           currentGame.actions.push({ player: false, type: decision, player_act_next: true, street: playerAction.street })
         }
         else {
+          if (playerAction.street === 'preflop') {
+            playerAction.street = 'flop';
+          }
+          else if (playerAction.street === 'flop') {
+            playerAction.street = 'turn';
+          }
+          else if (playerAction.street === 'turn') {
+            playerAction.street = 'river';
+          }
+          else {
+            playerAction.street = 'showdown'       
+          }
           currentGame.actions.push({ player: false, type: decision, player_act_next: player_sb, street: playerAction.street })
         }
         break;
