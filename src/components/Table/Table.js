@@ -27,6 +27,7 @@ class Table extends Component {
 
   state = {
     playerAction: null,
+    playerHasActed: null,
     playerSb: null,
     playerCards: null,
     pot: null,
@@ -49,6 +50,7 @@ class Table extends Component {
     if (this.props.table.state !== prevProps.table.state) {
       this.setState({
         playerAction: this.props.table.state.actions.player_act_next,
+        playerHasActed: this.props.table.state.actions.player_has_acted,
         playerSb: this.props.table.state.player_sb,
         playerCards: this.props.table.state.playerCards,
         pot: this.props.table.state.pot,
@@ -93,6 +95,7 @@ class Table extends Component {
                   playerSb={this.state.playerSb}
                   handleChange={this.handleChange}
                   playerAction={this.state.playerAction}
+                  playerHasActed={this.state.playerHasActed}
                 />
               </div>
             </div>
