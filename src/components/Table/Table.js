@@ -21,12 +21,15 @@ const mapStateToProps = state => ({
   table: state.table,
 });
 
+
 class Table extends Component {
 
   state = {
-    shuffle: false,
-    bet: 0,
-  }
+    playerAction: null,
+    playerSb: null,
+    playerCards: null,
+    pot: null,
+  };
 
   handleShuffle = () => {
     this.setState({
@@ -45,20 +48,26 @@ class Table extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.table !== prevProps.table) {
-      console.log(this.props.table);
+    if (this.props.table.state !== prevProps.table.state) {
+      this.setState({
+        playerAction: this.props.table.state.actions.player_act_next,
+        playerSb: this.props.table.state.player_sb,
+        playerCards: this.props.table.state.playerCards,
+        pot: this.props.table.state.pot,
+      })
     }
   }
 
   componentDidMount = () => {
     this.props.dispatch(checkGameStatus());
-    console.log(this.props.table.state);
+    console.log(this.props.table);
   }
+
 
   render() {
     return (
         <div>
-          {this.props.table.state ? (
+          {this.state.playerCards ? (
             <div>
               <div>
                 <ComputerHand
@@ -66,19 +75,20 @@ class Table extends Component {
               </div>
               <div>
                 <PlayerHand
-                  cards={this.props.table.state.playerCards}
+                  cards={this.state.playerCards}
                 />
               </div>
               <div>
                 <Pot
-                  pot={this.props.table.state.pot}
+                  pot={this.state.pot}
+                  handleChange={this.handleChange}
                 />
               </div>
               <div>
                 <Controller
-                  playerSb={this.props.table.state.player_sb}
-                  handleBet={this.handleChange}
-                  playerAction={this.props.table.state.playerActions[this.props.table.state.playerActions.length-1].act_next}
+                  playerSb={this.state.playerSb}
+                  handleChange={this.handleChange}
+                  playerAction={this.state.playerAction}
                 />
               </div>
             </div>

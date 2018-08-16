@@ -5,10 +5,10 @@ const Schema = mongoose.Schema;
 // Mongoose Schema
 
 const Actions = new Schema({
+  player: Boolean,
   type: String,
   bet: Number,
-  facing_bet: Number,
-  act_next: Boolean,
+  player_act_next: Boolean,
 });
 
 const Cards = new Schema({
@@ -23,8 +23,7 @@ const Hands = new Schema({
   player_chips: Number,
   computer_chips: Number,
   pot: Number,
-  playerActions: [Actions],
-  computerActions: [Actions],
+  actions: [Actions],
   current_hand_completed: Boolean,
   game_completed: Boolean,
 });

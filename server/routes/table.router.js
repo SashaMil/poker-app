@@ -41,19 +41,19 @@ router.put('/shuffle', (req, res) => {
      currentGame.playerCards.push({card1: playerCard1, card2: playerCard2});
      currentGame.computerCards.push({card1: computerCard1, card2: computerCard2});
 
-     console.log('giraffe', data.games[data.games.length-1].player_sb);
+     currentGame.player_sb = !currentGame.player_sb;
 
      if (currentGame.player_sb) {
-       currentGame.playerActions.push({type: 'sb', bet: 5, act_next: true, facing_bet: 5});
+       currentGame.actions.push({player: true, type: 'sb', bet: 5, player_act_next: true});
        currentGame.player_chips -= 5
-       currentGame.computerActions.push({type: 'bb', bet: 10, act_next: false, facing_bet: 0});
+       currentGame.actions.push({player: false, type: 'bb', bet: 10, player_act_next: true});
        currentGame.computer_chips -= 10;
 
      } else {
-       currentGame.playerActions.push({type: 'bb', bet: 10, act_next: false, facing_bet: 0});
-       currentGame.player_chips -= 10;
-       currentGame.computerActions.push({type: 'sb', bet: 5, act_next: true, facing_bet: 5});
+       currentGame.actions.push({player: false, type: 'sb', bet: 5, player_act_next: false});
        currentGame.computer_chips -= 5;
+       currentGame.actions.push({player: true, type: 'bb', bet: 10, player_act_next: false});
+       currentGame.player_chips -= 10;
 
      }
 
@@ -74,14 +74,13 @@ router.get('/gameInfo', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
     let currentGame = data.games[data.games.length-1];
-    console.log(currentGame.playerCards[currentGame.playerCards.length-1]);
+    console.log(currentGame.actions[currentGame.actions.length - 1])
     let gameInfo = {
       player_sb: currentGame.player_sb,
       playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
       playerChips: currentGame.player_chips,
       computerChips: currentGame.computer_chips,
-      computerActions: currentGame.computerActions,
-      playerActions: currentGame.playerActions,
+      actions: currentGame.actions[currentGame.actions.length - 1],
       computerActions: currentGame.computerActions,
       pot: currentGame.pot,
     }
