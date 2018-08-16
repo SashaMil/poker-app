@@ -26,6 +26,8 @@ const mapStateToProps = state => ({
 class Table extends Component {
 
   state = {
+    value: 0,
+    currentAction: null,
     playerAction: null,
     playerHasActed: null,
     playerSb: null,
@@ -49,6 +51,7 @@ class Table extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.table.state !== prevProps.table.state) {
       this.setState({
+        currentAction: this.props.table.state.actions,
         playerAction: this.props.table.state.actions.player_act_next,
         playerHasActed: this.props.table.state.actions.player_has_acted,
         playerSb: this.props.table.state.player_sb,
@@ -92,10 +95,10 @@ class Table extends Component {
               </div>
               <div>
                 <Controller
+                  value={this.state.value}
+                  currentAction={this.state.currentAction}
                   playerSb={this.state.playerSb}
                   handleChange={this.handleChange}
-                  playerAction={this.state.playerAction}
-                  playerHasActed={this.state.playerHasActed}
                 />
               </div>
             </div>

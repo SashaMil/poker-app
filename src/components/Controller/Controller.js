@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
 import { computerDecision } from '../../redux/actions/tableActions';
+import Slider from '@material-ui/lab/Slider';
+
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -14,10 +16,7 @@ const mapStateToProps = state => ({
 class Controller extends Component {
 
   componentDidMount() {
-    console.log(this.props.playerSb);
-    console.log(this.props.playerAction);
-    if (!this.props.playerAction) {
-      console.log('penguin');
+    if (!this.props.currentAction.player_act_next) {
       this.props.dispatch(computerDecision());
     }
   }
@@ -32,6 +31,32 @@ class Controller extends Component {
   render() {
     return (
       <div>
+        {this.props.currentAction.bet > 0 ? (
+          <div>
+            <div>
+              <Button onClick={this.fold} variant="contained" color="secondary">
+                Fold
+              </Button>
+            </div>
+            <div>
+              <Button onClick={this.call} variant="contained" color="default">
+                Call
+              </Button>
+            </div>
+            <div>
+              <Button variant="contained" color="primary" onClick={this.bet}>
+                Raise
+              </Button>
+            </div>
+          </div>
+        ) : (
+          null
+        )
+      }
+        <div>
+          <Slider value={this.props.value} min={10} max={1500} step={1} onChange={(event, value) => this.props.handleChange(event,value)} />
+        </div>
+
       </div>
     )
   }
