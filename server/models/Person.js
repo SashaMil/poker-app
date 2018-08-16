@@ -10,6 +10,7 @@ const Actions = new Schema({
   bet: Number,
   player_act_next: Boolean,
   street: String,
+  next_street: String,
   has_acted: Boolean,
 });
 

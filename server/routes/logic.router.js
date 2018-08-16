@@ -47,9 +47,9 @@ router.post('/computerDecision', (req, res) => {
             playerAction.street = 'river';
           }
           else {
-            playerAction.street = 'showdown'       
+            playerAction.street = 'showdown'
           }
-          currentGame.actions.push({ player: false, type: decision, player_act_next: player_sb, street: playerAction.street })
+          currentGame.actions.push({ player: false, type: decision, player_act_next: player_sb, next_street: playerAction.street })
         }
         break;
       case 'BET':
