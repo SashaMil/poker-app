@@ -94,6 +94,23 @@ router.get('/gameInfo', (req, res) => {
 
 })
 
+router.get('/street', (req, res) => {
+  Person.findById(req.user._id, function(err, data) {
+    if (err) throw err;
+    const currentGame = data.games[data.games.length-1];
+    const playerAction = currentGame.actions[currentGame.actions.length - 1];
+    if (playerAction.street === 'flop') {
+      res.send([currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3]);
+    }
+    else if (playerAction.street === 'turn') {
+      res.send([currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3, currentGame.street.turn])
+    }
+    else if (playerAction.street === 'river') {
+      res.send([currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3, currentGame.street.turn, currentGame.street.river])
+    }
+  })
+})
+
 /**
  * POST route template
  */

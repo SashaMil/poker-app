@@ -8,6 +8,7 @@ import PlayerHand from '../PlayerHand/PlayerHand';
 import ComputerHand from '../ComputerHand/ComputerHand';
 import Controller from '../Controller/Controller';
 import Pot from '../Pot/Pot';
+import Street from '../Street/Street';
 
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
@@ -29,16 +30,13 @@ class Table extends Component {
     playerSb: null,
     playerCards: null,
     pot: null,
+    street: null,
   };
 
   handleShuffle = () => {
     this.setState({
       shuffle: !this.state.shuffle,
     })
-  }
-
-  playerAction = () => {
-    console.log('Hey there!');
   }
 
   handleChange = (name) => event => {
@@ -54,6 +52,7 @@ class Table extends Component {
         playerSb: this.props.table.state.player_sb,
         playerCards: this.props.table.state.playerCards,
         pot: this.props.table.state.pot,
+        street: this.props.table.state.actions.street
       });
     }
   }
@@ -82,6 +81,11 @@ class Table extends Component {
                 <Pot
                   pot={this.state.pot}
                   handleChange={this.handleChange}
+                />
+              </div>
+              <div>
+                <Street
+                  street={this.state.street}
                 />
               </div>
               <div>
