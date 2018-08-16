@@ -9,6 +9,8 @@ import ComputerHand from '../ComputerHand/ComputerHand';
 import Controller from '../Controller/Controller';
 import Pot from '../Pot/Pot';
 import Street from '../Street/Street';
+import SnackBar from '../SnackBar/SnackBar';
+
 
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
@@ -41,6 +43,17 @@ class Table extends Component {
     this.setState({
       [name]: event.target.value
     })
+  }
+
+  messageGenerator = () => {
+    if (!this.state.currentAction.player) {
+      let message = 'Computer ' + this.state.currentAction.type.toLowerCase();
+      return message;
+    }
+    else {
+      let message = 'Player ' + this.state.currentAction.type.toLowerCase();
+      return message;
+    }
   }
 
   fold = () => {
@@ -106,6 +119,11 @@ class Table extends Component {
                   playerSb={this.state.playerSb}
                   handleChange={this.handleChange}
                   fold={this.fold}
+                />
+              </div>
+              <div>
+                <SnackBar
+                  message={this.messageGenerator}
                 />
               </div>
             </div>

@@ -45,9 +45,7 @@ function* computerDecision() {
 
 function* playerFold() {
   try {
-    console.log('giraffe');
     yield playerFoldRequest();
-    console.log('mooo');
     gameInfo = yield getGameInfoRequest();
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
@@ -76,12 +74,10 @@ function* getStreet() {
 }
 
 function* tableSaga() {
-  // yield takeLatest(TABLE_ACTIONS.NEW_GAME, newGame);
-  // yield takeLatest(TABLE_ACTIONS.SHUFFLE, shuffle);
   yield takeLatest(TABLE_ACTIONS.CHECK_GAME_STATUS, checkGameStatus);
   yield takeLatest(TABLE_ACTIONS.COMPUTER_DECISION, computerDecision);
   yield takeLatest(TABLE_ACTIONS.GET_STREET, getStreet);
-
+  yield takeLatest(TABLE_ACTIONS.PLAYER_FOLD, playerFold);
 }
 
 export default tableSaga;
