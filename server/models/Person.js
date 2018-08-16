@@ -13,19 +13,15 @@ const Actions = new Schema({
   has_acted: Boolean,
 });
 
-const Flop = new Schema({
-  card1: String,
-  card2: String,
-  card3: String,
-})
-
 const Cards = new Schema({
   card1: String,
   card2: String,
 });
 
 const Street = new Schema({
-  flop: [Flop],
+  flop1: String,
+  flop2: String,
+  flop3: String,
   turn: String,
   river: String,
 })

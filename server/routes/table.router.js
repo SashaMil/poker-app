@@ -57,8 +57,13 @@ router.put('/shuffle', (req, res) => {
 
      }
 
+     currentGame.street.push({flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1});
+
+
+
      currentGame.pot = 0;
      currentGame.pot += 15;
+
 
      data.save(function(err) {
        if (err) throw err;
