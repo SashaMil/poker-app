@@ -44,15 +44,15 @@ router.put('/shuffle', (req, res) => {
      currentGame.player_sb = !currentGame.player_sb;
 
      if (currentGame.player_sb) {
-       currentGame.actions.push({player: true, type: 'sb', bet: 5, player_act_next: true});
+       currentGame.actions.push({player: true, type: 'SB', bet: 5, player_act_next: true, has_acted: false, street: 'preflop'});
        currentGame.player_chips -= 5
-       currentGame.actions.push({player: false, type: 'bb', bet: 10, player_act_next: true});
+       currentGame.actions.push({player: false, type: 'BB', bet: 10, player_act_next: true, has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 10;
 
      } else {
-       currentGame.actions.push({player: false, type: 'sb', bet: 5, player_act_next: false});
+       currentGame.actions.push({player: false, type: 'SB', bet: 5, player_act_next: false, has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 5;
-       currentGame.actions.push({player: true, type: 'bb', bet: 10, player_act_next: false});
+       currentGame.actions.push({player: true, type: 'BB', bet: 10, player_act_next: false, has_acted: false, street: 'preflop'});
        currentGame.player_chips -= 10;
 
      }

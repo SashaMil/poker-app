@@ -9,16 +9,31 @@ const Actions = new Schema({
   type: String,
   bet: Number,
   player_act_next: Boolean,
+  street: String,
+  has_acted: Boolean,
 });
+
+const Flop = new Schema({
+  card1: String,
+  card2: String,
+  card3: String,
+})
 
 const Cards = new Schema({
   card1: String,
   card2: String,
 });
 
+const Street = new Schema({
+  flop: [Flop],
+  turn: String,
+  river: String,
+})
+
 const Hands = new Schema({
   playerCards: [Cards],
   computerCards: [Cards],
+  street: [Street],
   player_sb: Boolean,
   player_chips: Number,
   computer_chips: Number,

@@ -20,3 +20,10 @@ export function getGameInfoRequest() {
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });
 }
+
+export function computerDecisionRequest() {
+  return axios.post('/api/logic/computerDecision', {
+  })
+    .then(response => response.data)
+    .catch((error) => { throw error.response || error; });
+}

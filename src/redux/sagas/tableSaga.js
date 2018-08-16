@@ -4,19 +4,10 @@ import { TABLE_ACTIONS } from '../actions/tableActions';
 import { shuffleRequest } from '../requests/tableRequests';
 import { checkGameStatusRequest } from '../requests/tableRequests';
 import { getGameInfoRequest } from '../requests/tableRequests';
-
+import { computerDecisionRequest } from '../requests/tableRequests';
 
 let playerCards = '';
 let gameInfo = '';
-
-// function* shuffle(action) {
-//   try {
-//     playerCards = yield shuffleRequest();
-//   }
-//   catch (error) {
-//     console.log('WHOOPS');
-//   }
-// }
 
 function* checkGameStatus() {
   try {
@@ -35,10 +26,21 @@ function* checkGameStatus() {
   }
 }
 
+function* computerDecision() {
+  try {
+    console.log('sheep');
+    yield computerDecisionRequest();
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
 function* tableSaga() {
   // yield takeLatest(TABLE_ACTIONS.NEW_GAME, newGame);
   // yield takeLatest(TABLE_ACTIONS.SHUFFLE, shuffle);
-  yield takeLatest(TABLE_ACTIONS.CHECK_GAME_STATUS, checkGameStatus)
+  yield takeLatest(TABLE_ACTIONS.CHECK_GAME_STATUS, checkGameStatus);
+  yield takeLatest(TABLE_ACTIONS.COMPUTER_DECISION, computerDecision);
 
 }
 

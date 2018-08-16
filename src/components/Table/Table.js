@@ -54,7 +54,7 @@ class Table extends Component {
         playerSb: this.props.table.state.player_sb,
         playerCards: this.props.table.state.playerCards,
         pot: this.props.table.state.pot,
-      })
+      });
     }
   }
 
