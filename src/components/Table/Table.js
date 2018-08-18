@@ -10,6 +10,8 @@ import Controller from '../Controller/Controller';
 import Pot from '../Pot/Pot';
 import Street from '../Street/Street';
 import SnackBar from '../SnackBar/SnackBar';
+import ComputerChips from '../ComputerChips/ComputerChips';
+import PlayerChips from '../PlayerChips/PlayerChips';
 
 
 import './Table.css';
@@ -31,6 +33,9 @@ class Table extends Component {
   state = {
     betSize: null,
     pot: null,
+    showComputerCards: false,
+    foldComputerCards: false,
+    foldPlayerCards: false,
   };
 
   handleChange = (name) => event => {
@@ -77,8 +82,16 @@ class Table extends Component {
                 />
               </div>
               <div>
+                <ComputerChips
+                />
+              </div>
+              <div>
                 <PlayerHand
                   cards={redux.playerCards}
+                />
+              </div>
+              <div>
+                <PlayerChips
                 />
               </div>
               <div>

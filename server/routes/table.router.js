@@ -89,7 +89,6 @@ router.get('/gameInfo', (req, res) => {
       playerChips: currentGame.player_chips,
       computerChips: currentGame.computer_chips,
       actions: currentGame.actions[currentGame.actions.length - 1],
-      computerActions: currentGame.computerActions,
       pot: currentGame.pot,
       message: message,
     }
