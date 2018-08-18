@@ -29,31 +29,14 @@ const mapStateToProps = state => ({
 class Table extends Component {
 
   state = {
-    value: 0,
-    currentAction: null,
-    playerAction: null,
-    playerHasActed: null,
-    playerSb: null,
-    playerCards: null,
+    betSize: null,
     pot: null,
-    street: null,
   };
 
   handleChange = (name) => event => {
     this.setState({
       [name]: event.target.value
     })
-  }
-
-  messageGenerator = () => {
-    if (!this.state.currentAction.player) {
-      let message = 'Computer ' + this.state.currentAction.type.toLowerCase();
-      return message;
-    }
-    else {
-      let message = 'Player ' + this.state.currentAction.type.toLowerCase();
-      return message;
-    }
   }
 
   fold = () => {
@@ -71,13 +54,7 @@ class Table extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.table.state !== prevProps.table.state) {
       this.setState({
-        currentAction: this.props.table.state.actions,
-        playerAction: this.props.table.state.actions.player_act_next,
-        playerHasActed: this.props.table.state.actions.player_has_acted,
-        playerSb: this.props.table.state.player_sb,
-        playerCards: this.props.table.state.playerCards,
         pot: this.props.table.state.pot,
-        street: this.props.table.state.actions.street
       });
     }
   }
@@ -88,9 +65,12 @@ class Table extends Component {
 
 
   render() {
+
+    const redux = this.props.table.state;
+
     return (
         <div>
-          {this.state.playerCards ? (
+          {this.state.pot ? (
             <div>
               <div>
                 <ComputerHand
@@ -98,7 +78,7 @@ class Table extends Component {
               </div>
               <div>
                 <PlayerHand
-                  cards={this.state.playerCards}
+                  cards={redux.playerCards}
                 />
               </div>
               <div>
@@ -114,16 +94,16 @@ class Table extends Component {
               </div>
               <div>
                 <Controller
-                  value={this.state.value}
-                  currentAction={this.state.currentAction}
-                  playerSb={this.state.playerSb}
+                  betSize={this.state.betSize}
+                  currentAction={redux.actions}
+                  playerSb={redux.player_sb}
                   handleChange={this.handleChange}
                   fold={this.fold}
                 />
               </div>
               <div>
                 <SnackBar
-                  message={this.messageGenerator}
+                  message={redux.message}
                 />
               </div>
             </div>

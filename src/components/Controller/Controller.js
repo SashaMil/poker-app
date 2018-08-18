@@ -14,19 +14,12 @@ const mapStateToProps = state => ({
 });
 
 class Controller extends Component {
-  
+
   componentDidMount() {
     if (!this.props.currentAction.player_act_next) {
       this.props.dispatch(computerDecision());
     }
   }
-
-  // componentDidUpdate() {
-  //   if (!this.props.currentAction.player_act_next) {
-  //     console.log('dragon');
-  //     this.props.dispatch(computerDecision())
-  //   }
-  // }
 
   render() {
     return (
@@ -65,7 +58,7 @@ class Controller extends Component {
         )
       }
         <div>
-          <Slider value={this.props.value} min={10} max={1500} step={1} onChange={(event, value) => this.props.handleChange(event,value)} />
+          <Slider betSize={this.props.betSize} min={10} max={1500} step={1} onChange={(event, value) => this.props.handleChange(event,value)} />
         </div>
 
       </div>

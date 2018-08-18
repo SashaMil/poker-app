@@ -38,6 +38,7 @@ const Hands = new Schema({
   actions: [Actions],
   current_hand_completed: Boolean,
   game_completed: Boolean,
+  message: String,
 });
 
 const PersonSchema = new Schema({

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Deck = require('../modules/deck.js');
 const Person = require('../models/Person');
+const messageGenerator = require('../modules/messageGenerator.js');
+
 
 
 
@@ -79,7 +81,8 @@ router.get('/gameInfo', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
     let currentGame = data.games[data.games.length-1];
-    console.log(currentGame.actions[currentGame.actions.length - 1])
+    console.log(currentGame.actions[currentGame.actions.length - 1]);
+    let message = messageGenerator(currentGame.player_sb);
     let gameInfo = {
       player_sb: currentGame.player_sb,
       playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
@@ -88,6 +91,7 @@ router.get('/gameInfo', (req, res) => {
       actions: currentGame.actions[currentGame.actions.length - 1],
       computerActions: currentGame.computerActions,
       pot: currentGame.pot,
+      message: message,
     }
     res.send(gameInfo);
   })
@@ -120,12 +124,14 @@ router.post('/checkGameStatus', (req, res) => {
     if (data.games.length === 0 || data.games[data.games.length-1].game_completed) {
       let arr = [true, false];
       let bool = arr[Math.floor(Math.random() * (2))];
+      const message = messageGenerator(player_sb);
       data.games.push({
         player_sb: bool,
         player_chips: 1500,
         computer_chips: 1500,
         pot: 0,
         game_completed: false,
+        message: message,
       });
       data.save(function(err) {
         if (err) throw err;

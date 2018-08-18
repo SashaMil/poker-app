@@ -18,12 +18,6 @@ class SimpleSnackbar extends React.Component {
     message: '',
   };
 
-  componentDidMount() {
-    let message = this.props.message();
-    this.setState({
-      message: message,
-    })
-  }
 
   render() {
     const { classes } = this.props;
@@ -38,7 +32,7 @@ class SimpleSnackbar extends React.Component {
           ContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={<span id="message-id">{this.state.message}</span>}
+          message={<span id="message-id">{this.props.message}</span>}
         />
       </div>
     );
