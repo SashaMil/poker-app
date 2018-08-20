@@ -72,6 +72,52 @@ router.post('/call', (req, res) => {
   })
 })
 
+router.post('/check', (req, res) => {
+ Person.findById(req.user._id, function(err, data) {
+   if (err) throw err;
+   const currentGame = data.games[data.games.length-1];
+   const computerAction = currentGame.actions[currentGame.actions.length-1];
+   const playerAction = currentGame.actions[currentGame.actions.length-2];
+   
+   let playerActNext = null;
+   let nextStreet = null;
+
+   if (computerAction.computer_has_acted && currentGame.player_sb) {
+     playerActNext = true;
+     nextStreet = true;
+     currentGame.currentBet = 0;
+   }
+   else if (computerAction.computer_has_acted && !currentGame.player_sb) {
+     playerActNext = false;
+     nextStreet = true;
+     currentGame.currentBet = 0;
+   }
+   else {
+     playerActNext = false;
+     nextStreet = false;
+   }
+
+   currentGame.actions.push({
+     player: true,
+     type: 'CHECK',
+     bet: 0,
+     player_act_next: playerActNext,
+     street: 'preflop',
+     player_has_acted: true,
+     computer_has_acted: computerAction.computer_has_acted,
+     next_street: nextStreet,
+   });
+
+   const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+   currentGame.messages.push({message: message});
+
+   data.save(function(err) {
+     if (err) throw err;
+     res.send('Added new game Array');
+   });
+ });
+});
+
 
 
 

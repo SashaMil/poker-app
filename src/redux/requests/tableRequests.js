@@ -50,6 +50,13 @@ export function playerCallRequest() {
     .catch((error) => { throw error.response || error; })
 }
 
+export function playerCheckRequest() {
+  return axios.post('/api/playerAction/check', {
+  })
+    .then(response => response.data)
+    .catch((error) => { throw error.response || error; })
+}
+
 
 
 

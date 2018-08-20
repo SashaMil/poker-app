@@ -6,6 +6,7 @@ export const TABLE_ACTIONS = {
   GET_STREET: 'GET_STREET',
   PLAYER_FOLD: 'PLAYER_FOLD',
   PLAYER_CALL: 'PLAYER_CALL',
+  PLAYER_CHECK: 'PLAYER_CHECK',
 };
 
 export const shuffle = () => ({
@@ -31,3 +32,7 @@ export const playerFold = () => ({
 export const playerCall = () => ({
   type: TABLE_ACTIONS.PLAYER_CALL,
 });
+
+export const playerCheck = () => ({
+  type: TABLE_ACTIONS.PLAYER_CHECK,
+})

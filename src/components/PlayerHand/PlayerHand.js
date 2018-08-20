@@ -20,7 +20,6 @@ class PlayerHand extends Component {
           <Slide direction="right" in={this.props.cards.card1 !== undefined} mountOnEnter unmountOnExit>
             <img width='120px' src={`images/Cards/${this.props.cards.card2}.png`} />
           </Slide>
-          <p style={{color: 'white'}}>Computer Action</p>
         </div>
     )
   }

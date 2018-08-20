@@ -21,6 +21,7 @@ import Paper from '@material-ui/core/Paper';
 import { checkGameStatus } from '../../redux/actions/tableActions';
 import { playerFold } from '../../redux/actions/tableActions';
 import { playerCall } from '../../redux/actions/tableActions';
+import { playerCheck } from '../../redux/actions/tableActions';
 
 
 const mapStateToProps = state => ({
@@ -52,6 +53,14 @@ class Table extends Component {
 
   call = () => {
     this.props.dispatch(playerCall());
+  }
+
+  check = () => {
+    this.props.dispatch(playerCheck());
+  }
+
+  bet = () => {
+    
   }
 
   raise = () => {
@@ -121,6 +130,8 @@ class Table extends Component {
                   fold={this.fold}
                   call={this.call}
                   raise={this.raise}
+                  check={this.check}
+                  bet={this.bet}
                 />
               </div>
               <div>
