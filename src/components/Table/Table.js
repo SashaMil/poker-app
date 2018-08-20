@@ -12,6 +12,7 @@ import Street from '../Street/Street';
 import SnackBar from '../SnackBar/SnackBar';
 import ComputerChips from '../ComputerChips/ComputerChips';
 import PlayerChips from '../PlayerChips/PlayerChips';
+import ActionsList from '../ActionsList/ActionsList';
 
 
 import './Table.css';
@@ -122,13 +123,9 @@ class Table extends Component {
                 />
               </div>
               <div>
-                {redux.message.map((message, index) =>
-                  <SnackBar
-                    key={index}
-                    message={message.message}
-                  />
-              )}
-
+                <ActionsList
+                  messages={redux.message}
+                />
               </div>
             </div>
           ) : (
