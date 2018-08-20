@@ -16,9 +16,6 @@ router.post('/', (req, res) => {
     const playerAction = currentGame.actions[currentGame.actions.length - 1];
     const computerAction = currentGame.actions[currentGame.actions.length - 2];
     const callAmount = playerAction.bet - computerAction.bet;
-    console.log(currentGame.pot);
-    console.log(computerAction)
-    console.log(playerAction);
     console.log('hello', callAmount);
     const streetCards = currentGame.street;
     const decision = computerLogic(callAmount, currentGame.pot, currentGame.computer_chips, currentGame.player_chips, currentCards.card1, currentCards.card2, playerAction.street, streetCards);

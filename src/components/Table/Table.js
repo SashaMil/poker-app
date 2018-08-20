@@ -60,7 +60,7 @@ class Table extends Component {
     this.props.dispatch(playerCheck());
   }
 
-  bet = (betSize) => {
+  bet = (value) => {
     this.props.dispatch(playerBet(this.state.value));
   }
 

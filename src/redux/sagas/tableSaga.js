@@ -119,9 +119,14 @@ function* playerCheck() {
 function* playerBet(action) {
   try {
     console.log(action);
-    yield playerBetRequest();
+    yield playerBetRequest(action.betSize);
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    });
+    yield computerDecision();
   }
   catch(error) {
     console.log(error);

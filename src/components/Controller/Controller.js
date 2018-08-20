@@ -44,7 +44,7 @@ class Controller extends Component {
               </Button>
             </div>
             <div>
-              <Button onClick={this.props.bet} variant="contained" color="secondary">
+              <Button onClick={() => this.props.bet(this.props.value)} variant="contained" color="secondary">
                 Bet
               </Button>
             </div>

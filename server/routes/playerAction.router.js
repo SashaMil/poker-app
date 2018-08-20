@@ -122,26 +122,27 @@ router.post('/bet', (req, res) => {
  Person.findById(req.user._id, function(err, data) {
    if (err) throw err;
    const currentGame = data.games[data.games.length-1];
-   console.log(req.body);
+   currentGame.pot += req.body.betSize;
+   currentGame.player_chips -= req.body.betSize;
+   console.log(req.body.betSize);
+   currentGame.actions.push({
+     player: true,
+     type: 'BET',
+     bet: req.body.betSize,
+     player_act_next: false,
+     street: currentGame.actions[currentGame.actions.length-1].street,
+     player_has_acted: true,
+     computer_has_acted: false,
+     next_street: false,
+   });
 
-   // currentGame.actions.push({
-   //   player: true,
-   //   type: 'BET',
-   //   bet: ,
-   //   player_act_next: playerActNext,
-   //   street: 'preflop',
-   //   player_has_acted: true,
-   //   computer_has_acted: computerAction.computer_has_acted,
-   //   next_street: nextStreet,
-   // });
-   //
-   // const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   // currentGame.messages.push({message: message});
-   //
-   // data.save(function(err) {
-   //   if (err) throw err;
-   //   res.send('Added new game Array');
-   // });
+   const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+   currentGame.messages.push({message: message});
+
+   data.save(function(err) {
+     if (err) throw err;
+     res.send('Added new game Array');
+   });
  });
 });
 

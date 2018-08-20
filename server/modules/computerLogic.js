@@ -40,12 +40,21 @@ function computerLogic (callAmount, pot, computerChips, playerChips, computerCar
       if (startingHandValue >= 0) {
         if (callAmount > 0) {
           return 'CALL';
-        } else {
+        }
+        else {
           return 'CHECK';
         }
       }
       break;
     case 'flop':
+      if (startingHandValue >= 0) {
+        if (callAmount > 0) {
+          return 'CALL';
+        }
+        else {
+          return 'CHECK';
+        }
+      }
 
       break;
     case 'turn':
