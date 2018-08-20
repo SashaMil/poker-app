@@ -40,7 +40,11 @@ function computerLogic (callAmount, pot, computerChips, playerChips, computerCar
   switch(street) {
     case 'preflop':
       if (startingHandValue >= 0) {
-        return 'CALL'
+        if (callAmount > 0) {
+          return 'CALL';
+        } else {
+          return 'CHECK';
+        }
       }
       break;
     case 'flop':

@@ -44,22 +44,24 @@ router.put('/shuffle', (req, res) => {
      let message = '';
 
      if (currentGame.player_sb) {
-       currentGame.actions.push({player: true, type: 'SB', bet: 5, player_act_next: true, has_acted: false, street: 'preflop'});
+       currentGame.actions.push({player: true, type: 'SB', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.player_chips -= 5;
        message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
        currentGame.messages.push({message: message});
-       currentGame.actions.push({player: false, type: 'BB', bet: 10, player_act_next: true, has_acted: false, street: 'preflop'});
+       currentGame.actions.push({player: false, type: 'BB', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 10;
        message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+       currentGame.currentBet = 10;
        currentGame.messages.push({message: message});
 
      } else {
-       currentGame.actions.push({player: false, type: 'SB', bet: 5, player_act_next: false, has_acted: false, street: 'preflop'});
+       currentGame.actions.push({player: false, type: 'SB', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 5;
        message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
        currentGame.messages.push({message: message});
-       currentGame.actions.push({player: true, type: 'BB', bet: 10, player_act_next: false, has_acted: false, street: 'preflop'});
+       currentGame.actions.push({player: true, type: 'BB', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.player_chips -= 10;
+       currentGame.currentBet = 10;
        message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
        currentGame.messages.push({message: message});
 
@@ -67,11 +69,8 @@ router.put('/shuffle', (req, res) => {
 
      currentGame.street.push({flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1});
 
-
-
      currentGame.pot = 0;
      currentGame.pot += 15;
-
 
      data.save(function(err) {
        if (err) throw err;
@@ -105,16 +104,73 @@ router.get('/street', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
     const currentGame = data.games[data.games.length-1];
-    const playerAction = currentGame.actions[currentGame.actions.length - 1];
-    if (playerAction.street === 'flop') {
-      res.send([currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3]);
+    const currentAction = currentGame.actions[currentGame.actions.length - 1];
+    let gameInfo = '';
+    if (currentAction.street === 'preflop') {
+      if (currentGame.player_sb) {
+        currentGame.actions.push({type: 'flopSB', player: true, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'flop' });
+        currentGame.actions.push({type: 'flopBB', player: false, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'flop' });
+      }
+      else {
+        currentGame.actions.push({type: 'flopBB', player: true, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'flop' });
+        currentGame.actions.push({type: 'flopSB', player: false, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'flop' });
+      }
+      gameInfo = {
+        player_sb: currentGame.player_sb,
+        playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
+        playerChips: currentGame.player_chips,
+        computerChips: currentGame.computer_chips,
+        actions: currentGame.actions[currentGame.actions.length - 1],
+        pot: currentGame.pot,
+        message: currentGame.messages,
+        street: [currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3],
+      }
+      res.send(gameInfo);
     }
-    else if (playerAction.street === 'turn') {
-      res.send([currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3, currentGame.street.turn])
+    else if (currentAction.street === 'flop') {
+      if (currentGame.player_sb) {
+        currentGame.actions.push({type: 'turnSB', player: true, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'turn' });
+        currentGame.actions.push({type: 'flopBB', player: false, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'turn' });
+      }
+      else {
+        currentGame.actions.push({type: 'turnBB', player: true, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'turn' });
+        currentGame.actions.push({type: 'turnSB', player: false, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'turn' });
+      }
+      gameInfo = {
+        player_sb: currentGame.player_sb,
+        playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
+        playerChips: currentGame.player_chips,
+        computerChips: currentGame.computer_chips,
+        actions: currentGame.actions[currentGame.actions.length - 1],
+        pot: currentGame.pot,
+        message: currentGame.messages,
+        street: [currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3, currentGame.street.turn],
+      }
+      res.send(gameInfo);
     }
-    else if (playerAction.street === 'river') {
-      res.send([currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3, currentGame.street.turn, currentGame.street.river])
+    else if (currentAction.street === 'turn') {
+      if (currentGame.player_sb) {
+        currentGame.actions.push({type: 'riverSB', player: true, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'river' });
+        currentGame.actions.push({type: 'riverBB', player: false, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'river' });
+      }
+      else {
+        currentGame.actions.push({type: 'riverBB', player: true, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'river' });
+        currentGame.actions.push({type: 'riverSB', player: false, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'river' });
+      }
+      gameInfo = {
+        player_sb: currentGame.player_sb,
+        playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
+        playerChips: currentGame.player_chips,
+        computerChips: currentGame.computer_chips,
+        actions: currentGame.actions[currentGame.actions.length - 1],
+        pot: currentGame.pot,
+        message: currentGame.messages,
+        street: [currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3, currentGame.street.turn, currentGame.street.river],
+      }
+      res.send(gameInfo);
     }
+    
+    // Showdown Street
   })
 })
 

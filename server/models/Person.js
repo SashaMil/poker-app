@@ -10,7 +10,9 @@ const Actions = new Schema({
   bet: Number,
   player_act_next: Boolean,
   street: String,
-  has_acted: Boolean,
+  player_has_acted: Boolean,
+  computer_has_acted: Boolean,
+  next_street: Boolean,
 });
 
 const Cards = new Schema({
@@ -38,6 +40,7 @@ const Hands = new Schema({
   player_chips: Number,
   computer_chips: Number,
   pot: Number,
+  currentBet: Number,
   actions: [Actions],
   current_hand_completed: Boolean,
   game_completed: Boolean,

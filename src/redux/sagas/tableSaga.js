@@ -6,7 +6,8 @@ import { checkGameStatusRequest } from '../requests/tableRequests';
 import { getGameInfoRequest } from '../requests/tableRequests';
 import { computerDecisionRequest } from '../requests/tableRequests';
 import { getStreetRequest } from '../requests/tableRequests';
-import { playerFoldRequest } from '../requests/tableRequests'
+import { playerFoldRequest } from '../requests/tableRequests';
+import { playerCallRequest } from '../requests/tableRequests';
 
 let playerCards = '';
 let gameInfo = '';
@@ -65,10 +66,28 @@ function* playerFold() {
   }
 }
 
+function* playerCall() {
+  try {
+    yield playerCallRequest();
+    gameInfo = yield getGameInfoRequest();
+    console.log(gameInfo);
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    })
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
 function* getStreet() {
   try {
-    street = yield getStreetRequest();
-    console.log(street);
+    gameInfo = yield getStreetRequest();
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    })
   }
   catch (error) {
     console.log(error);
@@ -80,6 +99,7 @@ function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.COMPUTER_DECISION, computerDecision);
   yield takeLatest(TABLE_ACTIONS.GET_STREET, getStreet);
   yield takeLatest(TABLE_ACTIONS.PLAYER_FOLD, playerFold);
+  yield takeLatest(TABLE_ACTIONS.PLAYER_CALL, playerCall);
 }
 
 export default tableSaga;

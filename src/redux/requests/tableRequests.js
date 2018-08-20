@@ -43,6 +43,13 @@ export function playerFoldRequest() {
     .catch((error) => { throw error.response || error; });
 }
 
+export function playerCallRequest() {
+  return axios.post('/api/playerAction/call', {
+  })
+    .then(response => response.data)
+    .catch((error) => { throw error.response || error; })
+}
+
 
 
 

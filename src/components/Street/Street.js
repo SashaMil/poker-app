@@ -13,18 +13,17 @@ const mapStateToProps = state => ({
 
 class Street extends Component {
 
-  // componentDidMount() {
-  //   if (!this.props.playerAction) {
-  //     this.props.dispatch(getStreet());
-  //   }
-  // }
+  componentDidMount() {
+    if (this.props.currentAction.next_street) {
+      this.props.dispatch(getStreet());
+    }
+  }
 
-  // componentDidUpdate() {
-  //   if (!this.props.playerAction) {
-  //     console.log('dragon');
-  //     this.props.dispatch(getStreet())
-  //   }
-  // }
+  componentDidUpdate() {
+    if (this.props.currentAction.next_street) {
+      this.props.dispatch(getStreet())
+    }
+  }
 
   render() {
     return (

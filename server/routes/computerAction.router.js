@@ -15,9 +15,7 @@ router.post('/', (req, res) => {
     const computerAction = currentGame.actions[currentGame.actions.length - 2];
     const callAmount = currentGame.pot - computerAction.bet;
     const streetCards = currentGame.street;
-    const decision = computerLogic(callAmount, currentGame.pot, currentGame.computer_chips, currentGame.player_chips, currentCards.card1, currentCards.card2, playerAction.street, streetCards)
-    console.log(computerAction);
-    console.log(playerAction);
+    const decision = computerLogic(callAmount, currentGame.pot, currentGame.computer_chips, currentGame.player_chips, currentCards.card1, currentCards.card2, playerAction.street, streetCards);
 
     switch(decision) {
       case 'FOLD':
@@ -28,28 +26,21 @@ router.post('/', (req, res) => {
 
         break;
       case 'CHECK':
-
+        if (!playerAction.player_has_acted) {
+          currentGame.actions.push({ player: false, bet: 0, type: decision, player_act_next: true, street: playerAction.street, player_has_acted: false, computer_has_acted: true, next_street: false });
+        }
+        else {
+          currentGame.actions.push({ player: false, bet: 0, type: decision, player_act_next: currentGame.player_sb, street: playerAction.street, player_has_acted: true, computer_has_acted: true, next_street: true });
+        }
         break;
       case 'CALL':
         currentGame.computer_chips -= callAmount;
         currentGame.pot += callAmount;
-        if (!playerAction.has_acted) {
-          currentGame.actions.push({ player: false, type: decision, player_act_next: true, street: playerAction.street })
+        if (!playerAction.player_has_acted) {
+          currentGame.actions.push({ player: false, bet: callAmount, type: decision, player_act_next: true, street: playerAction.street, player_has_acted: false, computer_has_acted: true, next_street: false });
         }
         else {
-          if (playerAction.street === 'preflop') {
-            playerAction.street = 'flop';
-          }
-          else if (playerAction.street === 'flop') {
-            playerAction.street = 'turn';
-          }
-          else if (playerAction.street === 'turn') {
-            playerAction.street = 'river';
-          }
-          else {
-            playerAction.street = 'showdown'
-          }
-          currentGame.actions.push({ player: false, type: decision, player_act_next: player_sb, next_street: playerAction.street })
+          currentGame.actions.push({ player: false, bet: callAmount, type: decision, player_act_next: currentGame.player_sb, street: playerAction.street, player_has_acted: true, computer_has_actd: true, next_street: true });
         }
         break;
       case 'BET':

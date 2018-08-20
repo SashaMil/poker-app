@@ -5,6 +5,7 @@ export const TABLE_ACTIONS = {
   COMPUTER_DECISION: 'COMPUTER_DECISION',
   GET_STREET: 'GET_STREET',
   PLAYER_FOLD: 'PLAYER_FOLD',
+  PLAYER_CALL: 'PLAYER_CALL',
 };
 
 export const shuffle = () => ({
@@ -25,4 +26,8 @@ export const getStreet = () => ({
 
 export const playerFold = () => ({
   type: TABLE_ACTIONS.PLAYER_FOLD,
-})
+});
+
+export const playerCall = () => ({
+  type: TABLE_ACTIONS.PLAYER_CALL,
+});

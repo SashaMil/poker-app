@@ -8,6 +8,9 @@ function messageGenerator(action) {
   else if (action.type === 'FOLD') {
     return 'Player Folds';
   }
+  else if (action.type === 'CALL') {
+    return `Player Calls (${action.bet})`
+  }
 }
 
 

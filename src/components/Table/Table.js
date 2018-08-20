@@ -18,9 +18,9 @@ import ActionsList from '../ActionsList/ActionsList';
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
 
-import { shuffle } from '../../redux/actions/tableActions';
 import { checkGameStatus } from '../../redux/actions/tableActions';
 import { playerFold } from '../../redux/actions/tableActions';
+import { playerCall } from '../../redux/actions/tableActions';
 
 
 const mapStateToProps = state => ({
@@ -51,7 +51,7 @@ class Table extends Component {
   }
 
   call = () => {
-
+    this.props.dispatch(playerCall());
   }
 
   raise = () => {
@@ -102,13 +102,14 @@ class Table extends Component {
               </div>
               <div>
                 <Pot
-                  pot={this.state.pot}
+                  pot={redux.pot}
                   handleChange={this.handleChange}
                 />
               </div>
               <div>
                 <Street
                   street={redux.street}
+                  currentAction={redux.actions}
                 />
               </div>
               <div>

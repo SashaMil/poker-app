@@ -21,6 +21,12 @@ class Controller extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (!this.props.currentAction.player_act_next) {
+      this.props.dispatch(computerDecision());
+    }
+  }
+
   render() {
     return (
       <div>

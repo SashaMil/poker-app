@@ -13,10 +13,6 @@ const mapStateToProps = state => ({
 
 class Pot extends Component {
 
-  componentDidMount() {
-    console.log(this.props.pot);
-  }
-
   render() {
     return (
         <div>
