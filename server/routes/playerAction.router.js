@@ -12,12 +12,12 @@ router.post('/fold', (req, res) => {
    currentGame.actions.push({
      player: true,
      type: 'FOLD',
-   })
+   });
    currentGame.computer_chips += currentGame.pot;
    currentGame.pot = 0;
    const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
    console.log('dinosaur', message);
-   currentGame.message = message;
+   currentGame.messages.push({message: message});
    data.save(function(err) {
      if (err) throw err;
      res.send('Added new game Array');
