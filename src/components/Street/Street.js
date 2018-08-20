@@ -28,6 +28,29 @@ class Street extends Component {
   render() {
     return (
       <div>
+        {this.props.street ? (
+          <div>
+            <Slide direction="right" in={this.props.street[0] !== undefined} mountOnEnter unmountOnExit>
+              <img width='120px' src={`images/Cards/${this.props.street[0]}.png`} />
+            </Slide>
+            <Slide direction="right" in={this.props.street[2] !== undefined} mountOnEnter unmountOnExit>
+              <img width='120px' src={`images/Cards/${this.props.street[1]}.png`} />
+            </Slide>
+            <Slide direction="right" in={this.props.street[2] !== undefined} mountOnEnter unmountOnExit>
+              <img width='120px' src={`images/Cards/${this.props.street[2]}.png`} />
+            </Slide>
+            <Slide direction="right" in={this.props.street[4] !== undefined} mountOnEnter unmountOnExit>
+              <img width='120px' src={`images/Cards/${this.props.street[3]}.png`} />
+            </Slide>
+            <Slide direction="right" in={this.props.street[5] !== undefined} mountOnEnter unmountOnExit>
+              <img width='120px' src={`images/Cards/${this.props.street[4]}.png`} />
+            </Slide>
+          </div>
+        ) : (
+          null
+        )
+      }
+
       </div>
     )
   }

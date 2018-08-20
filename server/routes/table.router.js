@@ -105,6 +105,8 @@ router.get('/street', (req, res) => {
     if (err) throw err;
     const currentGame = data.games[data.games.length-1];
     const currentAction = currentGame.actions[currentGame.actions.length - 1];
+    const currentStreet = currentGame.street[currentGame.street.length-1];
+    console.log('goodbye', currentStreet);
     let gameInfo = '';
     if (currentAction.street === 'preflop') {
       if (currentGame.player_sb) {
@@ -123,7 +125,7 @@ router.get('/street', (req, res) => {
         actions: currentGame.actions[currentGame.actions.length - 1],
         pot: currentGame.pot,
         message: currentGame.messages,
-        street: [currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3],
+        street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3],
       }
       res.send(gameInfo);
     }
@@ -144,7 +146,7 @@ router.get('/street', (req, res) => {
         actions: currentGame.actions[currentGame.actions.length - 1],
         pot: currentGame.pot,
         message: currentGame.messages,
-        street: [currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3, currentGame.street.turn],
+        street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn],
       }
       res.send(gameInfo);
     }
@@ -165,11 +167,11 @@ router.get('/street', (req, res) => {
         actions: currentGame.actions[currentGame.actions.length - 1],
         pot: currentGame.pot,
         message: currentGame.messages,
-        street: [currentGame.street.flop1, currentGame.street.flop2, currentGame.street.flop3, currentGame.street.turn, currentGame.street.river],
+        street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river],
       }
       res.send(gameInfo);
     }
-    
+
     // Showdown Street
   })
 })
