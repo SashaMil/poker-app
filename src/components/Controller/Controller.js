@@ -15,18 +15,6 @@ const mapStateToProps = state => ({
 
 class Controller extends Component {
 
-  // componentDidMount() {
-  //   if (!this.props.currentAction.player_act_next) {
-  //     this.props.dispatch(computerDecision());
-  //   }
-  // }
-  //
-  // componentDidUpdate() {
-  //   if (!this.props.currentAction.player_act_next) {
-  //     this.props.dispatch(computerDecision());
-  //   }
-  // }
-
   render() {
     return (
       <div>
@@ -64,8 +52,9 @@ class Controller extends Component {
         )
       }
         <div>
-          <Slider betSize={this.props.betSize} min={10} max={1500} step={1} onChange={(event, value) => this.props.handleChange(event,value)} />
+          <Slider value={this.props.value} min={10} max={3000} step={1} onChange={(event, value) => this.props.handleChange(event,value)} />
         </div>
+        <h3>{this.props.value}</h3>
 
       </div>
     )

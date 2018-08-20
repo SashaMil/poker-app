@@ -9,6 +9,7 @@ import { getStreetRequest } from '../requests/tableRequests';
 import { playerFoldRequest } from '../requests/tableRequests';
 import { playerCallRequest } from '../requests/tableRequests';
 import { playerCheckRequest } from '../requests/tableRequests';
+import { playerBetRequest } from '../requests/tableRequests';
 
 
 let playerCards = '';
@@ -115,6 +116,18 @@ function* playerCheck() {
   }
 }
 
+function* playerBet(action) {
+  try {
+    console.log(action);
+    yield playerBetRequest();
+    gameInfo = yield getGameInfoRequest();
+    console.log(gameInfo);
+  }
+  catch(error) {
+    console.log(error);
+  }
+}
+
 function* getStreet() {
   try {
     gameInfo = yield getStreetRequest();
@@ -136,6 +149,7 @@ function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.PLAYER_FOLD, playerFold);
   yield takeLatest(TABLE_ACTIONS.PLAYER_CALL, playerCall);
   yield takeLatest(TABLE_ACTIONS.PLAYER_CHECK, playerCheck);
+  yield takeLatest(TABLE_ACTIONS.PLAYER_BET, playerBet);
 }
 
 export default tableSaga;

@@ -22,6 +22,7 @@ import { checkGameStatus } from '../../redux/actions/tableActions';
 import { playerFold } from '../../redux/actions/tableActions';
 import { playerCall } from '../../redux/actions/tableActions';
 import { playerCheck } from '../../redux/actions/tableActions';
+import { playerBet } from '../../redux/actions/tableActions';
 
 
 const mapStateToProps = state => ({
@@ -33,7 +34,7 @@ const mapStateToProps = state => ({
 class Table extends Component {
 
   state = {
-    betSize: null,
+    value: 0,
     pot: null,
     showComputerCards: false,
     foldComputerCards: false,
@@ -41,9 +42,9 @@ class Table extends Component {
     foldPlayerCards: false,
   };
 
-  handleChange = (name) => event => {
+  handleChange = (event, value) => {
     this.setState({
-      [name]: event.target.value
+      value: value
     })
   }
 
@@ -59,8 +60,8 @@ class Table extends Component {
     this.props.dispatch(playerCheck());
   }
 
-  bet = () => {
-    
+  bet = (betSize) => {
+    this.props.dispatch(playerBet(this.state.value));
   }
 
   raise = () => {
@@ -123,7 +124,7 @@ class Table extends Component {
               </div>
               <div>
                 <Controller
-                  betSize={this.state.betSize}
+                  value={this.state.value}
                   currentAction={redux.actions}
                   playerSb={redux.player_sb}
                   handleChange={this.handleChange}
