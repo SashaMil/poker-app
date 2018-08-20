@@ -85,7 +85,8 @@ router.get('/gameInfo', (req, res) => {
 
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    let currentGame = data.games[data.games.length-1];
+    const currentGame = data.games[data.games.length-1];
+    const currentStreet = currentGame.street[currentGame.street.length-1];
     let gameInfo = {
       player_sb: currentGame.player_sb,
       playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
@@ -94,6 +95,7 @@ router.get('/gameInfo', (req, res) => {
       actions: currentGame.actions[currentGame.actions.length - 1],
       pot: currentGame.pot,
       message: currentGame.messages,
+      street: currentStreet[0],
     }
     res.send(gameInfo);
   })
@@ -106,6 +108,7 @@ router.get('/street', (req, res) => {
     const currentGame = data.games[data.games.length-1];
     const currentAction = currentGame.actions[currentGame.actions.length - 1];
     const currentStreet = currentGame.street[currentGame.street.length-1];
+    console.log('hello there', currentAction.street);
     let gameInfo = '';
     if (currentAction.street === 'preflop') {
       if (currentGame.player_sb) {
@@ -126,7 +129,11 @@ router.get('/street', (req, res) => {
         message: currentGame.messages,
         street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3],
       }
-      res.send(gameInfo);
+      data.save(function(err) {
+        if (err) throw err;
+        res.send(gameInfo);
+        console.log('Games array updated successfully');
+      });
     }
     else if (currentAction.street === 'flop') {
       if (currentGame.player_sb) {
@@ -147,7 +154,11 @@ router.get('/street', (req, res) => {
         message: currentGame.messages,
         street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn],
       }
-      res.send(gameInfo);
+      data.save(function(err) {
+        if (err) throw err;
+        res.send(gameInfo);
+        console.log('Games array updated successfully');
+      });
     }
     else if (currentAction.street === 'turn') {
       if (currentGame.player_sb) {
@@ -168,10 +179,16 @@ router.get('/street', (req, res) => {
         message: currentGame.messages,
         street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river],
       }
-      res.send(gameInfo);
+      console.log(gameInfo.street);
+      data.save(function(err) {
+        if (err) throw err;
+        res.send(gameInfo);
+        console.log('Games array updated successfully');
+      });
     }
 
     // Showdown Street
+
   })
 })
 

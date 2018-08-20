@@ -58,10 +58,24 @@ function computerLogic (callAmount, pot, computerChips, playerChips, computerCar
 
       break;
     case 'turn':
-
+      if (startingHandValue >= 0) {
+        if (callAmount > 0) {
+          return 'CALL';
+        }
+        else {
+          return 'CHECK';
+        }
+      }
       break;
     case 'river':
-
+      if (startingHandValue >= 0) {
+        if (callAmount > 0) {
+          return 'CALL';
+        }
+        else {
+          return 'CHECK';
+        }
+      }
       break;
     default:
       return 'Error';

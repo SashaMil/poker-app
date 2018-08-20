@@ -97,12 +97,14 @@ router.post('/check', (req, res) => {
      nextStreet = false;
    }
 
+   console.log('wolverine', computerAction.street);
+
    currentGame.actions.push({
      player: true,
      type: 'CHECK',
      bet: 0,
      player_act_next: playerActNext,
-     street: 'preflop',
+     street: computerAction.street,
      player_has_acted: true,
      computer_has_acted: computerAction.computer_has_acted,
      next_street: nextStreet,

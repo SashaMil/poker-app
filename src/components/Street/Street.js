@@ -13,19 +13,6 @@ const mapStateToProps = state => ({
 
 class Street extends Component {
 
-  // componentDidMount() {
-  //   if (this.props.currentAction.next_street) {
-  //     this.props.dispatch(getStreet());
-  //   }
-  // }
-
-  // componentDidUpdate() {
-  //   if (this.props.currentAction.next_street) {
-  //     console.log('hello');
-  //     this.props.dispatch(getStreet())
-  //   }
-  // }
-
   render() {
     return (
       <div>
@@ -40,10 +27,10 @@ class Street extends Component {
             <Slide direction="right" in={this.props.street[2] !== undefined} mountOnEnter unmountOnExit>
               <img width='120px' src={`images/Cards/${this.props.street[2]}.png`} />
             </Slide>
-            <Slide direction="right" in={this.props.street[4] !== undefined} mountOnEnter unmountOnExit>
+            <Slide direction="right" in={this.props.street[3] !== undefined} mountOnEnter unmountOnExit>
               <img width='120px' src={`images/Cards/${this.props.street[3]}.png`} />
             </Slide>
-            <Slide direction="right" in={this.props.street[5] !== undefined} mountOnEnter unmountOnExit>
+            <Slide direction="right" in={this.props.street[4] !== undefined} mountOnEnter unmountOnExit>
               <img width='120px' src={`images/Cards/${this.props.street[4]}.png`} />
             </Slide>
           </div>
