@@ -13,7 +13,7 @@ class PlayerChips extends Component {
   render() {
     return (
       <div>
-
+        {this.props.chips}
       </div>
     )
   }

@@ -35,6 +35,7 @@ class Table extends Component {
     pot: null,
     showComputerCards: false,
     foldComputerCards: false,
+    showPlayerCards: false,
     foldPlayerCards: false,
   };
 
@@ -59,7 +60,7 @@ class Table extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.table.state !== prevProps.table.state) {
       this.setState({
-        pot: this.props.table.state.pot,
+        showPlayerCards: true,
       });
     }
   }
@@ -75,23 +76,27 @@ class Table extends Component {
 
     return (
         <div>
-          {this.state.pot ? (
+          {this.state.showPlayerCards ? (
             <div>
               <div>
                 <ComputerHand
+                  showCards={this.state.showComputerCards}
                 />
               </div>
               <div>
                 <ComputerChips
+                  chips={redux.computerChips}
                 />
               </div>
               <div>
                 <PlayerHand
                   cards={redux.playerCards}
+                  showCards={this.state.showPlayerCards}
                 />
               </div>
               <div>
                 <PlayerChips
+                  chips={redux.playerChips}
                 />
               </div>
               <div>
@@ -102,7 +107,7 @@ class Table extends Component {
               </div>
               <div>
                 <Street
-                  street={this.state.street}
+                  street={redux.street}
                 />
               </div>
               <div>
@@ -112,12 +117,18 @@ class Table extends Component {
                   playerSb={redux.player_sb}
                   handleChange={this.handleChange}
                   fold={this.fold}
+                  call={this.call}
+                  raise={this.raise}
                 />
               </div>
               <div>
-                <SnackBar
-                  message={redux.message}
-                />
+                {redux.message.map((message, index) =>
+                  <SnackBar
+                    key={index}
+                    message={message.message}
+                  />
+              )}
+
               </div>
             </div>
           ) : (

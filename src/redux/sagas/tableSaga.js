@@ -18,6 +18,7 @@ function* checkGameStatus() {
     console.log('dinosaur');
     yield shuffleRequest();
     gameInfo = yield getGameInfoRequest();
+    console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
@@ -47,6 +48,7 @@ function* playerFold() {
   try {
     yield playerFoldRequest();
     gameInfo = yield getGameInfoRequest();
+    console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,

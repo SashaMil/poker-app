@@ -4,9 +4,6 @@ const Deck = require('../modules/deck.js');
 const Person = require('../models/Person');
 const messageGenerator = require('../modules/messageGenerator.js');
 
-
-
-
 /**
  * GET route template
  */
@@ -44,18 +41,27 @@ router.put('/shuffle', (req, res) => {
      currentGame.computerCards.push({card1: computerCard1, card2: computerCard2});
 
      currentGame.player_sb = !currentGame.player_sb;
+     let message = '';
 
      if (currentGame.player_sb) {
        currentGame.actions.push({player: true, type: 'SB', bet: 5, player_act_next: true, has_acted: false, street: 'preflop'});
-       currentGame.player_chips -= 5
+       currentGame.player_chips -= 5;
+       message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+       currentGame.messages.push({message: message});
        currentGame.actions.push({player: false, type: 'BB', bet: 10, player_act_next: true, has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 10;
+       message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+       currentGame.messages.push({message: message});
 
      } else {
        currentGame.actions.push({player: false, type: 'SB', bet: 5, player_act_next: false, has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 5;
+       message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+       currentGame.messages.push({message: message});
        currentGame.actions.push({player: true, type: 'BB', bet: 10, player_act_next: false, has_acted: false, street: 'preflop'});
        currentGame.player_chips -= 10;
+       message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+       currentGame.messages.push({message: message});
 
      }
 
@@ -81,8 +87,6 @@ router.get('/gameInfo', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
     let currentGame = data.games[data.games.length-1];
-    console.log(currentGame.actions[currentGame.actions.length - 1]);
-    let message = messageGenerator(currentGame.player_sb);
     let gameInfo = {
       player_sb: currentGame.player_sb,
       playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
@@ -90,7 +94,7 @@ router.get('/gameInfo', (req, res) => {
       computerChips: currentGame.computer_chips,
       actions: currentGame.actions[currentGame.actions.length - 1],
       pot: currentGame.pot,
-      message: message,
+      message: currentGame.messages,
     }
     res.send(gameInfo);
   })
@@ -123,7 +127,7 @@ router.post('/checkGameStatus', (req, res) => {
     if (data.games.length === 0 || data.games[data.games.length-1].game_completed) {
       let arr = [true, false];
       let bool = arr[Math.floor(Math.random() * (2))];
-      const message = messageGenerator(player_sb);
+      const message = messageGenerator(bool);
       data.games.push({
         player_sb: bool,
         player_chips: 1500,

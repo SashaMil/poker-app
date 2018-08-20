@@ -10,7 +10,6 @@ const Actions = new Schema({
   bet: Number,
   player_act_next: Boolean,
   street: String,
-  next_street: String,
   has_acted: Boolean,
 });
 
@@ -25,6 +24,10 @@ const Street = new Schema({
   flop3: String,
   turn: String,
   river: String,
+});
+
+const Messages = new Schema({
+  message: String,
 })
 
 const Hands = new Schema({
@@ -38,7 +41,7 @@ const Hands = new Schema({
   actions: [Actions],
   current_hand_completed: Boolean,
   game_completed: Boolean,
-  message: String,
+  messages: [Messages],
 });
 
 const PersonSchema = new Schema({

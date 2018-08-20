@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Person = require('../models/Person');
+const messageGenerator = require('../modules/messageGenerator.js');
+
 
 
 router.post('/fold', (req, res) => {
@@ -8,12 +10,14 @@ router.post('/fold', (req, res) => {
    if (err) throw err;
    const currentGame = data.games[data.games.length-1];
    currentGame.actions.push({
-     player_sb: !currentGame.player_sb,
-     player_chips: currentGame.player_chips,
-     computer_chips: currentGame.computer_chips + currentGame.pot,
-     pot: 0,
-     game_completed: false,
+     player: true,
+     type: 'FOLD',
    })
+   currentGame.computer_chips += currentGame.pot;
+   currentGame.pot = 0;
+   const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+   console.log('dinosaur', message);
+   currentGame.message = message;
    data.save(function(err) {
      if (err) throw err;
      res.send('Added new game Array');
