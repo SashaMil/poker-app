@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Person = require('../models/Person');
-const computerLogic = require('../modules/computerLogic.js')
+const computerLogic = require('../modules/computerLogic.js');
+const messageGenerator = require('../modules/messageGenerator.js');
+
 
 
 router.post('/', (req, res) => {
@@ -13,7 +15,11 @@ router.post('/', (req, res) => {
     const currentCards = currentGame.computerCards[currentGame.computerCards.length-1];
     const playerAction = currentGame.actions[currentGame.actions.length - 1];
     const computerAction = currentGame.actions[currentGame.actions.length - 2];
-    const callAmount = currentGame.pot - computerAction.bet;
+    const callAmount = playerAction.bet - computerAction.bet;
+    console.log(currentGame.pot);
+    console.log(computerAction)
+    console.log(playerAction);
+    console.log('hello', callAmount);
     const streetCards = currentGame.street;
     const decision = computerLogic(callAmount, currentGame.pot, currentGame.computer_chips, currentGame.player_chips, currentCards.card1, currentCards.card2, playerAction.street, streetCards);
 
@@ -37,10 +43,10 @@ router.post('/', (req, res) => {
         currentGame.computer_chips -= callAmount;
         currentGame.pot += callAmount;
         if (!playerAction.player_has_acted) {
-          currentGame.actions.push({ player: false, bet: callAmount, type: decision, player_act_next: true, street: playerAction.street, player_has_acted: false, computer_has_acted: true, next_street: false });
+          currentGame.actions.push({ player: false, bet: 0, callAmount: callAmount, type: decision, player_act_next: true, street: playerAction.street, player_has_acted: false, computer_has_acted: true, next_street: false });
         }
         else {
-          currentGame.actions.push({ player: false, bet: callAmount, type: decision, player_act_next: currentGame.player_sb, street: playerAction.street, player_has_acted: true, computer_has_actd: true, next_street: true });
+          currentGame.actions.push({ player: false, bet: 0, callAmount, callAmount, type: decision, player_act_next: currentGame.player_sb, street: playerAction.street, player_has_acted: true, computer_has_actd: true, next_street: true });
         }
         break;
       case 'BET':
@@ -51,6 +57,9 @@ router.post('/', (req, res) => {
       default:
         return 'Error';
     }
+
+    const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+    currentGame.messages.push({message: message})
 
     data.save(function(err) {
       if (err) throw err;

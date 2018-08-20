@@ -32,7 +32,6 @@ function* checkGameStatus() {
 
 function* computerDecision() {
   try {
-    console.log('sheep');
     yield computerDecisionRequest();
     gameInfo = yield getGameInfoRequest();
     yield put({

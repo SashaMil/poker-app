@@ -106,7 +106,6 @@ router.get('/street', (req, res) => {
     const currentGame = data.games[data.games.length-1];
     const currentAction = currentGame.actions[currentGame.actions.length - 1];
     const currentStreet = currentGame.street[currentGame.street.length-1];
-    console.log('goodbye', currentStreet);
     let gameInfo = '';
     if (currentAction.street === 'preflop') {
       if (currentGame.player_sb) {

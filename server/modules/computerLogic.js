@@ -3,9 +3,7 @@ function computerLogic (callAmount, pot, computerChips, playerChips, computerCar
   let possibleAces = formatPossibleAces(computerCard1, computerCard2);
   computerCard1 = possibleAces[0];
   computerCard2 = possibleAces[1];
-  console.log(callAmount, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards);
   let startingHandValue = (evaluateStartingHand(computerCard1, computerCard2));
-  console.log(startingHandValue);
 
   const handRankings = ['Royal Flush', 'Straight Flush', 'Four of a Kind', 'Full House', 'Flush', 'Straight', 'Three of a Kind', 'Two Pair', 'Pair'];
 

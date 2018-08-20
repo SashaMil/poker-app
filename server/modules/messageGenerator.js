@@ -1,15 +1,30 @@
 function messageGenerator(action) {
-  if (action.type === 'SB') {
-    return 'Player on Button (5)';
-  }
-  else if (action.type === 'BB') {
-    return 'Player on Big Blind (10)';
-  }
-  else if (action.type === 'FOLD') {
-    return 'Player Folds';
-  }
-  else if (action.type === 'CALL') {
-    return `Player Calls (${action.bet})`
+
+  let user = (action.player) ? 'Player' : 'Computer';
+
+  switch(action.type) {
+    case 'SB':
+      return `${user} on Button (5)`;
+      break;
+
+    case 'BB':
+      return `${user} on BB (10)`
+      break;
+
+    case 'FOLD':
+      return `${user} Folds`;
+      break;
+
+    case 'CALL':
+      return `${user} Calls (${action.callAmount})`;
+      break;
+
+    case 'CHECK':
+      return `${user} Checks`;
+      break;
+
+    default:
+      return 'Error';
   }
 }
 
