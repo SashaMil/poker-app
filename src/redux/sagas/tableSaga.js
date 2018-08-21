@@ -69,6 +69,9 @@ function* playerFold() {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
+    if (!gameInfo.player_sb) {
+      yield computerDecision();
+    }
   }
   catch (error) {
     console.log(error);

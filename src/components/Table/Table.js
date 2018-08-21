@@ -13,6 +13,8 @@ import SnackBar from '../SnackBar/SnackBar';
 import ComputerChips from '../ComputerChips/ComputerChips';
 import PlayerChips from '../PlayerChips/PlayerChips';
 import ActionsList from '../ActionsList/ActionsList';
+import ComputerBet from '../ComputerBet/ComputerBet';
+import PlayerBet from '../PlayerBet/PlayerBet';
 
 
 import './Table.css';
@@ -86,6 +88,7 @@ class Table extends Component {
     const redux = this.props.table.state;
 
     return (
+      <div className="grid-2">
         <div>
           {this.state.showPlayerCards ? (
             <div>
@@ -106,14 +109,14 @@ class Table extends Component {
                 />
               </div>
               <div>
-                <PlayerChips
-                  chips={redux.playerChips}
-                />
-              </div>
-              <div>
                 <Pot
                   pot={redux.pot}
                   handleChange={this.handleChange}
+                />
+              </div>
+              <div>
+                <PlayerChips
+                  chips={redux.playerChips}
                 />
               </div>
               <div>
@@ -135,17 +138,26 @@ class Table extends Component {
                   bet={this.bet}
                 />
               </div>
-              <div>
-                <ActionsList
-                  messages={redux.message}
-                />
-              </div>
             </div>
           ) : (
             null
           )
         }
         </div>
+        <div>
+          {this.state.showPlayerCards ? (
+            <div>
+              <ActionsList
+                messages={redux.message}
+              />
+            </div>
+          ) : (
+            null
+          )
+        }
+        </div>
+      </div>
+
     )
   }
 }

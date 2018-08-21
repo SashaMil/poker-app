@@ -44,6 +44,7 @@ router.put('/shuffle', (req, res) => {
      let message = '';
 
      if (currentGame.player_sb) {
+       console.log('hello');
        currentGame.actions.push({player: true, type: 'SB', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.player_chips -= 5;
        message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
@@ -55,6 +56,7 @@ router.put('/shuffle', (req, res) => {
        currentGame.messages.push({message: message});
 
      } else {
+       console.log('there');
        currentGame.actions.push({player: false, type: 'SB', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 5;
        message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
