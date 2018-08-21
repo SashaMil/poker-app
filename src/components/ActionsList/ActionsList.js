@@ -26,20 +26,44 @@ const styles = theme => ({
 
 class ActionsList extends Component {
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
-        {this.props.messages.map((message, index) =>
-          <List className={styles.root}>
-            <ListItem key={index}>
-              <ListItemText primary={message.message} />
-            </ListItem>
+          <List className={classes.root} subheader={<li />}>
+              <li className={classes.listSection}>
+                <ul className={classes.ul}>
+                  <ListSubheader></ListSubheader>
+                  {this.props.messages.map((message, index) =>
+                    <ListItem key={index}>
+                      <ListItemText primary={message.message} />
+                    </ListItem>
+                  )}
+                </ul>
+              </li>
+              <div style={{ float:"left", clear: "both" }}
+                ref={(el) => { this.messagesEnd = el; }}>
+              </div>
           </List>
-        )}
       </div>
     );
   }
 }
+
+ActionsList.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(ActionsList);
