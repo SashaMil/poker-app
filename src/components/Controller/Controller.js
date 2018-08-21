@@ -31,7 +31,7 @@ class Controller extends Component {
               </Button>
             </div>
             <div>
-              <Button onClick={this.props.bet} variant="contained" color="primary">
+              <Button onClick={() => this.props.raise(this.props.value)} variant="contained" color="primary">
                 Raise
               </Button>
             </div>
@@ -52,7 +52,7 @@ class Controller extends Component {
         )
       }
         <div>
-          <Slider value={this.props.value} min={10} max={3000} step={1} onChange={(event, value) => this.props.handleChange(event,value)} />
+          <Slider value={this.props.value} min={10} max={2000} step={5} onChange={(event, value) => this.props.handleChange(event,value)} />
         </div>
         <h3>{this.props.value}</h3>
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import Log from '../Log/Log';
 import Deck from '../Deck/Deck';
 import PlayerHand from '../PlayerHand/PlayerHand';
 import ComputerHand from '../ComputerHand/ComputerHand';
@@ -15,6 +14,7 @@ import PlayerChips from '../PlayerChips/PlayerChips';
 import ActionsList from '../ActionsList/ActionsList';
 import ComputerBet from '../ComputerBet/ComputerBet';
 import PlayerBet from '../PlayerBet/PlayerBet';
+import Alerts from '../Alerts/Alerts';
 
 
 import './Table.css';
@@ -25,6 +25,7 @@ import { playerFold } from '../../redux/actions/tableActions';
 import { playerCall } from '../../redux/actions/tableActions';
 import { playerCheck } from '../../redux/actions/tableActions';
 import { playerBet } from '../../redux/actions/tableActions';
+import { playerRaise } from '../../redux/actions/tableActions';
 
 
 const mapStateToProps = state => ({
@@ -42,6 +43,7 @@ class Table extends Component {
     foldComputerCards: false,
     showPlayerCards: false,
     foldPlayerCards: false,
+    alertOpen: false,
   };
 
   handleChange = (event, value) => {
@@ -49,6 +51,10 @@ class Table extends Component {
       value: value
     })
   }
+
+  alertClose = () => {
+    this.setState({ alertOpen: false });
+  };
 
   fold = () => {
     this.props.dispatch(playerFold());
@@ -63,11 +69,23 @@ class Table extends Component {
   }
 
   bet = (value) => {
-    this.props.dispatch(playerBet(this.state.value));
+    if (value === 0) {
+      this.setState({ alertOpen: true });
+    }
+    else {
+      this.props.dispatch(playerBet(this.state.value));
+    }
   }
 
-  raise = () => {
-
+  raise = (value) => {
+    console.log(value);
+    console.log(this.props.table.state.actions.bet);
+    if (value <= this.props.table.state.actions.bet) {
+      this.setState({ alertOpen: true });
+    }
+    else {
+      this.props.dispatch(playerRaise(value))
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -136,6 +154,12 @@ class Table extends Component {
                   raise={this.raise}
                   check={this.check}
                   bet={this.bet}
+                />
+              </div>
+              <div>
+                <Alerts
+                  open={this.state.alertOpen}
+                  handleClose={this.alertClose}
                 />
               </div>
             </div>

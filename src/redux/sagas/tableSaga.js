@@ -136,6 +136,23 @@ function* playerBet(action) {
   }
 }
 
+function* playerRaise(action) {
+  try {
+    console.log(action);
+    yield playerBetRequest(action.betSize);
+    gameInfo = yield getGameInfoRequest();
+    // console.log(gameInfo);
+    // yield put({
+    //   type: TABLE_ACTIONS.SET_GAME,
+    //   payload: gameInfo,
+    // });
+    // yield computerDecision();
+  }
+  catch(error) {
+    console.log(error);
+  }
+}
+
 function* getStreet() {
   try {
     gameInfo = yield getStreetRequest();
@@ -158,6 +175,8 @@ function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.PLAYER_CALL, playerCall);
   yield takeLatest(TABLE_ACTIONS.PLAYER_CHECK, playerCheck);
   yield takeLatest(TABLE_ACTIONS.PLAYER_BET, playerBet);
+  yield takeLatest(TABLE_ACTIONS.PLAYER_RAISE, playerRaise);
+
 }
 
 export default tableSaga;

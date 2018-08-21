@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import Log from '../Log/Log';
 import Deck from '../Deck/Deck';
 
 

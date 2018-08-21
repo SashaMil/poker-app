@@ -27,6 +27,10 @@ function messageGenerator(action) {
       return `${user} bets ${action.bet}`;
       break;
 
+    case 'RAISE':
+      return `${user} raises to ${action.bet}`;
+      break;
+
     default:
       return 'Error';
   }

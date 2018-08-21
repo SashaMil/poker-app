@@ -8,6 +8,7 @@ export const TABLE_ACTIONS = {
   PLAYER_CALL: 'PLAYER_CALL',
   PLAYER_CHECK: 'PLAYER_CHECK',
   PLAYER_BET: 'PLAYER_BET',
+  PLAYER_RAISE: 'PLAYER_RAISE',
 };
 
 export const shuffle = () => ({
@@ -39,6 +40,11 @@ export const playerCheck = () => ({
 });
 
 export const playerBet = (betSize) => ({
+  type: TABLE_ACTIONS.PLAYER_BET,
+  betSize,
+});
+
+export const playerRaise = (betSize) => ({
   type: TABLE_ACTIONS.PLAYER_BET,
   betSize,
 });

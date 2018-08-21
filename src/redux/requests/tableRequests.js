@@ -65,6 +65,14 @@ export function playerBetRequest(betSize) {
     .catch((error) => { throw error.response || error; })
 }
 
+export function playerRaiseRequest(betSize) {
+  return axios.post('/api/playerAction/raise', {
+    betSize
+  })
+    .then(response => response.data)
+    .catch((error) => { throw error.response || error; })
+}
+
 
 
 

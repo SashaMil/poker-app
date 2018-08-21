@@ -148,6 +148,34 @@ router.post('/bet', (req, res) => {
  });
 });
 
+router.post('/raise', (req, res) => {
+ Person.findById(req.user._id, function(err, data) {
+   if (err) throw err;
+   const currentGame = data.games[data.games.length-1];
+   currentGame.pot += req.body.betSize;
+   currentGame.player_chips -= req.body.betSize;
+   console.log(req.body.betSize);
+   currentGame.actions.push({
+     player: true,
+     type: 'RAISE',
+     bet: req.body.betSize,
+     player_act_next: false,
+     street: currentGame.actions[currentGame.actions.length-1].street,
+     player_has_acted: true,
+     computer_has_acted: false,
+     next_street: false,
+   });
+
+   const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+   currentGame.messages.push({message: message});
+
+   data.save(function(err) {
+     if (err) throw err;
+     res.send('Added new game Array');
+   });
+ });
+});
+
 
 
 
