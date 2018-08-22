@@ -17,6 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 
 import { getHandHistory } from '../../redux/actions/tableActions';
+import { deleteHandHistory } from '../../redux/actions/tableActions';
 
 
 
@@ -48,6 +49,10 @@ class ViewHistory extends React.Component {
     this.props.dispatch(getHandHistory());
   }
 
+  deleteHistory = () => {
+    this.props.dispatch(deleteHandHistory());
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -68,35 +73,42 @@ class ViewHistory extends React.Component {
                   <Typography variant="title" color="inherit" className={classes.flex}>
                     All Hand History
                   </Typography>
-                  <Button color="inherit" onClick={this.deleteAllHistory}>
+                  <Button color="inherit" onClick={this.deleteHistory}>
                     Delete All History
                   </Button>
                 </Toolbar>
               </AppBar>
               {this.props.table.state.handHistory.actions.map((action, index) =>
-                <ListItem key={index}>
-                  <ListItemText primary={action.street} />
+                <ListItem className="grid-2"key={index}>
+                  <ListItemText primary={'Type of Action: ' +  action.type}/>
+                  <ListItemText primary={'Street: ' + action.street}/>
+                  <ListItemText primary={'Bet Amount: ' + action.bet}/>
+                  <ListItemText primary={'ID: ' + action._id} />
+
                 </ListItem>
               )}
               {this.props.table.state.handHistory.messages.map((message, index) =>
-                <ListItem key={index}>
-                  <ListItemText primary={message.message} />
+                <ListItem className="grid-2" key={index}>
+                  <ListItemText primary={'Action message: ' + message.message}/>
+                  <ListItemText primary={'ID: ' + message._id} />
                 </ListItem>
               )}
               {this.props.table.state.handHistory.playerCards.map((card, index) =>
                 <ListItem className="grid-2" key={index}>
-                  <ListItemText primary={card.card1} />
-                  <ListItemText primary={card.card2} />
+                  <ListItemText primary={'Player Card 1: ' + card.card1}/>
+                  <ListItemText primary={'Player Card 2: ' + card.card2}/>
+                  <ListItemText primary={'ID: ' + card._id} />
                 </ListItem>
               )}
 
               {this.props.table.state.handHistory.street.map((road, index) =>
                 <ListItem className="grid-2" key={index}>
-                  <ListItemText primary={road.flop1} />
-                  <ListItemText primary={road.flop2} />
-                  <ListItemText primary={road.flop3} />
-                  <ListItemText primary={road.turn} />
-                  <ListItemText primary={road.river} />
+                  <ListItemText primary={'Flop Card 1: ' + road.flop1} />
+                  <ListItemText primary={'Flop Card 2: ' + road.flop2} />
+                  <ListItemText primary={'Flop Card 3: ' + road.flop3} />
+                  <ListItemText primary={'Turn: ' + road.turn} />
+                  <ListItemText primary={'River: ' + road.river} />
+                  <ListItemText primary={'ID: ' + road._id} />
                 </ListItem>
               )}
             </Dialog>

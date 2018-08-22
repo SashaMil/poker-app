@@ -10,6 +10,7 @@ export const TABLE_ACTIONS = {
   PLAYER_BET: 'PLAYER_BET',
   PLAYER_RAISE: 'PLAYER_RAISE',
   GET_HAND_HISTORY: 'GET_HAND_HISTORY',
+  DELETE_HAND_HISTORY: 'DELETE_HAND_HISTORY',
 };
 
 export const shuffle = () => ({
@@ -52,4 +53,8 @@ export const playerRaise = (betSize) => ({
 
 export const getHandHistory = () => ({
   type: TABLE_ACTIONS.GET_HAND_HISTORY,
-})
+});
+
+export const deleteHandHistory = () => ({
+  type: TABLE_ACTIONS.DELETE_HAND_HISTORY,
+});

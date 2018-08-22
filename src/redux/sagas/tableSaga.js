@@ -11,6 +11,7 @@ import { playerCallRequest } from '../requests/tableRequests';
 import { playerCheckRequest } from '../requests/tableRequests';
 import { playerBetRequest } from '../requests/tableRequests';
 import { getHandHistoryRequest } from '../requests/tableRequests';
+import { deleteHandHistoryRequest } from '../requests/tableRequests';
 
 
 
@@ -202,6 +203,17 @@ function* getHandHistory() {
   }
  }
 
+ function* deleteHandHistory() {
+   try {
+     console.log('moose');
+     // yield deleteHandHistoryRequest();
+     // yield getHandHistory();
+   }
+   catch (error) {
+     console.log(error);
+   }
+ }
+
 function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.CHECK_GAME_STATUS, checkGameStatus);
   yield takeLatest(TABLE_ACTIONS.COMPUTER_DECISION, computerDecision);
@@ -212,7 +224,7 @@ function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.PLAYER_BET, playerBet);
   yield takeLatest(TABLE_ACTIONS.PLAYER_RAISE, playerRaise);
   yield takeLatest(TABLE_ACTIONS.GET_HAND_HISTORY, getHandHistory);
-
+  yield takeLatest(TABLE_ACTIONS.DELETE_HAND_HISTORY, deleteHandHistory);
 }
 
 export default tableSaga;
