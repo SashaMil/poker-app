@@ -1,7 +1,7 @@
 const postFlopEvaluation = require('../modules/postFlopEvaluation.js');
 
 function computerLogic (facingBet, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards) {
-
+  let postFlopHandValue = 0;
   switch(street) {
     case 'preflop':
       let possibleAces = formatPossibleAces(computerCard1, computerCard2);
@@ -71,29 +71,206 @@ function computerLogic (facingBet, pot, computerChips, playerChips, computerCard
         }
       }
       break;
+
+
     case 'flop':
-      console.log(postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]));
+    postFlopHandValue = postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]);
+
+    if (postFlopHandValue[0] === 0) {
+      if (facingBet === 0) {
+        return ['CHECK'];
+      }
+      else {
+        return ['FOLD'];
+      }
+    }
+    if (postFlopHandValue[0] === 1) {
+      if (facingBet === 0) {
+        return ['CHECK'];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else {
+        return ['FOLD'];
+      }
+    }
+    if (postFlopHandValue[0] === 2) {
+      if (facingBet === 0) {
+        return ['RAISE', 30]
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['CALL'];
+      }
+      else {
+        return ['FOLD']
+      }
+    }
+    if (postFlopHandValue[0] === 3) {
+      if (facingBet === 0) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['RAISE', 120];
+      }
+      else if (facingBet <= 150) {
+        return ['FOLD']
+      }
+    }
+    if (postFlopHandValue[0] >= 4) {
+      if (facingBet === 0) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['RAISE', 120];
+      }
+      else if (facingBet <= 150) {
+        return ['RAISE', computerChips];
+      }
+    }
       break;
+
     case 'turn':
-      if (startingHandValue >= 0) {
-        if (facingBet > 0) {
-          return 'CALL';
-        }
-        else {
-          return 'CHECK';
-        }
+    postFlopHandValue = postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]);
+
+    if (postFlopHandValue[0] === 0) {
+      if (facingBet === 0) {
+        return ['CHECK'];
       }
+      else {
+        return ['FOLD'];
+      }
+    }
+    if (postFlopHandValue[0] === 1) {
+      if (facingBet === 0) {
+        return ['CHECK'];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else {
+        return ['FOLD'];
+      }
+    }
+    if (postFlopHandValue[0] === 2) {
+      if (facingBet === 0) {
+        return ['RAISE', 30]
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['CALL'];
+      }
+      else {
+        return ['FOLD']
+      }
+    }
+    if (postFlopHandValue[0] === 3) {
+      if (facingBet === 0) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['RAISE', 120];
+      }
+      else if (facingBet <= 150) {
+        return ['FOLD']
+      }
+    }
+    if (postFlopHandValue[0] >= 4) {
+      if (facingBet === 0) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['RAISE', 120];
+      }
+      else if (facingBet <= 150) {
+        return ['RAISE', computerChips];
+      }
+    }
       break;
+
     case 'river':
-      if (startingHandValue >= 0) {
-        if (facingBet > 0) {
-          return 'CALL';
-        }
-        else {
-          return 'CHECK';
-        }
+    postFlopHandValue = postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]);
+
+    if (postFlopHandValue[0] === 0) {
+      if (facingBet === 0) {
+        return ['CHECK'];
       }
+      else {
+        return ['FOLD'];
+      }
+    }
+    if (postFlopHandValue[0] === 1) {
+      if (facingBet === 0) {
+        return ['CHECK'];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else {
+        return ['FOLD'];
+      }
+    }
+    if (postFlopHandValue[0] === 2) {
+      if (facingBet === 0) {
+        return ['RAISE', 30]
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['CALL'];
+      }
+      else {
+        return ['FOLD']
+      }
+    }
+    if (postFlopHandValue[0] === 3) {
+      if (facingBet === 0) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['RAISE', 120];
+      }
+      else if (facingBet <= 150) {
+        return ['FOLD']
+      }
+    }
+    if (postFlopHandValue[0] >= 4) {
+      if (facingBet === 0) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 5) {
+        return ['RAISE', 30];
+      }
+      else if (facingBet <= 40) {
+        return ['RAISE', 120];
+      }
+      else if (facingBet <= 150) {
+        return ['RAISE', computerChips];
+      }
+    }
       break;
+
     default:
       return 'Error';
   }
