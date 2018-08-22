@@ -15,6 +15,7 @@ import ActionsList from '../ActionsList/ActionsList';
 import ComputerBet from '../ComputerBet/ComputerBet';
 import PlayerBet from '../PlayerBet/PlayerBet';
 import Alerts from '../Alerts/Alerts';
+import PlayerHandRanking from '../PlayerHandRanking/PlayerHandRanking';
 
 
 import './Table.css';
@@ -171,9 +172,16 @@ class Table extends Component {
         <div>
           {this.state.showPlayerCards ? (
             <div>
-              <ActionsList
-                messages={redux.message}
-              />
+              <div>
+                <ActionsList
+                  messages={redux.message}
+                />
+              </div>
+              <div>
+                <PlayerHandRanking
+                  bestFiveCards={redux.actions.player_best_five_cards}
+                />
+              </div>
             </div>
           ) : (
             null

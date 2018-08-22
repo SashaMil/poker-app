@@ -6,17 +6,42 @@ function computerLogic (callAmount, pot, computerChips, playerChips, computerCar
   const evaluatePostFlopHand = (handAndStreet) => {
     let numberValues = extractNumberValues(handAndStreet);
     let suitValues = extractSuitValues(handAndStreet);
-
     console.log(handAndStreet);
-    console.log(checkForPairs(numberValues));
-    console.log(checkForFlush(suitValues, handAndStreet));
-    console.log('omgimnuts', checkForFlush(extractSuitValues(['2D', '13D', '4H', '6D', '7D', '10D']), ['2D', '13D', '4H', '6D', '7D', '10D']));
 
-
-
-
-
-
+    if (checkForFlush(suitValues, handAndStreet) !== false && checkForStraight(numberValues) !== false) {
+      return 'Straight Flush';
+    }
+    else if (checkForPairs(numberValues)[0] === 7) {
+      return checkForPairs(numberValues)[1];
+    }
+    else if (checkForPairs(numberValues)[0] === 6) {
+      console.log(checkForPairs(numberValues)[1]);
+      return checkForPairs(numberValues)[1];
+    }
+    else if (checkForFlush(suitValues, handAndStreet) !== false) {
+      console.log(checkForFlush(suitValues, handAndStreet));
+      return checkForFlush(suitValues, handAndStreet);
+    }
+    else if (checkForStraight(numberValues) !== false) {
+      console.log(checkForStraight(numberValues));
+      return checkForStraight(numberValues);
+    }
+    else if (checkForPairs(numberValues)[0] === 3) {
+      console.log(checkForPairs(numberValues)[1]);
+      return checkForPairs(numberValues)[1];
+    }
+    else if (checkForPairs(numberValues)[0] === 2) {
+      console.log(checkForPairs(numberValues)[1]);
+      return checkForPairs(numberValues)[1];
+    }
+    else if (checkForPairs(numberValues)[0] === 1) {
+      console.log(checkForPairs(numberValues)[1]);
+      return checkForPairs(numberValues)[1];
+    }
+    else {
+      console.log(checkForPairs(numberValues));
+      return checkForPairs(numberValues);
+    }
 
   }
   switch(street) {
@@ -35,7 +60,7 @@ function computerLogic (callAmount, pot, computerChips, playerChips, computerCar
       }
       break;
     case 'flop':
-      evaluatePostFlopHand([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]);
+      console.log(evaluatePostFlopHand([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]));
       break;
     case 'turn':
       if (startingHandValue >= 0) {
@@ -155,11 +180,6 @@ function checkForFlush(suitValues, handAndStreet) {
 
   suitsAndValuesSorted = suitsAndValuesSorted.sort(function(a,b){return b[0]-a[0]});
 
-
-
-  console.log('omg', suitsAndValuesSorted);
-
-
   let suitOccurences = {};
   for (suit of suitValues) {
     if (suitOccurences[suit] === undefined) {
@@ -178,6 +198,7 @@ function checkForFlush(suitValues, handAndStreet) {
       }
     }
   }
+  return false;
 }
 
 // Used to find the occurences of all present integer values
@@ -194,27 +215,27 @@ function checkForPairs(numberValues) {
     }
     for (let key in pairOccurences) {
         if (pairOccurences[key] === 4) {
-            return `4 of a kind with ${key}s`
+            return [7, `4 of a kind with ${key}s`]
         }
     }
     for (let key in pairOccurences) {
         if (pairOccurences[key] === 3) {
             for (let props in pairOccurences) {
                 if (pairOccurences[props] === 2) {
-                    return `Full House, ${key}s full of ${props}`
+                    return [6, `Full House, ${key}s full of ${props}`]
                 }
             }
-            return `3 of a kind with ${key}s`
+            return [3, `3 of a kind with ${key}s`]
         }
     }
     for (let key in pairOccurences) {
       if (pairOccurences[key] === 2) {
         for (let props in pairOccurences) {
           if (pairOccurences[props] === 2 && pairOccurences[key] !== pairOccurences[props]) {
-            return `Two Pair, ${key}s and ${props}`
+            return [2, `Two Pair, ${key}s and ${props}`]
           }
         }
-        return `Pair of ${key}s`
+        return [1, `Pair of ${key}s`]
       }
     }
     return `${sortedNumberValues[0]} High`;
@@ -243,7 +264,7 @@ function checkForStraight(numberValues) {
 
         }
     }
-    return sortedNumberValues[0];
+    return `${sortedNumberValues[0]} High Straight`;
 
 }
 

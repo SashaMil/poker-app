@@ -3,6 +3,7 @@ const router = express.Router();
 const Deck = require('../modules/deck.js');
 const Person = require('../models/Person');
 const messageGenerator = require('../modules/messageGenerator.js');
+const postFlopEvaluation = require('../modules/postFlopEvaluation.js');
 
 /**
  * GET route template
@@ -112,15 +113,19 @@ router.get('/street', (req, res) => {
     const currentStreet = currentGame.street[currentGame.street.length-1];
     console.log('hello there', currentAction.street);
     let gameInfo = '';
+    let bestFiveCards = postFlopEvaluation([currentGame.playerCards[currentGame.playerCards.length-1].card1, currentGame.playerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3]);
     if (currentAction.street === 'preflop') {
       if (currentGame.player_sb) {
-        currentGame.actions.push({type: 'flopSB', player: true, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'flop', next_street: false });
-        currentGame.actions.push({type: 'flopBB', player: false, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'flop', next_street: false});
+        currentGame.actions.push({type: 'flopSB', player: true, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'flop', next_street: false});
+        currentGame.actions.push({type: 'flopBB', player: false, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'flop', next_street: false, player_best_five_cards: bestFiveCards});
       }
       else {
         currentGame.actions.push({type: 'flopBB', player: true, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'flop', next_street: false});
-        currentGame.actions.push({type: 'flopSB', player: false, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'flop', next_street: false});
+        currentGame.actions.push({type: 'flopSB', player: false, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'flop', next_street: false, player_best_five_cards: bestFiveCards});
       }
+
+
+
       gameInfo = {
         player_sb: currentGame.player_sb,
         playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
@@ -130,6 +135,7 @@ router.get('/street', (req, res) => {
         pot: currentGame.pot,
         message: currentGame.messages,
         street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3],
+        best_five_cards: bestFiveCards,
       }
       data.save(function(err) {
         if (err) throw err;

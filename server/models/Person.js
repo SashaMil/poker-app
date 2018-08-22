@@ -14,6 +14,8 @@ const Actions = new Schema({
   player_has_acted: Boolean,
   computer_has_acted: Boolean,
   next_street: Boolean,
+  player_best_five_cards: String,
+  player_best_five_cards_value: Number,
 });
 
 const Cards = new Schema({
