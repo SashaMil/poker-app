@@ -52,33 +52,51 @@ class ViewHistory extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-        <Dialog
-          fullScreen
-          open={this.props.open}
-          onClose={this.props.historyClose}
-          TransitionComponent={Transition}
-        >
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <IconButton color="inherit" onClick={this.props.historyClose} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-              <Typography variant="title" color="inherit" className={classes.flex}>
-                All Hand History
-              </Typography>
-              <Button color="inherit" onClick={this.deleteAllHistory}>
-                Delete All History
-              </Button>
-            </Toolbar>
-          </AppBar>
-          <List>
-          {}
-            <ListItem>
+        {this.props.table.state.handHistory ? (
+          <div>
+            <Dialog
+              fullScreen
+              open={this.props.open}
+              onClose={this.props.historyClose}
+              TransitionComponent={Transition}
+            >
+              <AppBar className={classes.appBar}>
+                <Toolbar>
+                  <IconButton color="inherit" onClick={this.props.historyClose} aria-label="Close">
+                    <CloseIcon />
+                  </IconButton>
+                  <Typography variant="title" color="inherit" className={classes.flex}>
+                    All Hand History
+                  </Typography>
+                  <Button color="inherit" onClick={this.deleteAllHistory}>
+                    Delete All History
+                  </Button>
+                </Toolbar>
+              </AppBar>
+              {this.props.table.state.handHistory.actions.map((action, index) =>
+                <ListItem key={index}>
+                  <ListItemText primary={action.street} />
+                </ListItem>
+              )}
+              {this.props.table.state.handHistory.messages.map((message, index) =>
+                <ListItem key={index}>
+                  <ListItemText primary={message.message} />
+                </ListItem>
+              )}
+              {this.props.table.state.handHistory.playerCards.map((card, index) => {
+                <ListItem key={index}>
+                  <ListItemText primary={card.card1} />
+                  <ListItemText primary={card.card2} />
+                </ListItem>
+              })}
+            </Dialog>
+          </div>
+    ) : (
+      null
+    )
+  }
+  </div>
 
-            </ListItem>
-          </List>
-        </Dialog>
-      </div>
     );
   }
 }

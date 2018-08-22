@@ -281,7 +281,13 @@ router.post('/checkGameStatus', (req, res) => {
 router.get('/history', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    res.send(data.games);
+    let objToSend = {};
+    objToSend.actions = data.games[0].actions;
+    objToSend.messages = data.games[0].messages;
+    objToSend.playerCards = data.games[0].playerCards;
+    objToSend.street = data.games[0].street;
+
+    res.send(objToSend);
 
   })
 });

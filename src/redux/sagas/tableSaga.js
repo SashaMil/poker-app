@@ -17,6 +17,7 @@ import { getHandHistoryRequest } from '../requests/tableRequests';
 let playerCards = '';
 let gameInfo = '';
 let street = '';
+let handHistory = '';
 
 function* checkGameStatus() {
   try {
@@ -186,8 +187,14 @@ function* getStreet() {
 function* getHandHistory() {
   try {
     console.log('donkey');
-    let handHistory = yield getHandHistoryRequest();
-    console.log(handHistory);
+    handHistory = yield getHandHistoryRequest();
+    gameInfo = yield getGameInfoRequest();
+    gameInfo.handHistory = handHistory;
+    console.log(gameInfo);
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    })
 
   }
   catch (error) {

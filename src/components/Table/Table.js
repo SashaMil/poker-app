@@ -197,10 +197,15 @@ class Table extends Component {
                 />
               </div>
               <div>
-                <ViewHistory
-                  open={this.state.historyOpen}
-                  historyClose={this.historyClose}
-                />
+                {this.state.historyOpen === true ? (
+                  <ViewHistory
+                    open={this.state.historyOpen}
+                    historyClose={this.historyClose}
+                  />
+                ) : (
+                  null
+                )
+              }
               </div>
               <Button onClick={this.historyOpen}>
                 View History
