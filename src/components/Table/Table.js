@@ -16,6 +16,9 @@ import ComputerBet from '../ComputerBet/ComputerBet';
 import PlayerBet from '../PlayerBet/PlayerBet';
 import Alerts from '../Alerts/Alerts';
 import PlayerHandRanking from '../PlayerHandRanking/PlayerHandRanking';
+import ViewHistory from '../ViewHistory/ViewHistory';
+import Button from '@material-ui/core/Button';
+
 
 
 import './Table.css';
@@ -45,6 +48,7 @@ class Table extends Component {
     showPlayerCards: false,
     foldPlayerCards: false,
     alertOpen: false,
+    historyOpen: false,
   };
 
   handleChange = (event, value) => {
@@ -56,6 +60,14 @@ class Table extends Component {
   alertClose = () => {
     this.setState({ alertOpen: false });
   };
+
+  historyOpen = () => {
+    this.setState({ historyOpen: true });
+  }
+
+  historyClose = () => {
+    this.setState({ historyOpen: false });
+  }
 
   fold = () => {
     this.props.dispatch(playerFold());
@@ -158,6 +170,8 @@ class Table extends Component {
                 />
               </div>
               <div>
+              </div>
+              <div>
                 <Alerts
                   open={this.state.alertOpen}
                   handleClose={this.alertClose}
@@ -182,6 +196,15 @@ class Table extends Component {
                   bestFiveCards={redux.actions.player_best_five_cards}
                 />
               </div>
+              <div>
+                <ViewHistory
+                  open={this.state.historyOpen}
+                  historyClose={this.historyClose}
+                />
+              </div>
+              <Button onClick={this.historyOpen}>
+                View History
+              </Button>
             </div>
           ) : (
             null

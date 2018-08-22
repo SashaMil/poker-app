@@ -10,6 +10,8 @@ import { playerFoldRequest } from '../requests/tableRequests';
 import { playerCallRequest } from '../requests/tableRequests';
 import { playerCheckRequest } from '../requests/tableRequests';
 import { playerBetRequest } from '../requests/tableRequests';
+import { getHandHistoryRequest } from '../requests/tableRequests';
+
 
 
 let playerCards = '';
@@ -152,12 +154,12 @@ function* playerRaise(action) {
     console.log(action);
     yield playerBetRequest(action.betSize);
     gameInfo = yield getGameInfoRequest();
-    // console.log(gameInfo);
-    // yield put({
-    //   type: TABLE_ACTIONS.SET_GAME,
-    //   payload: gameInfo,
-    // });
-    // yield computerDecision();
+    console.log(gameInfo);
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    });
+    yield computerDecision();
   }
   catch(error) {
     console.log(error);
@@ -172,11 +174,26 @@ function* getStreet() {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
+    if (gameInfo.current_hand_completed) {
+      yield checkGameStatus();
+    }
   }
   catch (error) {
     console.log(error);
   }
 }
+
+function* getHandHistory() {
+  try {
+    console.log('donkey');
+    let handHistory = yield getHandHistoryRequest();
+    console.log(handHistory);
+
+  }
+  catch (error) {
+    console.log(error);
+  }
+ }
 
 function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.CHECK_GAME_STATUS, checkGameStatus);
@@ -187,6 +204,7 @@ function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.PLAYER_CHECK, playerCheck);
   yield takeLatest(TABLE_ACTIONS.PLAYER_BET, playerBet);
   yield takeLatest(TABLE_ACTIONS.PLAYER_RAISE, playerRaise);
+  yield takeLatest(TABLE_ACTIONS.GET_HAND_HISTORY, getHandHistory);
 
 }
 
