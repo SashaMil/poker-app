@@ -54,7 +54,7 @@ class Controller extends Component {
         <div>
           <Slider value={this.props.value} min={10} max={2000} step={5} onChange={(event, value) => this.props.handleChange(event,value)} />
         </div>
-        <h3>{this.props.value}</h3>
+        <h3>{'Current Player Bet ' + this.props.value}</h3>
 
       </div>
     )
