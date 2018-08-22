@@ -292,5 +292,18 @@ router.get('/history', (req, res) => {
   })
 });
 
+router.delete('/deleteHistory', (req, res) => {
+  Person.findById(req.user._id, function(err, data) {
+    if (err) throw err;
+    data.games[0] = [{message: 'Recently Deleted History'}];
+    res.send('Deleted Hand History');
+    data.save(function(err) {
+      if (err) throw err;
+      res.send(gameInfo);
+      console.log('Games array updated successfully');
+    });
+  })
+})
+
 
 module.exports = router;

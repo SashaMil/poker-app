@@ -206,8 +206,13 @@ function* getHandHistory() {
  function* deleteHandHistory() {
    try {
      console.log('moose');
-     // yield deleteHandHistoryRequest();
-     // yield getHandHistory();
+     yield deleteHandHistoryRequest();
+     gameInfo.handHistory = {actions: [], street: [], playerCards: [], messages: []};
+     console.log(gameInfo);
+     yield put({
+       type: TABLE_ACTIONS.SET_GAME,
+       payload: gameInfo,
+     })
    }
    catch (error) {
      console.log(error);
