@@ -45,6 +45,17 @@ function* computerDecision() {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
+    if (gameInfo.actions.type === 'FOLD') {
+      yield shuffleRequest();
+      gameInfo = yield getGameInfoRequest();
+      yield put({
+        type: TABLE_ACTIONS.SET_GAME,
+        payload: gameInfo,
+      })
+      if (!gameInfo.player_sb) {
+        yield computerDecision();
+      }
+    }
     if (gameInfo.actions.next_street) {
       yield getStreet();
     }

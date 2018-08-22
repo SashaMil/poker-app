@@ -15,11 +15,14 @@ router.post('/', (req, res) => {
     const currentCards = currentGame.computerCards[currentGame.computerCards.length-1];
     const playerAction = currentGame.actions[currentGame.actions.length - 1];
     const computerAction = currentGame.actions[currentGame.actions.length - 2];
-    const callAmount = playerAction.bet - computerAction.bet;
     const streetCards = currentGame.street[currentGame.street.length-1];
-    const decision = computerLogic(callAmount, currentGame.pot, currentGame.computer_chips, currentGame.player_chips, currentCards.card1, currentCards.card2, playerAction.street, streetCards);
+    let facingBet = 0;
+    if (playerAction.bet) {
+      facingBet = playerAction.bet;
+    }
+    const decision = computerLogic(facingBet, currentGame.pot, currentGame.computer_chips, currentGame.player_chips, currentCards.card1, currentCards.card2, playerAction.street, streetCards);
 
-    switch(decision) {
+    switch(decision[0]) {
       case 'FOLD':
         currentGame.current_hand_completed = true;
         currentGame.player_chips += currentGame.pot;
@@ -29,31 +32,40 @@ router.post('/', (req, res) => {
         break;
       case 'CHECK':
         if (!playerAction.player_has_acted) {
-          currentGame.actions.push({ player: false, bet: 0, type: decision, player_act_next: true, street: playerAction.street, player_has_acted: false, computer_has_acted: true, next_street: false });
+          currentGame.actions.push({ player: false, bet: 0, type: decision[0], player_act_next: true, street: playerAction.street, player_has_acted: false, computer_has_acted: true, next_street: false });
         }
         else {
-          currentGame.actions.push({ player: false, bet: 0, type: decision, player_act_next: currentGame.player_sb, street: playerAction.street, player_has_acted: true, computer_has_acted: true, next_street: true });
+          currentGame.actions.push({ player: false, bet: 0, type: decision[0], player_act_next: currentGame.player_sb, street: playerAction.street, player_has_acted: true, computer_has_acted: true, next_street: true });
         }
         break;
       case 'CALL':
-        currentGame.computer_chips -= callAmount;
-        currentGame.pot += callAmount;
+        currentGame.computer_chips -= facingBet;
+        currentGame.pot += facingBet;
         if (!playerAction.player_has_acted) {
-          currentGame.actions.push({ player: false, bet: 0, callAmount: callAmount, type: decision, player_act_next: true, street: playerAction.street, player_has_acted: false, computer_has_acted: true, next_street: false });
+          currentGame.actions.push({ player: false, bet: 0, callAmount: facingBet, type: decision[0], player_act_next: true, street: playerAction.street, player_has_acted: false, computer_has_acted: true, next_street: false });
         }
         else {
-          currentGame.actions.push({ player: false, bet: 0, callAmount, callAmount, type: decision, player_act_next: currentGame.player_sb, street: playerAction.street, player_has_acted: true, computer_has_actd: true, next_street: true });
+          currentGame.actions.push({ player: false, bet: 0, callAmount: facingBet, type: decision[0], player_act_next: currentGame.player_sb, street: playerAction.street, player_has_acted: true, computer_has_actd: true, next_street: true });
         }
         break;
       case 'BET':
+        currentGame.computer_chips -= decision[1];
+        currentGame.pot += decision[1];
+        currentGame.actions.push({ player: false, bet: decision[1], type: decision[0], player_act_next: true, street: playerAction.street, player_has_acted: playerAction.player_has_acted, next_street: false });
 
         break;
       case 'RAISE':
-
+        console.log('doggy', decision);
+        currentGame.computer_chips -= decision[1];
+        currentGame.pot += decision[1];
+        currentGame.actions.push({ player: false, bet: decision[1], type: decision[0], player_act_next: true, street: playerAction.street, player_has_acted: playerAction.player_has_acted, next_street: false });
+        break;
+        
       default:
         return 'Error';
     }
 
+    console.log(playerAction);
     const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
     currentGame.messages.push({message: message})
 
