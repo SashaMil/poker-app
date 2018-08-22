@@ -83,12 +83,22 @@ class ViewHistory extends React.Component {
                   <ListItemText primary={message.message} />
                 </ListItem>
               )}
-              {this.props.table.state.handHistory.playerCards.map((card, index) => {
-                <ListItem key={index}>
+              {this.props.table.state.handHistory.playerCards.map((card, index) =>
+                <ListItem className="grid-2" key={index}>
                   <ListItemText primary={card.card1} />
                   <ListItemText primary={card.card2} />
                 </ListItem>
-              })}
+              )}
+
+              {this.props.table.state.handHistory.street.map((road, index) =>
+                <ListItem className="grid-2" key={index}>
+                  <ListItemText primary={road.flop1} />
+                  <ListItemText primary={road.flop2} />
+                  <ListItemText primary={road.flop3} />
+                  <ListItemText primary={road.turn} />
+                  <ListItemText primary={road.river} />
+                </ListItem>
+              )}
             </Dialog>
           </div>
     ) : (
