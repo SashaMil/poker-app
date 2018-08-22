@@ -5,38 +5,38 @@ const postFlopEvaluation = (handAndStreet) => {
   let suitValues = extractSuitValues(handAndStreet);
 
   if (checkForFlush(suitValues, handAndStreet) !== false && checkForStraight(numberValues) !== false) {
-    return 'Straight Flush';
+    return [8, 'Straight Flush'];
   }
   else if (checkForPairs(numberValues)[0] === 7) {
-    return checkForPairs(numberValues)[1];
+    return [7, checkForPairs(numberValues)[1]];
   }
   else if (checkForPairs(numberValues)[0] === 6) {
     console.log(checkForPairs(numberValues)[1]);
-    return checkForPairs(numberValues)[1];
+    return [6, checkForPairs(numberValues)[1]];
   }
   else if (checkForFlush(suitValues, handAndStreet) !== false) {
     console.log(checkForFlush(suitValues, handAndStreet));
-    return checkForFlush(suitValues, handAndStreet);
+    return [5, checkForFlush(suitValues, handAndStreet)];
   }
   else if (checkForStraight(numberValues) !== false) {
     console.log(checkForStraight(numberValues));
-    return checkForStraight(numberValues);
+    return [4, checkForStraight(numberValues)];
   }
   else if (checkForPairs(numberValues)[0] === 3) {
     console.log(checkForPairs(numberValues)[1]);
-    return checkForPairs(numberValues)[1];
+    return [3, checkForPairs(numberValues)[1]];
   }
   else if (checkForPairs(numberValues)[0] === 2) {
     console.log(checkForPairs(numberValues)[1]);
-    return checkForPairs(numberValues)[1];
+    return [2, checkForPairs(numberValues)[1]];
   }
   else if (checkForPairs(numberValues)[0] === 1) {
     console.log(checkForPairs(numberValues)[1]);
-    return checkForPairs(numberValues)[1];
+    return [1, checkForPairs(numberValues)[1]];
   }
   else {
     console.log(checkForPairs(numberValues));
-    return checkForPairs(numberValues);
+    return [0, checkForPairs(numberValues)];
   }
 
 }
