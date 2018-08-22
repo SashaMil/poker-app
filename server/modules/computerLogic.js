@@ -46,6 +46,9 @@ function computerLogic (facingBet, pot, computerChips, playerChips, computerCard
         if (facingBet === 0) {
           return ['RAISE', 30];
         }
+        else if (facingBet <= 5) {
+          return ['RAISE', 30];
+        }
         else if (facingBet <= 40) {
           return ['RAISE', 120];
         }

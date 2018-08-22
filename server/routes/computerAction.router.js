@@ -17,8 +17,8 @@ router.post('/', (req, res) => {
     const computerAction = currentGame.actions[currentGame.actions.length - 2];
     const streetCards = currentGame.street[currentGame.street.length-1];
     let facingBet = 0;
-    if (playerAction.bet) {
-      facingBet = playerAction.bet;
+    if (playerAction.bet > computerAction.bet) {
+      facingBet = playerAction.bet - computerAction.bet;
     }
     const decision = computerLogic(facingBet, currentGame.pot, currentGame.computer_chips, currentGame.player_chips, currentCards.card1, currentCards.card2, playerAction.street, streetCards);
 
@@ -51,16 +51,16 @@ router.post('/', (req, res) => {
       case 'BET':
         currentGame.computer_chips -= decision[1];
         currentGame.pot += decision[1];
-        currentGame.actions.push({ player: false, bet: decision[1], type: decision[0], player_act_next: true, street: playerAction.street, player_has_acted: playerAction.player_has_acted, next_street: false });
+        currentGame.actions.push({ player: false, bet: decision[1], type: decision[0], player_act_next: true, street: playerAction.street, player_has_acted: playerAction.player_has_acted, computer_has_acted: true, next_street: false });
 
         break;
       case 'RAISE':
         console.log('doggy', decision);
         currentGame.computer_chips -= decision[1];
         currentGame.pot += decision[1];
-        currentGame.actions.push({ player: false, bet: decision[1], type: decision[0], player_act_next: true, street: playerAction.street, player_has_acted: playerAction.player_has_acted, next_street: false });
+        currentGame.actions.push({ player: false, bet: decision[1], type: decision[0], player_act_next: true, street: playerAction.street, player_has_acted: playerAction.player_has_acted, computer_has_acted: true, next_street: false });
         break;
-        
+
       default:
         return 'Error';
     }
