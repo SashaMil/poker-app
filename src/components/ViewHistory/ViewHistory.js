@@ -78,21 +78,19 @@ class ViewHistory extends React.Component {
                   </Button>
                 </Toolbar>
               </AppBar>
+              <h2>List of Actions, Street, and Bet Amount</h2>
               {this.props.table.state.handHistory.actions.map((action, index) =>
                 <ListItem className="grid-2"key={index}>
                   <ListItemText primary={'Type of Action: ' +  action.type}/>
-                  <ListItemText primary={'Street: ' + action.street}/>
+                  <ListItemText primary={'Street Type: ' + action.street}/>
                   <ListItemText primary={'Bet Amount: ' + action.bet}/>
                   <ListItemText primary={'ID: ' + action._id} />
 
                 </ListItem>
               )}
-              {this.props.table.state.handHistory.messages.map((message, index) =>
-                <ListItem className="grid-2" key={index}>
-                  <ListItemText primary={'Action message: ' + message.message}/>
-                  <ListItemText primary={'ID: ' + message._id} />
-                </ListItem>
-              )}
+              <br></br>
+              <br></br>
+              <h2>List of Player Cards</h2>
               {this.props.table.state.handHistory.playerCards.map((card, index) =>
                 <ListItem className="grid-2" key={index}>
                   <ListItemText primary={'Player Card 1: ' + card.card1}/>
@@ -100,7 +98,9 @@ class ViewHistory extends React.Component {
                   <ListItemText primary={'ID: ' + card._id} />
                 </ListItem>
               )}
-
+              <br></br>
+              <br></br>
+              <h2>List of Streets</h2>
               {this.props.table.state.handHistory.street.map((road, index) =>
                 <ListItem className="grid-2" key={index}>
                   <ListItemText primary={'Flop Card 1: ' + road.flop1} />
