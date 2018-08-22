@@ -8,9 +8,9 @@ function computerLogic (callAmount, pot, computerChips, playerChips, computerCar
     let suitValues = extractSuitValues(handAndStreet);
 
     console.log(handAndStreet);
-    console.log(checkForFlush(suitValues));
     console.log(checkForPairs(numberValues));
-    console.log(checkForStraight(numberValues));
+    console.log(checkForFlush(suitValues, handAndStreet));
+    console.log('omgimnuts', checkForFlush(extractSuitValues(['2D', '13D', '4H', '6D', '7D', '10D']), ['2D', '13D', '4H', '6D', '7D', '10D']));
 
 
 
@@ -142,7 +142,24 @@ function extractSuitValues(valuesAndSuits) {
 }
 
 // Used to find  the occurences of all present suits.
-function checkForFlush(suitValues) {
+function checkForFlush(suitValues, handAndStreet) {
+  let suitsAndValuesSorted = [];
+  for (card of handAndStreet) {
+    if (card.length === 3) {
+      suitsAndValuesSorted.push([parseInt(card[0] + card[1]), card[2]]);
+    }
+    else {
+      suitsAndValuesSorted.push([parseInt(card[0]), card[1]]);
+    }
+  }
+
+  suitsAndValuesSorted = suitsAndValuesSorted.sort(function(a,b){return b[0]-a[0]});
+
+
+
+  console.log('omg', suitsAndValuesSorted);
+
+
   let suitOccurences = {};
   for (suit of suitValues) {
     if (suitOccurences[suit] === undefined) {
@@ -152,25 +169,59 @@ function checkForFlush(suitValues) {
       suitOccurences[suit]++;
     }
   }
-  return suitOccurences;
+  for (let key in suitOccurences) {
+    if (suitOccurences[key] === 5) {
+      for (let x = 0; x < suitsAndValuesSorted.length; x++) {
+        if (suitsAndValuesSorted[x][1] === key) {
+          return `${suitsAndValuesSorted[x][0]} High Flush`;
+        }
+      }
+    }
+  }
 }
 
 // Used to find the occurences of all present integer values
 function checkForPairs(numberValues) {
-  let pairOccurences = {};
-  for (number of numberValues) {
-    if (pairOccurences[number] === undefined) {
-      pairOccurences[number] = 1;
+    let sortedNumberValues = numberValues.sort(function(a,b){return b-a});
+    let pairOccurences = {};
+    for (number of sortedNumberValues) {
+        if (pairOccurences[number] === undefined) {
+            pairOccurences[number] = 1;
+        }
+        else {
+            pairOccurences[number]++;
+        }
     }
-    else {
-      pairOccurences[number]++;
+    for (let key in pairOccurences) {
+        if (pairOccurences[key] === 4) {
+            return `4 of a kind with ${key}s`
+        }
     }
-  }
-  return pairOccurences;
+    for (let key in pairOccurences) {
+        if (pairOccurences[key] === 3) {
+            for (let props in pairOccurences) {
+                if (pairOccurences[props] === 2) {
+                    return `Full House, ${key}s full of ${props}`
+                }
+            }
+            return `3 of a kind with ${key}s`
+        }
+    }
+    for (let key in pairOccurences) {
+      if (pairOccurences[key] === 2) {
+        for (let props in pairOccurences) {
+          if (pairOccurences[props] === 2 && pairOccurences[key] !== pairOccurences[props]) {
+            return `Two Pair, ${key}s and ${props}`
+          }
+        }
+        return `Pair of ${key}s`
+      }
+    }
+    return `${sortedNumberValues[0]} High`;
 }
 
 function checkForStraight(numberValues) {
-    let sortedNumberValues = numberValues.sort(function(a,b){return a-b});
+    let sortedNumberValues = numberValues.sort(function(a,b){return b-a});
 
     let chance = 0;
     if (sortedNumberValues.length === 5) {
@@ -184,7 +235,6 @@ function checkForStraight(numberValues) {
     }
 
     for (let x = 0; x < sortedNumberValues.length; x++) {
-        console.log(sortedNumberValues[x] - 1, sortedNumberValues[x+1]);
         if (sortedNumberValues[x] - 1 !== sortedNumberValues[x+1] && sortedNumberValues[x+1] !== undefined) {
             chance--;
             if (chance < 0) {
