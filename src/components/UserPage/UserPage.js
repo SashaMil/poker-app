@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Nav from '../../components/Nav/Nav';
 
@@ -16,20 +17,8 @@ class UserPage extends Component {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   }
 
-  componentDidUpdate() {
-    if (!this.props.user.isLoading && this.props.user.userName === null) {
-      this.props.history.push('home');
-    }
-  }
-
   logout = () => {
     this.props.dispatch(triggerLogout());
-    this.props.history.push('home');
-  }
-
-  routeToView = (viewName) => {
-    viewName = viewName.toLowerCase().replace(/\s/g, '');
-    window.location.href = `#/${viewName}`;
   }
 
   render() {
@@ -42,8 +31,14 @@ class UserPage extends Component {
             Welcome, { this.props.user.userName }!
           </h1>
           <p>Your ID is: {this.props.user.id}</p>
-          <button onClick={() => this.routeToView('game')}>New Game</button>
-          <button onClick={this.logout}>Log Out</button>
+          <Link to="/game">
+            <button>
+              New Game
+            </button>
+          </Link>
+          <Link to="/">
+            <button onClick={this.logout}>Log Out</button>
+          </Link>
         </div>
       );
     }
