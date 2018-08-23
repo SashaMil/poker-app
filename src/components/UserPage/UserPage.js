@@ -36,7 +36,6 @@ render() {
           <Link to="/account"><img className="images" src="/images/Icons/account.png" /></Link>
           <Link to="/game"><img className="images" src="/images/Icons/logout.png" /></Link>
         </div>
-
       </div>
 
 
