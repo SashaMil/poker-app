@@ -31,27 +31,27 @@ render() {
         <div className="grid-3">
           <div>
             <Link to="/game"><img className="images" src="/images/Icons/startGame.png" /></Link>
-            <p>Start Game</p>
+            <p className="userPageP">Start Game</p>
           </div>
           <div>
             <Link to="/statistics"><img className="images" src="/images/Icons/statistics.png" /></Link>
-            <p>Statistics</p>
+            <p className="userPageP">Statistics</p>
           </div>
           <div>
             <Link to="/settings"><img className ="images" src="/images/Icons/settings.png" /></Link>
-            <p>Settings</p>
+            <p className="userPageP">Settings</p>
           </div>
           <div>
             <Link to="/preferences"><img className="images" src="/images/Icons/preferences.png" /></Link>
-            <p>Preferences</p>
+            <p className="userPageP">Preferences</p>
           </div>
           <div>
             <Link to="/account"><img className="images" src="/images/Icons/account.png" /></Link>
-            <p>Account Settings</p>
+            <p className="userPageP">Account Settings</p>
           </div>
           <div>
-            <Link to="/game"><img className="images" src="/images/Icons/logout.png" /></Link>
-            <p>Logout</p>
+            <Link onClick={this.logout} to="/"><img className="images" src="/images/Icons/logout.png" /></Link>
+            <p className="userPageP">Logout</p>
           </div>
         </div>
       </div>

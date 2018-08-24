@@ -19,8 +19,6 @@ import PlayerHandRanking from '../PlayerHandRanking/PlayerHandRanking';
 import ViewHistory from '../ViewHistory/ViewHistory';
 import Button from '@material-ui/core/Button';
 
-
-
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
 
@@ -119,105 +117,10 @@ class Table extends Component {
     const redux = this.props.table.state;
 
     return (
-      <div className="grid-2">
-        <div>
-          {this.state.showPlayerCards ? (
-            <div>
-              <div>
-                <ComputerHand
-                  showCards={this.state.showComputerCards}
-                />
-              </div>
-              <div>
-                <ComputerChips
-                  chips={redux.computerChips}
-                />
-              </div>
-              <div>
-                <PlayerHand
-                  cards={redux.playerCards}
-                  showCards={this.state.showPlayerCards}
-                />
-              </div>
-              <div>
-                <Pot
-                  pot={redux.pot}
-                  handleChange={this.handleChange}
-                />
-              </div>
-              <div>
-                <PlayerChips
-                  chips={redux.playerChips}
-                />
-              </div>
-              <div>
-                <Street
-                  street={redux.street}
-                  currentAction={redux.actions}
-                />
-              </div>
-              <div>
-                <Controller
-                  value={this.state.value}
-                  currentAction={redux.actions}
-                  playerSb={redux.player_sb}
-                  handleChange={this.handleChange}
-                  fold={this.fold}
-                  call={this.call}
-                  raise={this.raise}
-                  check={this.check}
-                  bet={this.bet}
-                />
-              </div>
-              <div>
-              </div>
-              <div>
-                <Alerts
-                  open={this.state.alertOpen}
-                  handleClose={this.alertClose}
-                />
-              </div>
-            </div>
-          ) : (
-            null
-          )
-        }
+        <div className="gridContainer">
+          <div>
+          </div>
         </div>
-        <div>
-          {this.state.showPlayerCards ? (
-            <div>
-              <div>
-                <ActionsList
-                  messages={redux.message}
-                />
-              </div>
-              <div>
-                <PlayerHandRanking
-                  bestFiveCards={redux.actions.player_best_five_cards}
-                />
-              </div>
-              <div>
-                {this.state.historyOpen === true ? (
-                  <ViewHistory
-                    open={this.state.historyOpen}
-                    historyClose={this.historyClose}
-                  />
-                ) : (
-                  null
-                )
-              }
-              </div>
-              <Button onClick={this.historyOpen}>
-                View History
-              </Button>
-            </div>
-          ) : (
-            null
-          )
-        }
-        </div>
-      </div>
-
     )
   }
 }

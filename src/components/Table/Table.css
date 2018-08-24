@@ -1,19 +1,15 @@
-.wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+.tableImage {
+  width: 1100px;
+  height: 600px;
 }
 
-#paper {
-  background-color: red;
-  grid-column-start: 3;
-  grid-column-end: 3;
-}
-
-.grid-2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
-    width: 100%;
-    padding-top: 10px;
+.gridContainer {
+  margin: 0 auto;
+  max-width: 1400px;
+  background-image: url("/images/Table/pokerTable.png");
+  width: 1400px;
+  height: 700px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }

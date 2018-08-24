@@ -4,6 +4,8 @@ import { compose } from 'redux';
 
 import Deck from '../Deck/Deck';
 
+import './PlayerBet.css';
+
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -17,7 +19,7 @@ class PlayerBet extends Component {
         <div>
         {this.props.bet.player ? (
           <div>
-            <h3>{this.props.bet}</h3>
+            <h3 className="playerBetH3">{this.props.bet}</h3>
           </div>
         ) : (
           null

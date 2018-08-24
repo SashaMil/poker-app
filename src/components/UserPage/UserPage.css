@@ -11,14 +11,14 @@
 .grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 30px;
+    grid-gap: 0px;
     width: 100%;
     margin: auto;
 }
 
 .images {
-  height: 350px;
-  width: 350px;
+  height: 300px;
+  width: 300px;
   transition: .2s;
 }
 
@@ -26,10 +26,10 @@
     transform: scale(1.2);
 }
 
-p {
+.userPageP {
   position: relative;
+  left: 80px;
+  bottom: 50px;
   color: white;
   font-size: 25px;
-  left: 110px;
-  top: 370px;
 }

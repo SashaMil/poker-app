@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import { computerDecision } from '../../redux/actions/tableActions';
 import Slider from '@material-ui/lab/Slider';
 
+import './Controller.css';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -54,7 +55,7 @@ class Controller extends Component {
         <div>
           <Slider value={this.props.value} min={10} max={2000} step={5} onChange={(event, value) => this.props.handleChange(event,value)} />
         </div>
-        <h3>{'Current Player Bet ' + this.props.value}</h3>
+        <h3 className="controllerH3">{'Current Player Bet ' + this.props.value}</h3>
 
       </div>
     )

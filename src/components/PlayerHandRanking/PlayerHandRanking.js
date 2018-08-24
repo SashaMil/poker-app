@@ -4,6 +4,8 @@ import { compose } from 'redux';
 
 import Deck from '../Deck/Deck';
 
+import './PlayerHandRanking.css';
+
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -16,7 +18,7 @@ class PlayerHandRanking extends Component {
     return (
         <div>
           {this.props.bestFiveCards ? (
-            <h2>{this.props.bestFiveCards}</h2>
+            <h2 className="playerHandRankingH2">{this.props.bestFiveCards}</h2>
           ) : (
             null
           )

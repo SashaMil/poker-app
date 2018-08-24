@@ -4,6 +4,8 @@ import { compose } from 'redux';
 
 import Deck from '../Deck/Deck';
 
+import './Pot.css';
+
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -15,7 +17,7 @@ class Pot extends Component {
   render() {
     return (
         <div>
-          <h2>{'Pot ' + this.props.pot}</h2>
+          <h2 className="potH2">{'Pot ' + this.props.pot}</h2>
         </div>
     )
   }
