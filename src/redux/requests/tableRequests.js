@@ -73,22 +73,6 @@ export function playerRaiseRequest(betSize) {
     .catch((error) => { throw error.response || error; })
 }
 
-export function getHandHistoryRequest() {
-  return axios.get('/api/table/history', {
-  })
-    .then(response => response.data)
-    .catch((error) => { throw error.response || error; });
-}
-
-export function deleteHandHistoryRequest() {
-  return axios.delete('/api/table/deleteHistory', {
-  })
-    .then(response => response.data)
-    .catch((error) => { throw error.response || error; });
-}
-
-
-
 
 
 

@@ -11,13 +11,12 @@ import Street from '../Street/Street';
 import SnackBar from '../SnackBar/SnackBar';
 import ComputerChips from '../ComputerChips/ComputerChips';
 import PlayerChips from '../PlayerChips/PlayerChips';
-import ActionsList from '../ActionsList/ActionsList';
-import ComputerBet from '../ComputerBet/ComputerBet';
 import PlayerBet from '../PlayerBet/PlayerBet';
 import Alerts from '../Alerts/Alerts';
 import PlayerHandRanking from '../PlayerHandRanking/PlayerHandRanking';
-import ViewHistory from '../ViewHistory/ViewHistory';
 import Button from '@material-ui/core/Button';
+import ComputerAction from '../ComputerAction/ComputerAction';
+import PlayerPrompt from '../PlayerPrompt/PlayerPrompt';
 
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
@@ -117,8 +116,92 @@ class Table extends Component {
     const redux = this.props.table.state;
 
     return (
-        <div className="gridContainer">
+        <div>
           <div>
+            {this.state.showPlayerCards ? (
+              <div className="grid">
+                <div>
+                  <ComputerChips
+                    chips={redux.computerChips}
+                  />
+                </div>
+                <div>
+                  <ComputerHand
+                    showCards={this.state.showComputerCards}
+                  />
+                </div>
+                <div>
+                  {!redux.actions.player ? (
+                    <ComputerAction
+                      message={redux.messages}
+                    />
+                    ) : (
+                      null
+                    )
+                  }
+                </div>
+                <div>
+                  <Deck
+                  />
+                </div>
+                <div>
+                  <Street
+                    street={redux.street}
+                    currentAction={redux.actions}
+                  />
+                </div>
+                <div>
+                  <Pot
+                    pot={redux.pot}
+                    handleChange={this.handleChange}
+                  />
+                </div>
+                <div>
+                  <div>
+                    <PlayerChips
+                      chips={redux.playerChips}
+                    />
+                  </div>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+                  <div>
+                    <PlayerPrompt
+                    />
+                  </div>
+                </div>
+                <div>
+                  <PlayerHand
+                    cards={redux.playerCards}
+                    showCards={this.state.showPlayerCards}
+                  />
+                </div>
+                <div>
+                  <Controller
+                    value={this.state.value}
+                    currentAction={redux.actions}
+                    playerSb={redux.player_sb}
+                    handleChange={this.handleChange}
+                    fold={this.fold}
+                    call={this.call}
+                    raise={this.raise}
+                    check={this.check}
+                    bet={this.bet}
+                  />
+                </div>
+                <div>
+                </div>
+                <div>
+                  <Alerts
+                    open={this.state.alertOpen}
+                    handleClose={this.alertClose}
+                  />
+                </div>
+              </div>
+            ) : (
+              null
+            )
+          }
           </div>
         </div>
     )

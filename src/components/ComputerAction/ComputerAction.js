@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import Deck from '../Deck/Deck';
-
+import Typography from '@material-ui/core/Typography';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -15,13 +14,7 @@ class ComputerBet extends Component {
   render() {
     return (
         <div>
-        {!this.props.bet.player ? (
-          <div>
-            <h3>{this.props.bet}</h3>
-          </div>
-        ) : (
-          null
-        )}
+          <Typography variant="headline" style={{ color: 'white' }}>Computer Action Message</Typography>
         </div>
     )
   }

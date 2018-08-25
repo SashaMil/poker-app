@@ -278,32 +278,5 @@ router.post('/checkGameStatus', (req, res) => {
   })
 });
 
-router.get('/history', (req, res) => {
-  Person.findById(req.user._id, function(err, data) {
-    if (err) throw err;
-    let objToSend = {};
-    objToSend.actions = data.games[0].actions;
-    objToSend.messages = data.games[0].messages;
-    objToSend.playerCards = data.games[0].playerCards;
-    objToSend.street = data.games[0].street;
-
-    res.send(objToSend);
-
-  })
-});
-
-router.delete('/deleteHistory', (req, res) => {
-  Person.findById(req.user._id, function(err, data) {
-    if (err) throw err;
-    data.games[0] = [{message: 'Recently Deleted History'}];
-    res.send('Deleted Hand History');
-    data.save(function(err) {
-      if (err) throw err;
-      res.send(gameInfo);
-      console.log('Games array updated successfully');
-    });
-  })
-})
-
 
 module.exports = router;

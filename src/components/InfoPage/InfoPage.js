@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
 const mapStateToProps = state => ({
@@ -23,21 +22,14 @@ class InfoPage extends Component {
     let content = null;
 
     if (this.props.user.userName) {
-      content = (
+      return (
         <div>
           <p>
             Info Page
           </p>
         </div>
-      );
+      )
     }
-
-    return (
-      <div>
-        <Nav />
-        { content }
-      </div>
-    );
   }
 }
 

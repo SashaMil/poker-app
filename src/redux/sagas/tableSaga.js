@@ -185,40 +185,6 @@ function* getStreet() {
   }
 }
 
-function* getHandHistory() {
-  try {
-    console.log('donkey');
-    handHistory = yield getHandHistoryRequest();
-    gameInfo = yield getGameInfoRequest();
-    gameInfo.handHistory = handHistory;
-    console.log(gameInfo);
-    yield put({
-      type: TABLE_ACTIONS.SET_GAME,
-      payload: gameInfo,
-    })
-
-  }
-  catch (error) {
-    console.log(error);
-  }
- }
-
- function* deleteHandHistory() {
-   try {
-     console.log('moose');
-     yield deleteHandHistoryRequest();
-     gameInfo.handHistory = {actions: [], street: [], playerCards: [], messages: []};
-     console.log(gameInfo);
-     yield put({
-       type: TABLE_ACTIONS.SET_GAME,
-       payload: gameInfo,
-     })
-   }
-   catch (error) {
-     console.log(error);
-   }
- }
-
 function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.CHECK_GAME_STATUS, checkGameStatus);
   yield takeLatest(TABLE_ACTIONS.COMPUTER_DECISION, computerDecision);
@@ -228,8 +194,7 @@ function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.PLAYER_CHECK, playerCheck);
   yield takeLatest(TABLE_ACTIONS.PLAYER_BET, playerBet);
   yield takeLatest(TABLE_ACTIONS.PLAYER_RAISE, playerRaise);
-  yield takeLatest(TABLE_ACTIONS.GET_HAND_HISTORY, getHandHistory);
-  yield takeLatest(TABLE_ACTIONS.DELETE_HAND_HISTORY, deleteHandHistory);
+
 }
 
 export default tableSaga;

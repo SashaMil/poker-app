@@ -15,12 +15,11 @@ class ComputerHand extends Component {
     return (
         <div>
           <Slide direction="right" in={this.props.table.state !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/purple_back.png`} />
+            <img width='80px' src={`images/Cards/purple_back.png`} />
           </Slide>
           <Slide direction="right" in={this.props.table.state !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/purple_back.png`} />
+            <img width='80px' src={`images/Cards/purple_back.png`} />
           </Slide>
-          <p style={{color: 'white'}}>Computer Action</p>
         </div>
     )
   }

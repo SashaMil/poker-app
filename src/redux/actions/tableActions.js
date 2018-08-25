@@ -50,11 +50,3 @@ export const playerRaise = (betSize) => ({
   type: TABLE_ACTIONS.PLAYER_BET,
   betSize,
 });
-
-export const getHandHistory = () => ({
-  type: TABLE_ACTIONS.GET_HAND_HISTORY,
-});
-
-export const deleteHandHistory = () => ({
-  type: TABLE_ACTIONS.DELETE_HAND_HISTORY,
-});
