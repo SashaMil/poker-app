@@ -23,7 +23,8 @@ class Pot extends Component {
           <ComputerBet
             lastAction={this.props.lastAction}
           />
-          <Typography variant="headline" style={{ color: 'white' }}>Pot: {this.props.pot}</Typography>
+          <Typography variant="headline" style={{ color: 'white' }}>{this.props.pot}</Typography>
+          <img src="images/Table/pot.png" />
           <PlayerBet
             betAmount={this.props.betAmount}
           />

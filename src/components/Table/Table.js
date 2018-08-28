@@ -90,8 +90,7 @@ class Table extends Component {
 
   raise = (value) => {
     console.log(value);
-    console.log(this.props.table.state.actions.bet);
-    if (value <= this.props.table.state.actions.bet) {
+    if (value <= this.props.table.actions.lastAction.bet) {
       this.setState({ alertOpen: true });
     }
     else {

@@ -43,12 +43,13 @@ function* computerDecision() {
   try {
     yield computerDecisionRequest();
     gameInfo = yield getGameInfoRequest();
-    console.log(`Computer ${gameInfo.actions.type}`);
+    console.log(gameInfo);
+    console.log(`Computer ${gameInfo.actions.lastAction.type}`);
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
-    if (gameInfo.actions.type === 'FOLD') {
+    if (gameInfo.actions.lastAction.type === 'FOLD') {
       yield shuffleRequest();
       gameInfo = yield getGameInfoRequest();
       yield put({
