@@ -92,15 +92,11 @@ router.get('/gameInfo', (req, res) => {
     const currentGame = data.games[data.games.length-1];
     const currentStreet = currentGame.street[currentGame.street.length-1];
     let gameInfo = {
-      player_sb: currentGame.player_sb,
-      playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
-      playerChips: currentGame.player_chips,
-      computerChips: currentGame.computer_chips,
-      actions: currentGame.actions[currentGame.actions.length - 1],
-      pot: currentGame.pot,
-      message: currentGame.messages,
-      street: currentStreet[0],
+      chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
+      cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], street: currentStreet[0]},
+      actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
     }
+    console.log(gameInfo);
     res.send(gameInfo);
   })
 

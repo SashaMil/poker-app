@@ -27,9 +27,17 @@ function* checkGameStatus() {
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     yield put({
-      type: TABLE_ACTIONS.SET_GAME,
-      payload: gameInfo,
+      type: TABLE_ACTIONS.SET_ACTIONS,
+      payload: gameInfo.actions,
     });
+    yield put({
+      type: TABLE_ACTIONS.SET_CHIPS,
+      payload: gameInfo.chips,
+    })
+    yield put({
+      type: TABLE_ACTIONS.SET_CARDS,
+      payload: gameInfo.cards,
+    })
     if (!gameInfo.actions.player_act_next) {
       yield computerDecision();
     }

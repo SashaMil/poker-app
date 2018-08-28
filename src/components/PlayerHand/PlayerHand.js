@@ -15,10 +15,10 @@ class PlayerHand extends Component {
     return (
         <div>
           <Slide direction="right" in={this.props.dealPlayerHand}>
-            <img width='80px' src={`images/Cards/${this.props.cards.card1}.png`} />
+            <img width='80px' src={`images/Cards/${this.props.card1}.png`} />
           </Slide>
           <Slide direction="right" in={this.props.dealPlayerHand}>
-            <img width='80px' src={`images/Cards/${this.props.cards.card2}.png`} />
+            <img width='80px' src={`images/Cards/${this.props.card2}.png`} />
           </Slide>
         </div>
     )

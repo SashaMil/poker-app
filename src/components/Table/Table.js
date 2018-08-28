@@ -108,27 +108,28 @@ class Table extends Component {
 
   render() {
 
-    const redux = this.props.table.state;
+    const actions = this.props.table.actions;
+    const cards = this.props.table.cards;
+    const chips = this.props.table.chips;
 
     return (
       <div>
        <div>
-         {redux ? (
+         {this.props.table ? (
            <div className="grid">
              <div>
                <ComputerChips
-                 chips={redux.computerChips}
+                 chips={chips.computerChips}
                />
              </div>
              <div>
                <ComputerHand
-                 showCards={this.state.showComputerHand}
+                 showCards={cards.showComputerHand}
                />
              </div>
              <div>
-               {!redux.actions.player ? (
+               {actions.lastAction.player ? (
                  <ComputerAction
-                   message={redux.messages}
                  />
                  ) : (
                    null
@@ -141,27 +142,28 @@ class Table extends Component {
              </div>
              <div>
                <Street
-                 street={redux.street}
-                 currentAction={redux.actions}
+                 street={cards.street}
+                 currentAction={actions.lastAction}
                />
              </div>
              <div>
                <Pot
-                 pot={redux.pot}
+                 pot={chips.pot}
                  handleChange={this.handleChange}
                />
              </div>
              <div>
                <PlayerChips
-                 chips={redux.playerChips}
+                 chips={chips.playerChips}
                />
              </div>
              <div>
                <div>
                  <PlayerHand
-                   cards={redux.playerCards}
-                   dealPlayerHand={this.state.dealPlayerHand}
-                   foldPlayerHand={this.state.foldPlayerHand}
+                   card1={cards.playerCard1}
+                   card2={cards.playerCard2}
+                   dealPlayerHand={cards.dealPlayerHand}
+                   foldPlayerHand={cards.foldPlayerHand}
                  />
                  <br></br>
                  <br></br>
@@ -175,8 +177,8 @@ class Table extends Component {
              <div>
                <Controller
                  value={this.state.value}
-                 currentAction={redux.actions}
-                 playerSb={redux.player_sb}
+                 currentAction={actions.lastAction}
+                 playerSb={actions.playerButton}
                  handleChange={this.handleChange}
                  fold={this.fold}
                  call={this.call}
