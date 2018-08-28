@@ -14,10 +14,10 @@ class ComputerHand extends Component {
   render() {
     return (
         <div>
-          <Slide direction="right" in={this.props.table.state !== undefined} mountOnEnter unmountOnExit>
+          <Slide direction="right" in={this.props.dealComputerHand} mountOnEnter unmountOnExit>
             <img width='80px' src={`images/Cards/purple_back.png`} />
           </Slide>
-          <Slide direction="right" in={this.props.table.state !== undefined} mountOnEnter unmountOnExit>
+          <Slide direction="right" in={this.props.dealComputerHand} mountOnEnter unmountOnExit>
             <img width='80px' src={`images/Cards/purple_back.png`} />
           </Slide>
         </div>

@@ -123,6 +123,7 @@ class Table extends Component {
              <div>
                <ComputerHand
                  showCards={cards.showComputerHand}
+                 dealComputerHand={cards.dealPlayerHand}
                />
              </div>
              <div>
@@ -161,7 +162,6 @@ class Table extends Component {
                    card1={cards.playerCard1}
                    card2={cards.playerCard2}
                    dealPlayerHand={cards.dealPlayerHand}
-                   foldPlayerHand={cards.foldPlayerHand}
                  />
                  <br></br>
                  <br></br>

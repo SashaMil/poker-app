@@ -18,7 +18,7 @@ class PlayerChips extends Component {
     return (
       <div className="">
         <Typography variant="headline" style={{ color: 'white' }}>{this.props.chips}</Typography>
-        <img src="/images/Table/chipStack.png" />
+        <img width="80px" src="/images/Table/chipStack.png" />
       </div>
     )
   }
