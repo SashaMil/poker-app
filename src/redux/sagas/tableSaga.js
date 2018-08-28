@@ -27,17 +27,9 @@ function* checkGameStatus() {
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     yield put({
-      type: TABLE_ACTIONS.SET_ACTIONS,
-      payload: gameInfo.actions,
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
     });
-    yield put({
-      type: TABLE_ACTIONS.SET_CHIPS,
-      payload: gameInfo.chips,
-    })
-    yield put({
-      type: TABLE_ACTIONS.SET_CARDS,
-      payload: gameInfo.cards,
-    })
     if (!gameInfo.actions.player_act_next) {
       yield computerDecision();
     }
@@ -78,6 +70,10 @@ function* computerDecision() {
 
 function* playerFold() {
   try {
+    yield put({
+      type: TABLE_ACTIONS.FOLD_PLAYER_HAND,
+    })
+    yield new Promise(resolve => setTimeout(resolve, 2000));
     yield playerFoldRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);

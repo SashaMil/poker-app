@@ -2,16 +2,16 @@ import { combineReducers } from 'redux';
 import { TABLE_ACTIONS } from '../actions/tableActions';
 
 let initialActionsState = {lastAction: {}, playerSB: false,}
-let initialCardsState = {playerCard1: '', playerCard2: '', dealPlayerHand: false, foldPlayerHand: false, dealComputerHand: false, foldComputerHand: false, showComputerHand: true};
+let initialCardsState = {playerCard1: '', playerCard2: '', dealPlayerHand: false, dealComputerHand: false, showComputerHand: true};
 let initialChipsState = {playerChips: 0, computerChips: 0, pot: 0};
 
 const actions = (state = initialActionsState, action) => {
   switch (action.type) {
-    case TABLE_ACTIONS.SET_ACTIONS:
+    case TABLE_ACTIONS.SET_GAME:
       return {
         ... state,
-        lastAction: action.payload.lastAction,
-        playerButton: action.payload.playerButton,
+        lastAction: action.payload.actions.lastAction,
+        playerButton: action.payload.actions.playerButton,
       }
     default:
       return state;
@@ -20,14 +20,19 @@ const actions = (state = initialActionsState, action) => {
 
 const cards = (state = initialCardsState, action) => {
   switch (action.type) {
-    case TABLE_ACTIONS.SET_CARDS:
+    case TABLE_ACTIONS.SET_GAME:
       return {
         ... state,
-        playerCard1: action.payload.playerCards.card1,
-        playerCard2: action.payload.playerCards.card2,
+        playerCard1: action.payload.cards.playerCards.card1,
+        playerCard2: action.payload.cards.playerCards.card2,
         dealPlayerHand: true,
         dealComputerHand: true,
-        street: action.payload.street,
+        street: action.payload.cards.street,
+      }
+    case TABLE_ACTIONS.FOLD_PLAYER_HAND:
+      return {
+        ... state,
+        dealPlayerHand: false,
       }
     default:
       return state;
@@ -36,12 +41,12 @@ const cards = (state = initialCardsState, action) => {
 
 const chips = (state = initialChipsState, action) => {
   switch(action.type) {
-    case TABLE_ACTIONS.SET_CHIPS:
+    case TABLE_ACTIONS.SET_GAME:
      return {
        ... state,
-       playerChips: action.payload.playerChips,
-       computerChips: action.payload.computerChips,
-       pot: action.payload.pot,
+       playerChips: action.payload.chips.playerChips,
+       computerChips: action.payload.chips.computerChips,
+       pot: action.payload.chips.pot,
      }
     default:
       return state;
