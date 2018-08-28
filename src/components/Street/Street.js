@@ -1,55 +1,30 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import {Link} from 'react-router-dom';
 import Slide from '@material-ui/core/Slide';
-import Button from '@material-ui/core/Button';
-import { getStreet } from '../../redux/actions/tableActions';
-
-const mapStateToProps = state => ({
-  user: state.user,
-  table: state.table,
-});
 
 class Street extends Component {
 
   render() {
     return (
       <div>
-        {this.props.street ? (
-          <div>
-            <Slide direction="right" in={this.props.street[0] !== undefined} mountOnEnter unmountOnExit>
-              <img width='80px' src={`images/Cards/${this.props.street[0]}.png`} />
-            </Slide>
-            <Slide direction="right" in={this.props.street[1] !== undefined} mountOnEnter unmountOnExit>
-              <img width='80px' src={`images/Cards/${this.props.street[1]}.png`} />
-            </Slide>
-            <Slide direction="right" in={this.props.street[2] !== undefined} mountOnEnter unmountOnExit>
-              <img width='80px' src={`images/Cards/${this.props.street[2]}.png`} />
-            </Slide>
-            <Slide direction="right" in={this.props.street[3] !== undefined} mountOnEnter unmountOnExit>
-              <img width='80px' src={`images/Cards/${this.props.street[3]}.png`} />
-            </Slide>
-            <Slide direction="right" in={this.props.street[4] !== undefined} mountOnEnter unmountOnExit>
-              <img width='80px' src={`images/Cards/${this.props.street[4]}.png`} />
-            </Slide>
-          </div>
-        ) : (
-          null
-        )
-      }
-
+        <Slide direction="right" in={this.props.flop[0] !== undefined} mountOnEnter unmountOnExit>
+          <img width='80px' src={`images/Cards/${this.props.flop[0]}.png`} />
+        </Slide>
+        <Slide direction="right" in={this.props.flop[1] !== undefined} mountOnEnter unmountOnExit>
+          <img width='80px' src={`images/Cards/${this.props.flop[1]}.png`} />
+        </Slide>
+        <Slide direction="right" in={this.props.flop[2] !== undefined} mountOnEnter unmountOnExit>
+          <img width='80px' src={`images/Cards/${this.props.flop[2]}.png`} />
+        </Slide>
+        <Slide direction="right" in={this.props.turn !== ''} mountOnEnter unmountOnExit>
+          <img width='80px' src={`images/Cards/${this.props.turn}.png`} />
+        </Slide>
+        <Slide direction="right" in={this.props.river !== ''} mountOnEnter unmountOnExit>
+          <img width='80px' src={`images/Cards/${this.props.river}.png`} />
+        </Slide>
       </div>
     )
   }
 }
 
-Slide.defaultProps = {
-  timeout: {
-    enter: 1000,
-    exit: 1000,
-  },
-};
 
-
-export default compose(connect(mapStateToProps))(Street);
+export default Street;

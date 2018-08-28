@@ -26,7 +26,7 @@ class Pot extends Component {
           <Typography variant="headline" style={{ color: 'white' }}>{this.props.pot}</Typography>
           <img src="images/Table/pot.png" />
           <PlayerBet
-            betAmount={this.props.betAmount}
+            lastAction={this.props.lastAction}
           />
         </div>
     )

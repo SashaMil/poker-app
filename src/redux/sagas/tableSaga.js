@@ -60,7 +60,7 @@ function* computerDecision() {
         yield computerDecision();
       }
     }
-    if (gameInfo.actions.next_street) {
+    if (gameInfo.actions.lastAction.next_street) {
       yield getStreet();
     }
   }
@@ -108,7 +108,7 @@ function* playerCall() {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
-    if (gameInfo.actions.next_street) {
+    if (gameInfo.actions.lastAction.next_street) {
       yield getStreet();
     }
     else {
@@ -129,7 +129,7 @@ function* playerCheck() {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
-    if (gameInfo.actions.next_street) {
+    if (gameInfo.actions.lastAction.next_street) {
       yield getStreet();
     }
     else {

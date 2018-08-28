@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { TABLE_ACTIONS } from '../actions/tableActions';
 
 let initialActionsState = {lastAction: {}, playerSB: false,}
-let initialCardsState = {playerCard1: '', playerCard2: '', dealPlayerHand: false, dealComputerHand: false, showComputerHand: true};
+let initialCardsState = {playerCard1: '', playerCard2: '', dealPlayerHand: false, dealComputerHand: false, showComputerHand: true, flop: [], turn: '', river: ''};
 let initialChipsState = {playerChips: 0, computerChips: 0, pot: 0};
 
 const actions = (state = initialActionsState, action) => {
@@ -33,7 +33,9 @@ const cards = (state = initialCardsState, action) => {
         playerCard2: action.payload.cards.playerCards.card2,
         dealPlayerHand: true,
         dealComputerHand: true,
-        street: action.payload.cards.street,
+        flop: action.payload.cards.flop ? action.payload.cards.flop : state.flop,
+        turn: action.payload.cards.turn ? action.payload.cards.turn : state.turn,
+        river: action.payload.cards.river ? action.payload.cards.river : state.river,
       }
     case TABLE_ACTIONS.FOLD_PLAYER_HAND:
       return {

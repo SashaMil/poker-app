@@ -93,7 +93,7 @@ router.get('/gameInfo', (req, res) => {
     const currentStreet = currentGame.street[currentGame.street.length-1];
     let gameInfo = {
       chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
-      cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], street: currentStreet[0]},
+      cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1]},
       actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
     }
     console.log(gameInfo);
@@ -124,15 +124,9 @@ router.get('/street', (req, res) => {
         currentGame.actions.push({type: 'flopSB', player: false, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'flop', next_street: false, player_best_five_cards: bestFiveCards[1], player_best_five_cards_value: bestFiveCards[0], computer_best_five_cards: bestFiveComputerCards[1], computer_best_five_cards_value: bestFiveComputerCards[0]});
       }
       gameInfo = {
-        player_sb: currentGame.player_sb,
-        playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
-        playerChips: currentGame.player_chips,
-        computerChips: currentGame.computer_chips,
-        actions: currentGame.actions[currentGame.actions.length - 1],
-        pot: currentGame.pot,
-        message: currentGame.messages,
-        street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3],
-        best_five_cards: bestFiveCards,
+        chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
+        cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], flop: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3]},
+        actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
       }
       data.save(function(err) {
         if (err) throw err;
@@ -153,14 +147,9 @@ router.get('/street', (req, res) => {
         currentGame.actions.push({type: 'turnSB', player: false, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'turn', next_street: false, player_best_five_cards: bestFiveCards[1], player_best_five_cards_value: bestFiveCards[0], computer_best_five_cards: bestFiveComputerCards[1], computer_best_five_cards_value: bestFiveComputerCards[0] });
       }
       gameInfo = {
-        player_sb: currentGame.player_sb,
-        playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
-        playerChips: currentGame.player_chips,
-        computerChips: currentGame.computer_chips,
-        actions: currentGame.actions[currentGame.actions.length - 1],
-        pot: currentGame.pot,
-        message: currentGame.messages,
-        street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn],
+        chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
+        cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], turn: currentStreet.turn},
+        actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
       }
       data.save(function(err) {
         if (err) throw err;
@@ -181,14 +170,9 @@ router.get('/street', (req, res) => {
         currentGame.actions.push({type: 'riverSB', player: false, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'river', next_street: false, player_best_five_cards: bestFiveCards[1], player_best_five_cards_value: bestFiveCards[0], computer_best_five_cards: bestFiveComputerCards[1], computer_best_five_cards_value: bestFiveComputerCards[0] });
       }
       gameInfo = {
-        player_sb: currentGame.player_sb,
-        playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
-        playerChips: currentGame.player_chips,
-        computerChips: currentGame.computer_chips,
-        actions: currentGame.actions[currentGame.actions.length - 1],
-        pot: currentGame.pot,
-        message: currentGame.messages,
-        street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river],
+        chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
+        cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], river: currentStreet.river},
+        actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
       }
       console.log(gameInfo.street);
       data.save(function(err) {

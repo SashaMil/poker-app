@@ -18,7 +18,7 @@ class PlayerBet extends Component {
   render() {
     return (
         <div>
-          <Slide direction="right" in={this.props.betAmount > 0} mountOnEnter timeout={1000}>
+          <Slide direction="up" in={this.props.lastAction.player && (this.props.lastAction.betAmount > 0 || this.props.lastAction.callAmount > 0)} mountOnEnter timeout={1000}>
             <img src="/images/Table/bet.png" />
           </Slide>
         </div>

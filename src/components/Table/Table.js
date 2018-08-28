@@ -141,7 +141,9 @@ class Table extends Component {
              </div>
              <div>
                <Street
-                 street={cards.street}
+                 flop={cards.flop}
+                 turn={cards.turn}
+                 river={cards.river}
                  currentAction={actions.lastAction}
                />
              </div>
@@ -150,7 +152,6 @@ class Table extends Component {
                  pot={chips.pot}
                  handleChange={this.handleChange}
                  lastAction={actions.lastAction}
-                 betAmount={this.state.value}
                />
              </div>
              <div>
