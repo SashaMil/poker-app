@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Slide from '@material-ui/core/Slide';
 
-
 import Typography from '@material-ui/core/Typography';
-import './PlayerBet.css';
 
 
 const mapStateToProps = state => ({
@@ -18,7 +16,7 @@ class PlayerBet extends Component {
   render() {
     return (
         <div>
-          <Slide direction="right" in={this.props.betAmount > 0} mountOnEnter timeout={1000}>
+          <Slide direction="right" in={!this.props.lastAction.player && this.props.lastAction.bet > 0} mountOnEnter timeout={1000}>
             <img src="/images/Table/bet.png" />
           </Slide>
         </div>

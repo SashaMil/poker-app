@@ -150,6 +150,8 @@ class Table extends Component {
                <Pot
                  pot={chips.pot}
                  handleChange={this.handleChange}
+                 lastAction={actions.lastAction}
+                 betAmount={this.state.value}
                />
              </div>
              <div>
