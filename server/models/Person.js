@@ -34,7 +34,7 @@ const Street = new Schema({
 });
 
 const Messages = new Schema({
-  message: String,
+  message: {playerMessage: String, computerMessage: String},
 })
 
 const Hands = new Schema({

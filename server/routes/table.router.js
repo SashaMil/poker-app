@@ -43,31 +43,30 @@ router.put('/shuffle', (req, res) => {
      currentGame.computerCards.push({card1: computerCard1, card2: computerCard2});
 
      currentGame.player_sb = !currentGame.player_sb;
-     let message = '';
+     let playerMessage = '';
+     let computerMessage = '';
 
      if (currentGame.player_sb) {
        console.log('hello');
        currentGame.actions.push({player: true, type: 'SB', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.player_chips -= 5;
-       message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-       currentGame.messages.push({message: message});
+       playerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
        currentGame.actions.push({player: false, type: 'BB', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 10;
-       message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+       computerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
        currentGame.currentBet = 10;
-       currentGame.messages.push({message: message});
+       currentGame.messages.push({message: {playerMessage: playerMessage, computerMessage: computerMessage}});
 
      } else {
        console.log('there');
        currentGame.actions.push({player: false, type: 'SB', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 5;
-       message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-       currentGame.messages.push({message: message});
+       computerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
        currentGame.actions.push({player: true, type: 'BB', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.player_chips -= 10;
        currentGame.currentBet = 10;
-       message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-       currentGame.messages.push({message: message});
+       playerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
+       currentGame.messages.push({message: {playerMessage: playerMessage, computerMessage: computerMessage}});
 
      }
 
@@ -91,10 +90,12 @@ router.get('/gameInfo', (req, res) => {
     if (err) throw err;
     const currentGame = data.games[data.games.length-1];
     const currentStreet = currentGame.street[currentGame.street.length-1];
+    const currentMessage = currentGame.messages[currentGame.messages.length-1];
     let gameInfo = {
       chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
       cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1]},
       actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
+      message: currentMessage
     }
     console.log(gameInfo);
     res.send(gameInfo);

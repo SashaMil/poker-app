@@ -4,6 +4,7 @@ import { TABLE_ACTIONS } from '../actions/tableActions';
 let initialActionsState = {lastAction: {}, playerSB: false,}
 let initialCardsState = {playerCard1: '', playerCard2: '', dealPlayerHand: false, dealComputerHand: false, showComputerHand: true, flop: [], turn: '', river: ''};
 let initialChipsState = {playerChips: 0, computerChips: 0, pot: 0};
+let initialMessagesState = {playerMessage: '', computerMessage: ''};
 
 const actions = (state = initialActionsState, action) => {
   switch (action.type) {
@@ -72,8 +73,34 @@ const chips = (state = initialChipsState, action) => {
   }
 }
 
+const messages = (state = initialMessagesState, action) => {
+  switch(action.type) {
+    case TABLE_ACTIONS.SET_PLAYER_MESSAGE:
+      return {
+        ... state,
+        playerMessage: action.payload.playerMessage,
+        computerMessage: '',
+      }
+    case TABLE_ACTIONS.SET_COMPUTER_MESSAGE:
+      return {
+        ... state,
+        computerMessage: action.payload.computerMessage,
+        playerMessage: '',
+      }
+    case TABLE_ACTIONS.SET_NEW_HAND_MESSAGES:
+     return {
+       ... state,
+       computerMessage: action.payload.computerMessage,
+       playerMessage: action.payload.playerMessage,
+     }
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   chips,
   cards,
   actions,
+  messages,
 });

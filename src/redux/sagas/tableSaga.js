@@ -27,6 +27,10 @@ function* checkGameStatus() {
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     yield put({
+      type: TABLE_ACTIONS.SET_NEW_HAND_MESSAGES,
+      payload: gameInfo.message.message,
+    });
+    yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     });
@@ -48,7 +52,7 @@ function* computerDecision() {
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
-    })
+    });
     if (gameInfo.actions.lastAction.type === 'FOLD') {
       yield shuffleRequest();
       gameInfo = yield getGameInfoRequest();
