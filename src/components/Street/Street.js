@@ -19,19 +19,19 @@ class Street extends Component {
         {this.props.street ? (
           <div>
             <Slide direction="right" in={this.props.street[0] !== undefined} mountOnEnter unmountOnExit>
-              <img width='120px' src={`images/Cards/${this.props.street[0]}.png`} />
+              <img width='80px' src={`images/Cards/${this.props.street[0]}.png`} />
             </Slide>
             <Slide direction="right" in={this.props.street[1] !== undefined} mountOnEnter unmountOnExit>
-              <img width='120px' src={`images/Cards/${this.props.street[1]}.png`} />
+              <img width='80px' src={`images/Cards/${this.props.street[1]}.png`} />
             </Slide>
             <Slide direction="right" in={this.props.street[2] !== undefined} mountOnEnter unmountOnExit>
-              <img width='120px' src={`images/Cards/${this.props.street[2]}.png`} />
+              <img width='80px' src={`images/Cards/${this.props.street[2]}.png`} />
             </Slide>
             <Slide direction="right" in={this.props.street[3] !== undefined} mountOnEnter unmountOnExit>
-              <img width='120px' src={`images/Cards/${this.props.street[3]}.png`} />
+              <img width='80px' src={`images/Cards/${this.props.street[3]}.png`} />
             </Slide>
             <Slide direction="right" in={this.props.street[4] !== undefined} mountOnEnter unmountOnExit>
-              <img width='120px' src={`images/Cards/${this.props.street[4]}.png`} />
+              <img width='80px' src={`images/Cards/${this.props.street[4]}.png`} />
             </Slide>
           </div>
         ) : (

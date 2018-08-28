@@ -14,10 +14,10 @@ class PlayerHand extends Component {
   render() {
     return (
         <div>
-          <Slide direction="right" in={this.props.cards.card1 !== undefined} mountOnEnter unmountOnExit>
+          <Slide direction="right" in={this.props.dealPlayerHand}>
             <img width='80px' src={`images/Cards/${this.props.cards.card1}.png`} />
           </Slide>
-          <Slide direction="right" in={this.props.cards.card1 !== undefined} mountOnEnter unmountOnExit>
+          <Slide direction="right" in={this.props.dealPlayerHand}>
             <img width='80px' src={`images/Cards/${this.props.cards.card2}.png`} />
           </Slide>
         </div>

@@ -6,6 +6,8 @@ import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
 import { computerDecision } from '../../redux/actions/tableActions';
 import Slider from '@material-ui/lab/Slider';
+import Typography from '@material-ui/core/Typography';
+
 
 import './Controller.css';
 
@@ -55,7 +57,7 @@ class Controller extends Component {
         <div>
           <Slider value={this.props.value} min={10} max={2000} step={5} onChange={(event, value) => this.props.handleChange(event,value)} />
         </div>
-        <h3 className="controllerH3">{'Current Player Bet ' + this.props.value}</h3>
+        <Typography variant="headline" style={{ color: 'white' }}>Current Player Bet: {this.props.value}</Typography>
 
       </div>
     )

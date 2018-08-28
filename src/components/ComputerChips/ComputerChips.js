@@ -17,7 +17,8 @@ class ComputerChips extends Component {
   render() {
     return (
       <div>
-        <Typography variant="headline" style={{ color: 'white' }}>Computer Chips: {this.props.chips}</Typography>
+        <Typography variant="headline" style={{ color: 'white' }}>{this.props.chips}</Typography>
+        <img src="/images/Table/chipStack.png" />
       </div>
     )
   }

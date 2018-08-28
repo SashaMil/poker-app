@@ -40,10 +40,13 @@ class Table extends Component {
   state = {
     value: 0,
     pot: null,
-    showComputerCards: false,
-    foldComputerCards: false,
-    showPlayerCards: false,
-    foldPlayerCards: false,
+    showComputerHand: false,
+    dealComputerHand: false,
+    foldComputerHand: false,
+    dealPlayerHand: false,
+    foldPlayerHand: false,
+    showComputerAction: false,
+    showPlayerPrompt: false,
     alertOpen: false,
     historyOpen: false,
   };
@@ -98,14 +101,6 @@ class Table extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.table.state !== prevProps.table.state) {
-      this.setState({
-        showPlayerCards: true,
-      });
-    }
-  }
-
   componentDidMount = () => {
     this.props.dispatch(checkGameStatus());
   }
@@ -116,94 +111,95 @@ class Table extends Component {
     const redux = this.props.table.state;
 
     return (
-        <div>
-          <div>
-            {this.state.showPlayerCards ? (
-              <div className="grid">
-                <div>
-                  <ComputerChips
-                    chips={redux.computerChips}
-                  />
-                </div>
-                <div>
-                  <ComputerHand
-                    showCards={this.state.showComputerCards}
-                  />
-                </div>
-                <div>
-                  {!redux.actions.player ? (
-                    <ComputerAction
-                      message={redux.messages}
-                    />
-                    ) : (
-                      null
-                    )
-                  }
-                </div>
-                <div>
-                  <Deck
-                  />
-                </div>
-                <div>
-                  <Street
-                    street={redux.street}
-                    currentAction={redux.actions}
-                  />
-                </div>
-                <div>
-                  <Pot
-                    pot={redux.pot}
-                    handleChange={this.handleChange}
-                  />
-                </div>
-                <div>
-                  <div>
-                    <PlayerChips
-                      chips={redux.playerChips}
-                    />
-                  </div>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <div>
-                    <PlayerPrompt
-                    />
-                  </div>
-                </div>
-                <div>
-                  <PlayerHand
-                    cards={redux.playerCards}
-                    showCards={this.state.showPlayerCards}
-                  />
-                </div>
-                <div>
-                  <Controller
-                    value={this.state.value}
-                    currentAction={redux.actions}
-                    playerSb={redux.player_sb}
-                    handleChange={this.handleChange}
-                    fold={this.fold}
-                    call={this.call}
-                    raise={this.raise}
-                    check={this.check}
-                    bet={this.bet}
-                  />
-                </div>
-                <div>
-                </div>
-                <div>
-                  <Alerts
-                    open={this.state.alertOpen}
-                    handleClose={this.alertClose}
-                  />
-                </div>
-              </div>
-            ) : (
-              null
-            )
-          }
-          </div>
-        </div>
+      <div>
+       <div>
+         {redux ? (
+           <div className="grid">
+             <div>
+               <ComputerChips
+                 chips={redux.computerChips}
+               />
+             </div>
+             <div>
+               <ComputerHand
+                 showCards={this.state.showComputerHand}
+               />
+             </div>
+             <div>
+               {!redux.actions.player ? (
+                 <ComputerAction
+                   message={redux.messages}
+                 />
+                 ) : (
+                   null
+                 )
+               }
+             </div>
+             <div>
+               <Deck
+               />
+             </div>
+             <div>
+               <Street
+                 street={redux.street}
+                 currentAction={redux.actions}
+               />
+             </div>
+             <div>
+               <Pot
+                 pot={redux.pot}
+                 handleChange={this.handleChange}
+               />
+             </div>
+             <div>
+               <PlayerChips
+                 chips={redux.playerChips}
+               />
+             </div>
+             <div>
+               <div>
+                 <PlayerHand
+                   cards={redux.playerCards}
+                   dealPlayerHand={this.state.dealPlayerHand}
+                   foldPlayerHand={this.state.foldPlayerHand}
+                 />
+                 <br></br>
+                 <br></br>
+                 <br></br>
+                 <div>
+                   <PlayerPrompt
+                   />
+                 </div>
+               </div>
+             </div>
+             <div>
+               <Controller
+                 value={this.state.value}
+                 currentAction={redux.actions}
+                 playerSb={redux.player_sb}
+                 handleChange={this.handleChange}
+                 fold={this.fold}
+                 call={this.call}
+                 raise={this.raise}
+                 check={this.check}
+                 bet={this.bet}
+               />
+             </div>
+             <div>
+             </div>
+             <div>
+               <Alerts
+                 open={this.state.alertOpen}
+                 handleClose={this.alertClose}
+               />
+             </div>
+           </div>
+         ) : (
+           null
+         )
+       }
+       </div>
+     </div>
     )
   }
 }

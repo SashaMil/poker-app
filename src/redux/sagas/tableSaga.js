@@ -23,7 +23,6 @@ let handHistory = '';
 function* checkGameStatus() {
   try {
     yield checkGameStatusRequest();
-    console.log('dinosaur');
     yield shuffleRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);

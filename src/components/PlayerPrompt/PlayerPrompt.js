@@ -14,7 +14,7 @@ class ComputerBet extends Component {
   render() {
     return (
         <div>
-          <Typography variant="headline" style={{ color: 'white' }}>Player Action Message</Typography>
+          <Typography variant="headline" style={{ color: 'white' }}>Player Action Prompt</Typography>
         </div>
     )
   }

@@ -4,6 +4,7 @@ import { compose } from 'redux';
 
 import Deck from '../Deck/Deck';
 
+import Typography from '@material-ui/core/Typography';
 import './Pot.css';
 
 
@@ -17,7 +18,7 @@ class Pot extends Component {
   render() {
     return (
         <div>
-          <h2 className="potH2">{'Pot ' + this.props.pot}</h2>
+          <Typography variant="headline" style={{ color: 'white' }}>Pot: {this.props.pot}</Typography>
         </div>
     )
   }

@@ -4,6 +4,7 @@ import { compose } from 'redux';
 
 import Deck from '../Deck/Deck';
 
+import Typography from '@material-ui/core/Typography';
 import './PlayerBet.css';
 
 
@@ -19,7 +20,7 @@ class PlayerBet extends Component {
         <div>
         {this.props.bet.player ? (
           <div>
-            <h3 className="playerBetH3">{this.props.bet}</h3>
+            <Typography variant="headline" style={{ color: 'white' }}>Current Player Bet: {this.props.bet}</Typography>
           </div>
         ) : (
           null

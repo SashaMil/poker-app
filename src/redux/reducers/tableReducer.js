@@ -5,6 +5,7 @@ const table = (state = {}, action) => {
   switch (action.type) {
     case TABLE_ACTIONS.SET_GAME:
       return {
+        ... state,
         state: action.payload,
       }
     default:

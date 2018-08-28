@@ -16,8 +16,9 @@ class PlayerChips extends Component {
 
   render() {
     return (
-      <div>
-        <Typography variant="headline" style={{ color: 'white' }}>Player Chips: {this.props.chips}</Typography>
+      <div className="">
+        <Typography variant="headline" style={{ color: 'white' }}>{this.props.chips}</Typography>
+        <img src="/images/Table/chipStack.png" />
       </div>
     )
   }
