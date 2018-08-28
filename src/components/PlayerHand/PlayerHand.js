@@ -27,8 +27,7 @@ class PlayerHand extends Component {
 
 Slide.defaultProps = {
   timeout: {
-    enter: 1000,
-    exit: 1000,
+    enter: 4000,
   },
 };
 

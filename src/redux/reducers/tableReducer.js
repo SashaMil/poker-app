@@ -13,6 +13,12 @@ const actions = (state = initialActionsState, action) => {
         lastAction: action.payload.actions.lastAction,
         playerButton: action.payload.actions.playerButton,
       }
+    case TABLE_ACTIONS.SET_ACTIONS:
+     return {
+       ... state,
+       lastAction: action.payload.lastAction,
+       playerButton: action.payload.playerButton,
+     }
     default:
       return state;
   }
@@ -33,6 +39,8 @@ const cards = (state = initialCardsState, action) => {
       return {
         ... state,
         dealPlayerHand: false,
+        playerCard1: 'purple_back',
+        playerCard2: 'purple_back',
       }
     default:
       return state;
@@ -48,6 +56,13 @@ const chips = (state = initialChipsState, action) => {
        computerChips: action.payload.chips.computerChips,
        pot: action.payload.chips.pot,
      }
+    case TABLE_ACTIONS.SET_CHIPS:
+      return {
+        ... state,
+        playerChips: action.payload.playerChips,
+        computerChips: action.payload.computerChips,
+        pot: action.payload.pot,
+      }
     default:
       return state;
   }

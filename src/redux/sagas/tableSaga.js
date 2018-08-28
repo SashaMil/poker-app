@@ -73,13 +73,17 @@ function* playerFold() {
     yield put({
       type: TABLE_ACTIONS.FOLD_PLAYER_HAND,
     })
-    yield new Promise(resolve => setTimeout(resolve, 2000));
+    yield new Promise(resolve => setTimeout(resolve, 1000));
     yield playerFoldRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     yield put({
-      type: TABLE_ACTIONS.SET_GAME,
-      payload: gameInfo,
+      type: TABLE_ACTIONS.SET_CHIPS,
+      payload: gameInfo.chips,
+    })
+    yield put({
+      type: TABLE_ACTIONS.SET_ACTIONS,
+      payload: gameInfo.actions,
     })
     yield shuffleRequest();
     gameInfo = yield getGameInfoRequest();
