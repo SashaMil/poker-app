@@ -73,7 +73,6 @@ function* playerFold() {
     yield put({
       type: TABLE_ACTIONS.FOLD_PLAYER_HAND,
     })
-    yield new Promise(resolve => setTimeout(resolve, 1000));
     yield playerFoldRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);

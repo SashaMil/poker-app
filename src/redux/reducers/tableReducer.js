@@ -39,6 +39,8 @@ const cards = (state = initialCardsState, action) => {
       return {
         ... state,
         dealPlayerHand: false,
+        dealComputerHand: false,
+        playerFoldFirst: true,
         playerCard1: 'purple_back',
         playerCard2: 'purple_back',
       }
