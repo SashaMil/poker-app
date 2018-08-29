@@ -9,15 +9,15 @@ const mapStateToProps = state => ({
   table: state.table,
 });
 
-class ComputerBet extends Component {
+class PlayerAction extends Component {
 
   render() {
     return (
         <div>
-          <Typography variant="headline" style={{ color: 'white' }}>Player Action Prompt</Typography>
+          <Typography variant="subheading" style={{ color: 'white' }}>{this.props.playerMessage}</Typography>
         </div>
     )
   }
 }
 
-export default compose(connect(mapStateToProps))(ComputerBet);
+export default compose(connect(mapStateToProps))(PlayerAction);

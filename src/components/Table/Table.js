@@ -16,7 +16,7 @@ import Alerts from '../Alerts/Alerts';
 import PlayerHandRanking from '../PlayerHandRanking/PlayerHandRanking';
 import Button from '@material-ui/core/Button';
 import ComputerAction from '../ComputerAction/ComputerAction';
-import PlayerPrompt from '../PlayerPrompt/PlayerPrompt';
+import PlayerAction from '../PlayerAction/PlayerAction';
 
 import './Table.css';
 import Paper from '@material-ui/core/Paper';
@@ -108,6 +108,7 @@ class Table extends Component {
     const actions = this.props.table.actions;
     const cards = this.props.table.cards;
     const chips = this.props.table.chips;
+    const messages = this.props.table.messages;
 
     return (
       <div>
@@ -127,13 +128,9 @@ class Table extends Component {
                />
              </div>
              <div>
-               {actions.lastAction.player ? (
-                 <ComputerAction
-                 />
-                 ) : (
-                   null
-                 )
-               }
+               <ComputerAction
+                 computerMessage={messages.computerMessage}
+                />
              </div>
              <div>
                <Deck
@@ -171,7 +168,8 @@ class Table extends Component {
                  <br></br>
                  <br></br>
                  <div>
-                   <PlayerPrompt
+                   <PlayerAction
+                     playerMessage={messages.playerMessage}
                    />
                  </div>
                </div>

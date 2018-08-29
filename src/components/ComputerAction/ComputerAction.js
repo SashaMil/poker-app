@@ -14,7 +14,7 @@ class ComputerBet extends Component {
   render() {
     return (
         <div>
-          <Typography variant="headline" style={{ color: 'white' }}>Computer Action Message</Typography>
+          <Typography variant="subheading" style={{ color: 'white' }}>{this.props.computerMessage}</Typography>
         </div>
     )
   }

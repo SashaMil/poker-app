@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
   table: state.table,
 });
 
-class PlayerBet extends Component {
+class ComputerBet extends Component {
 
   render() {
     return (
@@ -24,4 +24,4 @@ class PlayerBet extends Component {
   }
 }
 
-export default compose(connect(mapStateToProps))(PlayerBet);
+export default compose(connect(mapStateToProps))(ComputerBet);
