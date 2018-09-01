@@ -45,10 +45,15 @@ function* checkGameStatus() {
 
 function* computerDecision() {
   try {
+    yield new Promise(resolve => setTimeout(resolve, 1000));
     yield computerDecisionRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     console.log(`Computer ${gameInfo.actions.lastAction.type}`);
+    yield put({
+      type: TABLE_ACTIONS.SET_COMPUTER_MESSAGE,
+      payload: gameInfo.message.message,
+    })
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
@@ -82,6 +87,10 @@ function* playerFold() {
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     yield put({
+      type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
+      payload: gameInfo.message.message,
+    })
+    yield put({
       type: TABLE_ACTIONS.SET_CHIPS,
       payload: gameInfo.chips,
     })
@@ -89,6 +98,7 @@ function* playerFold() {
       type: TABLE_ACTIONS.SET_ACTIONS,
       payload: gameInfo.actions,
     })
+    yield new Promise(resolve => setTimeout(resolve, 2000));
     yield shuffleRequest();
     gameInfo = yield getGameInfoRequest();
     yield put({
@@ -109,6 +119,10 @@ function* playerCall() {
     yield playerCallRequest();
     gameInfo = yield getGameInfoRequest();
     yield put({
+      type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
+      payload: gameInfo.message.message,
+    });
+    yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
@@ -128,7 +142,10 @@ function* playerCheck() {
   try {
     yield playerCheckRequest();
     gameInfo = yield getGameInfoRequest();
-    console.log(gameInfo);
+    yield put({
+      type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
+      payload: gameInfo.message.message,
+    });
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
@@ -150,7 +167,10 @@ function* playerBet(action) {
     console.log(action);
     yield playerBetRequest(action.betSize);
     gameInfo = yield getGameInfoRequest();
-    console.log(gameInfo);
+    yield put({
+      type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
+      payload: gameInfo.message.message,
+    });
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
@@ -167,7 +187,10 @@ function* playerRaise(action) {
     console.log(action);
     yield playerBetRequest(action.betSize);
     gameInfo = yield getGameInfoRequest();
-    console.log(gameInfo);
+    yield put({
+      type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
+      payload: gameInfo.message.message,
+    });
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,

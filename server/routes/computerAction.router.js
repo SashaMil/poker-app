@@ -67,7 +67,7 @@ router.post('/', (req, res) => {
 
     console.log(playerAction);
     const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-    currentGame.messages.push({message: message})
+    currentGame.messages.push({message: {computerMessage: message}})
 
     data.save(function(err) {
       if (err) throw err;

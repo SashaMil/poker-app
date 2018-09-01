@@ -16,7 +16,7 @@ router.post('/fold', (req, res) => {
    currentGame.computer_chips += currentGame.pot;
    currentGame.pot = 0;
    const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   currentGame.messages.push({message: message});
+   currentGame.messages.push({message: {playerMessage: message}});
    data.save(function(err) {
      if (err) throw err;
      res.send('Added new game Array');
@@ -62,7 +62,7 @@ router.post('/call', (req, res) => {
     });
 
     const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-    currentGame.messages.push({message: message})
+    currentGame.messages.push({message: {playerMessage: message}})
 
     data.save(function(err) {
       if (err) throw err;
@@ -111,7 +111,7 @@ router.post('/check', (req, res) => {
    });
 
    const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   currentGame.messages.push({message: message});
+   currentGame.messages.push({message: {playerMessage: message}});
 
    data.save(function(err) {
      if (err) throw err;
@@ -139,7 +139,7 @@ router.post('/bet', (req, res) => {
    });
 
    const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   currentGame.messages.push({message: message});
+   currentGame.messages.push({message: {playerMessage: message}});
 
    data.save(function(err) {
      if (err) throw err;
@@ -167,7 +167,7 @@ router.post('/raise', (req, res) => {
    });
 
    const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   currentGame.messages.push({message: message});
+   currentGame.messages.push({message: {playerMessage: message}});
 
    data.save(function(err) {
      if (err) throw err;
