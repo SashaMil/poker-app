@@ -74,6 +74,7 @@ router.put('/shuffle', (req, res) => {
 
      currentGame.pot = 0;
      currentGame.pot += 15;
+     currentGame.current_hand_completed = false;
 
      data.save(function(err) {
        if (err) throw err;
@@ -95,7 +96,7 @@ router.get('/gameInfo', (req, res) => {
       chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
       cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1]},
       actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
-      message: currentMessage
+      message: currentMessage,
     }
     console.log(gameInfo);
     res.send(gameInfo);
@@ -143,7 +144,7 @@ router.get('/street', (req, res) => {
 
       if (currentGame.player_sb) {
         currentGame.actions.push({type: 'turnSB', player: true, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'turn', next_street: false, player_best_five_cards: playerBestFiveCards[1], player_best_five_cards_value: playerBestFiveCards[0], computer_best_five_cards: bestFiveComputerCards[1], computer_best_five_cards_value: bestFiveComputerCards[0] });
-        currentGame.actions.push({type: 'flopBB', player: false, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'turn', next_street: false, player_best_five_cards: playerBestFiveCards[1], player_best_five_cards_value: playerBestFiveCards[0], computer_best_five_cards: bestFiveComputerCards[1], computer_best_five_cards_value: bestFiveComputerCards[0] });
+        currentGame.actions.push({type: 'turnBB', player: false, bet: 0, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'turn', next_street: false, player_best_five_cards: playerBestFiveCards[1], player_best_five_cards_value: playerBestFiveCards[0], computer_best_five_cards: bestFiveComputerCards[1], computer_best_five_cards_value: bestFiveComputerCards[0] });
       }
       else {
         currentGame.actions.push({type: 'turnBB', player: true, bet: 0, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'turn', next_street: false, player_best_five_cards: playerBestFiveCards[1], player_best_five_cards_value: playerBestFiveCards[0], computer_best_five_cards: bestFiveComputerCards[1], computer_best_five_cards_value: bestFiveComputerCards[0] });
@@ -191,13 +192,12 @@ router.get('/street', (req, res) => {
       bestFiveComputerCards = postFlopEvaluation([currentGame.computerCards[currentGame.computerCards.length-1].card1, currentGame.computerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river]);
       console.log(playerBestFiveCards);
       console.log(bestFiveComputerCards);
+
       if (evaluateShowdown(currentPlayerCard.card1, currentPlayerCard.card2, currentComputerCard.card1, playerBestFiveCards[0], bestFiveComputerCards[0], currentGame.street[currentGame.street.length-1])) {
         currentGame.player_chips += currentGame.pot;
         currentGame.messages.push({message: { playerMessage: `Player wins ${currentGame.pot}`}});
         gameInfo = {
-          cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], computerCards: currentGame.computerCards[currentGame.computerCards.length-1]},
-          message: {playerHandValue: playerBestFiveCards[1], playerMessage: `Player wins ${currentGame.pot}`},
-
+          message: {playerHandValue: `Player wins ${currentGame.pot}`},
           currentHandCompleted: true,
         }
         currentGame.pot = 0;
@@ -206,10 +206,7 @@ router.get('/street', (req, res) => {
         currentGame.computer_chips += currentGame.pot;
         currentGame.messages.push({ message: {computerMessage: `Computer wins ${currentGame.pot}`}})
         gameInfo = {
-          chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
-          cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], computerCards: currentGame.computerCards[currentGame.computerCards.length-1]},
-          actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
-          message: {playerHandValue: playerBestFiveCards[1], playerMessage: `ComputerWins ${currentGame.pot}`},
+          message: {playerHandValue: `ComputerWins ${currentGame.pot}`},
           currentHandCompleted: true,
         }
         currentGame.pot = 0;
@@ -242,7 +239,6 @@ router.post('/checkGameStatus', (req, res) => {
         player_chips: 1500,
         computer_chips: 1500,
         pot: 0,
-        game_completed: false,
         message: message,
       });
       data.save(function(err) {

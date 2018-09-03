@@ -51,16 +51,9 @@ const cards = (state = initialCardsState, action) => {
         playerCard1: 'purple_back',
         playerCard2: 'purple_back',
       }
-    case TABLE_ACTIONS.SHOWDOWN:
-      return {
-        ... state,
-        showComputerHand: true,
-        computerCard1: action.payload.cards.computerCards.card1,
-        computerCard2: action.payload.cards.computerCards.card2,
-        flop: action.payload.cards.flop,
-        turn: action.payload.cards.turn,
-        river: action.payload.cards.river,
-      }
+    case TABLE_ACTIONS.NEW_HAND:
+      state = initialCardsState;
+
     default:
       return state;
   }
@@ -81,6 +74,11 @@ const chips = (state = initialChipsState, action) => {
         playerChips: action.payload.playerChips,
         computerChips: action.payload.computerChips,
         pot: action.payload.pot,
+      }
+    case TABLE_ACTIONS.NEW_HAND:
+      return {
+        ... state,
+        pot: 0,
       }
     default:
       return state;
@@ -112,6 +110,8 @@ const messages = (state = initialMessagesState, action) => {
        ... state,
        playerHandValue: action.payload.playerHandValue,
      }
+    case TABLE_ACTIONS.NEW_HAND:
+      state = initialMessagesState;
     default:
       return state;
   }

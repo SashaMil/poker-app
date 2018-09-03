@@ -214,9 +214,11 @@ function* getStreet() {
       type: TABLE_ACTIONS.SET_PLAYER_HAND_VALUE,
       payload: street.message,
     })
-    console.log('Getting Street');
     yield new Promise(resolve => setTimeout(resolve, 2000));
-    if (gameInfo.currentHandCompleted) {
+    if (street.currentHandCompleted) {
+      yield put({
+        type: TABLE_ACTIONS.NEW_HAND,
+      })
       yield checkGameStatus();
     }
     if (gameInfo.actions.playerButton) {
