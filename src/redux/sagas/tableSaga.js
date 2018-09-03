@@ -34,7 +34,7 @@ function* checkGameStatus() {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     });
-    if (!gameInfo.actions.player_act_next) {
+    if (!gameInfo.actions.playerButton) {
       yield computerDecision();
     }
   }
@@ -218,6 +218,9 @@ function* getStreet() {
     yield new Promise(resolve => setTimeout(resolve, 2000));
     if (gameInfo.currentHandCompleted) {
       yield checkGameStatus();
+    }
+    if (gameInfo.actions.playerButton) {
+      yield computerDecision();
     }
   }
   catch (error) {

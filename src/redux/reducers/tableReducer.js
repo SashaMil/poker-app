@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { TABLE_ACTIONS } from '../actions/tableActions';
 
-let initialActionsState = {lastAction: {}, playerSB: false,}
+let initialActionsState = {lastAction: {}, playerButton: null}
 let initialCardsState = {playerCard1: '', playerCard2: '', computerCard1: '', computerCard2: '', dealPlayerHand: false, dealComputerHand: false, showComputerHand: true, flop: [], turn: '', river: ''};
 let initialChipsState = {playerChips: 0, computerChips: 0, pot: 0};
 let initialMessagesState = {playerMessage: '', computerMessage: '', playerHandValue: ''};

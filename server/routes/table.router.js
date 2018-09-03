@@ -109,6 +109,9 @@ router.get('/street', (req, res) => {
     const currentGame = data.games[data.games.length-1];
     const currentAction = currentGame.actions[currentGame.actions.length - 1];
     const currentStreet = currentGame.street[currentGame.street.length-1];
+    console.log('dinosaur bones', currentAction);
+    console.log(currentStreet);
+    console.log('howdy', currentAction.street);
     let gameInfo = '';
     let playerBestFiveCards = '';
     let bestFiveComputerCards = '';
