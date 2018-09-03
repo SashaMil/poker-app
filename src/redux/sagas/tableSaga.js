@@ -206,11 +206,19 @@ function* getStreet() {
   try {
     gameInfo = yield getStreetRequest();
     console.log('Getting Street');
+    console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
-    if (gameInfo.current_hand_completed) {
+    if (gameInfo.message) {
+      yield put ({
+        type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
+        payload: gameInfo.message,
+      })
+    }
+    yield new Promise(resolve => setTimeout(resolve, 2000));
+    if (gameInfo.currentHandCompleted) {
       yield checkGameStatus();
     }
   }

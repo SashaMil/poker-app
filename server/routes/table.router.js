@@ -184,39 +184,38 @@ router.get('/street', (req, res) => {
     }
     else if (currentAction.street === 'river') {
       const currentPlayerCard = currentGame.playerCards[currentGame.playerCards.length-1];
-      const currentComputerCard = currentGame.computerCards[currentGame.computerCards.length-1]
+      const currentComputerCard = currentGame.computerCards[currentGame.computerCards.length-1];
+      const currentMessage = currentGame.messages[currentGame.messages.length-1];
+      console.log('look here', currentMessage);
       bestFiveCards = postFlopEvaluation([currentGame.playerCards[currentGame.playerCards.length-1].card1, currentGame.playerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river]);
       bestFiveComputerCards = postFlopEvaluation([currentGame.computerCards[currentGame.computerCards.length-1].card1, currentGame.computerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river]);
       console.log(bestFiveCards);
       console.log(bestFiveComputerCards);
       if (evaluateShowdown(currentPlayerCard.card1, currentPlayerCard.card2, currentComputerCard.card1, bestFiveCards[0], bestFiveComputerCards[0], currentGame.street[currentGame.street.length-1])) {
         currentGame.player_chips += currentGame.pot;
-        currentGame.messages.push({ message: `Player wins ${currentGame.pot}`})
+        currentGame.messages.push({message: { playerMessage: `Player wins ${currentGame.pot}`}});
         gameInfo = {
-          player_sb: currentGame.player_sb,
-          playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
-          current_hand_completed: true,
-          actions: currentGame.actions[currentGame.actions.length - 1],
-          message: currentGame.messages,
-          pot: currentGame.pot,
-          street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river],
+          chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
+          cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], computerCards: currentGame.computerCards[currentGame.computerCards.length-1]},
+          actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
+          message: { playerMessage: `Player wins ${currentGame.pot}`},
+          currentHandCompleted: true,
         }
         currentGame.pot = 0;
       }
       else {
         currentGame.computer_chips += currentGame.pot;
-        currentGame.messages.push({ message: `Computer wins ${currentGame.pot}`})
+        currentGame.messages.push({ message: {computerMessage: `Computer wins ${currentGame.pot}`}})
         gameInfo = {
-          player_sb: currentGame.player_sb,
-          playerCards: currentGame.playerCards[currentGame.playerCards.length-1],
-          actions: currentGame.actions[currentGame.actions.length - 1],
-          current_hand_completed: true,
-          message: currentGame.messages,
-          pot: currentGame.pot,
-          street: [currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river],
+          chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
+          cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1], computerCards: currentGame.computerCards[currentGame.computerCards.length-1]},
+          actions: {lastAction: currentGame.actions[currentGame.actions.length - 1], playerButton: currentGame.player_sb},
+          message: {playerMessage: `Computer wins ${currentGame.pot}`},
+          currentHandCompleted: true,
         }
         currentGame.pot = 0;
       }
+      currentGame.current_hand_completed = true;
       data.save(function(err) {
         if (err) throw err;
         res.send(gameInfo);

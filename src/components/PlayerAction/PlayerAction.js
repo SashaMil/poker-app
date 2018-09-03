@@ -11,6 +11,10 @@ const mapStateToProps = state => ({
 
 class PlayerAction extends Component {
 
+  componentDidUpdate() {
+    console.log(this.props.playerMessage);
+  }
+
   render() {
     return (
         <div>
