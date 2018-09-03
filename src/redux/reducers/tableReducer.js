@@ -4,7 +4,7 @@ import { TABLE_ACTIONS } from '../actions/tableActions';
 let initialActionsState = {lastAction: {}, playerSB: false,}
 let initialCardsState = {playerCard1: '', playerCard2: '', computerCard1: '', computerCard2: '', dealPlayerHand: false, dealComputerHand: false, showComputerHand: true, flop: [], turn: '', river: ''};
 let initialChipsState = {playerChips: 0, computerChips: 0, pot: 0};
-let initialMessagesState = {playerMessage: '', computerMessage: ''};
+let initialMessagesState = {playerMessage: '', computerMessage: '', playerHandValue: ''};
 
 const actions = (state = initialActionsState, action) => {
   switch (action.type) {
@@ -34,9 +34,13 @@ const cards = (state = initialCardsState, action) => {
         playerCard2: action.payload.cards.playerCards.card2,
         dealPlayerHand: true,
         dealComputerHand: true,
-        flop: action.payload.cards.flop ? action.payload.cards.flop : state.flop,
-        turn: action.payload.cards.turn ? action.payload.cards.turn : state.turn,
-        river: action.payload.cards.river ? action.payload.cards.river : state.river,
+      }
+    case TABLE_ACTIONS.SET_STREET:
+      return {
+        ... state,
+        flop: action.payload.flop ? action.payload.flop : state.flop,
+        turn: action.payload.turn ? action.payload.turn : state.turn,
+        river: action.payload.river ? action.payload.river : state.river,
       }
     case TABLE_ACTIONS.FOLD_PLAYER_HAND:
       return {
@@ -102,6 +106,11 @@ const messages = (state = initialMessagesState, action) => {
        ... state,
        computerMessage: action.payload.computerMessage,
        playerMessage: action.payload.playerMessage,
+     }
+    case TABLE_ACTIONS.SET_PLAYER_HAND_VALUE:
+     return {
+       ... state,
+       playerHandValue: action.payload.playerHandValue,
      }
     default:
       return state;

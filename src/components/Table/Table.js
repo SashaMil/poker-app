@@ -142,6 +142,7 @@ class Table extends Component {
                  turn={cards.turn}
                  river={cards.river}
                  currentAction={actions.lastAction}
+                 playerHandValue={messages.playerHandValue}
                />
              </div>
              <div>

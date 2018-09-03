@@ -204,19 +204,17 @@ function* playerRaise(action) {
 
 function* getStreet() {
   try {
-    gameInfo = yield getStreetRequest();
-    console.log('Getting Street');
-    console.log(gameInfo);
+    street = yield getStreetRequest();
+    console.log('street', street);
     yield put({
-      type: TABLE_ACTIONS.SET_GAME,
-      payload: gameInfo,
+      type: TABLE_ACTIONS.SET_STREET,
+      payload: street.cards,
     })
-    if (gameInfo.message) {
-      yield put ({
-        type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
-        payload: gameInfo.message,
-      })
-    }
+    yield put ({
+      type: TABLE_ACTIONS.SET_PLAYER_HAND_VALUE,
+      payload: street.message,
+    })
+    console.log('Getting Street');
     yield new Promise(resolve => setTimeout(resolve, 2000));
     if (gameInfo.currentHandCompleted) {
       yield checkGameStatus();

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Slide from '@material-ui/core/Slide';
+import Typography from '@material-ui/core/Typography';
 
 class Street extends Component {
 
@@ -21,6 +22,7 @@ class Street extends Component {
         <Slide direction="right" in={this.props.river !== ''} mountOnEnter unmountOnExit>
           <img width='80px' src={`images/Cards/${this.props.river}.png`} />
         </Slide>
+        <Typography variant="subheading" style={{ color: 'white' }}>{this.props.playerHandValue}</Typography>
       </div>
     )
   }

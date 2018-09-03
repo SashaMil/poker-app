@@ -4,7 +4,9 @@ const postFlopEvaluation = (handAndStreet) => {
   let numberValues = extractNumberValues(handAndStreet);
   let suitValues = extractSuitValues(handAndStreet);
 
-  if (checkForFlush(suitValues, handAndStreet) !== false && checkForStraight(numberValues) !== false) {
+  // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
+  // then works its way down
+  if (!checkForFlush(suitValues, handAndStreet) && !checkForStraight(numberValues)) {
     return [8, 'Straight Flush'];
   }
   else if (checkForPairs(numberValues)[0] === 7) {
@@ -41,6 +43,7 @@ const postFlopEvaluation = (handAndStreet) => {
 
 }
 
+// Helper function to extract just the integer values from an array of cards
 function extractNumberValues(valuesAndSuits) {
   let justValues = [];
   for (card of valuesAndSuits) {

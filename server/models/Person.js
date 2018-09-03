@@ -49,6 +49,7 @@ const Hands = new Schema({
   current_hand_completed: Boolean,
   game_completed: Boolean,
   messages: [Messages],
+  player_won_hand: Boolean,
 });
 
 const PersonSchema = new Schema({
