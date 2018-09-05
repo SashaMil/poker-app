@@ -7,6 +7,13 @@ export function shuffleRequest() {
     .catch((error) => { throw error.response || error; });
 }
 
+export function newGameRequest() {
+  return axios.put('/api/table/newGame', {
+  })
+    .then(response => response.data)
+    .catch((error) => { throw error.response || error; });
+}
+
 export function checkGameStatusRequest() {
   return axios.post('/api/table/checkGameStatus', {
   })

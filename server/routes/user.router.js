@@ -20,8 +20,9 @@ router.post('/register', (req, res, next) => {
 
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
+  const games = [{game_completed: false}];
 
-  const newPerson = new Person({ username, password });
+  const newPerson = new Person({ username, password, games });
   newPerson.save()
     .then(() => { res.sendStatus(201); })
     .catch((err) => { next(err); });

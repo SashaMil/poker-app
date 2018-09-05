@@ -6,9 +6,37 @@ const messageGenerator = require('../modules/messageGenerator.js');
 const postFlopEvaluation = require('../modules/postFlopEvaluation.js');
 const evaluateShowdown = require('../modules/evaluateShowdown')
 
-/**
- * GET route template
- */
+router.post('/checkGameStatus', (req, res) => {
+  Person.findById(req.user._id, function(err, data) {
+    if (err) throw err;
+    const lastGame = data.games[data.games.length-1];
+    if (lastGame.game_completed) {
+      data.games.push({game_completed: false});
+      data.save(function(err) {
+        if (err) throw err;
+        res.send(false);
+      });
+    }
+    else {
+      res.send(true);
+    }
+  })
+});
+
+ router.put('/newGame', (req, res) => {
+   Person.findById(req.user._id, function(err, data) {
+     if (err) throw err;
+     console.log('hello',data.games.hands);
+     const arr = [true, false];
+     let bool = arr[Math.floor(Math.random() * (2))];
+     data.games.hands.push({ player_button: bool, hand_status: 'incomplete' })
+     data.games.hands.actions.push({player_chips: 1500, computer_chips: 1500, pot: 0})
+     res.send('Success');
+   })
+ })
+
+
+
 router.put('/shuffle', (req, res) => {
 
   let deck = new Deck;
@@ -38,27 +66,27 @@ router.put('/shuffle', (req, res) => {
 
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    let currentGame = data.games[data.games.length-1];
-     currentGame.playerCards.push({card1: playerCard1, card2: playerCard2});
-     currentGame.computerCards.push({card1: computerCard1, card2: computerCard2});
+    let currentHand = data.games[data.games.length-1].hands;
+     currentHand.playerCards.card1 = playerCard1;
+     currentHand.playerCards.card2 = playerCard2;
+     currentHand.computerCards.card1 = computerCard1;
+     currentHand.computerCards.card2 = computerCard2;
 
-     currentGame.player_sb = !currentGame.player_sb;
+     currentHand.player_button = !currentHand.player_button;
      let playerMessage = '';
      let computerMessage = '';
 
      if (currentGame.player_sb) {
-       console.log('hello');
-       currentGame.actions.push({player: true, type: 'SB', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
-       currentGame.player_chips -= 5;
+       currentHand.actions.push({player: true, type: 'SB', , street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false });
+       currentHand.actions.player_chips -= 5;
        playerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
        currentGame.actions.push({player: false, type: 'BB', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 10;
        computerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
        currentGame.currentBet = 10;
-       currentGame.messages.push({message: {playerMessage: playerMessage, computerMessage: computerMessage}});
+       currentHand.messages.push({message: {playerMessage: playerMessage, computerMessage: computerMessage}});
 
      } else {
-       console.log('there');
        currentGame.actions.push({player: false, type: 'SB', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
        currentGame.computer_chips -= 5;
        computerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
@@ -227,31 +255,7 @@ router.get('/street', (req, res) => {
 /**
  * POST route template
  */
-router.post('/checkGameStatus', (req, res) => {
-  Person.findById(req.user._id, function(err, data) {
-    if (err) throw err;
-    if (data.games.length === 0 || data.games[data.games.length-1].game_completed) {
-      let arr = [true, false];
-      let bool = arr[Math.floor(Math.random() * (2))];
-      const message = messageGenerator(bool);
-      data.games.push({
-        player_sb: bool,
-        player_chips: 1500,
-        computer_chips: 1500,
-        pot: 0,
-        message: message,
-      });
-      data.save(function(err) {
-        if (err) throw err;
-        res.send('Added new game Array');
-      });
-    }
-    else {
-      res.send('Game still active');
-    }
 
-  })
-});
 
 
 module.exports = router;

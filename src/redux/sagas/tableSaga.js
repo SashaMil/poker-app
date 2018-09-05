@@ -10,8 +10,7 @@ import { playerFoldRequest } from '../requests/tableRequests';
 import { playerCallRequest } from '../requests/tableRequests';
 import { playerCheckRequest } from '../requests/tableRequests';
 import { playerBetRequest } from '../requests/tableRequests';
-import { getHandHistoryRequest } from '../requests/tableRequests';
-import { deleteHandHistoryRequest } from '../requests/tableRequests';
+import { newGameRequest } from '../requests/tableRequests';
 
 
 
@@ -19,24 +18,29 @@ let playerCards = '';
 let gameInfo = '';
 let street = '';
 let handHistory = '';
+let newGame = null;
 
 function* checkGameStatus() {
   try {
-    yield checkGameStatusRequest();
-    yield shuffleRequest();
-    gameInfo = yield getGameInfoRequest();
-    console.log(gameInfo);
-    yield put({
-      type: TABLE_ACTIONS.SET_NEW_HAND_MESSAGES,
-      payload: gameInfo.message.message,
-    });
-    yield put({
-      type: TABLE_ACTIONS.SET_GAME,
-      payload: gameInfo,
-    });
-    if (!gameInfo.actions.playerButton) {
-      yield computerDecision();
+    newGame = yield checkGameStatusRequest();
+    if (newGame) {
+      yield newGameRequest();
     }
+
+    // yield shuffleRequest();
+    // gameInfo = yield getGameInfoRequest();
+    // console.log(gameInfo);
+    // yield put({
+    //   type: TABLE_ACTIONS.SET_NEW_HAND_MESSAGES,
+    //   payload: gameInfo.message.message,
+    // });
+    // yield put({
+    //   type: TABLE_ACTIONS.SET_GAME,
+    //   payload: gameInfo,
+    // });
+    // if (!gameInfo.actions.playerButton) {
+    //   yield computerDecision();
+    // }
   }
   catch (error) {
     console.log('WHOOPS');
