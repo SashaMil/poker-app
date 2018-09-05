@@ -10,29 +10,37 @@ const evaluateShowdown = require('../modules/evaluateShowdown');
 router.post('/checkGameStatus', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
+    // currentGame constant is the last game in game array
     const currentGame = data.games.slice(-1)[0];
-    if (currentGame.game_completed) {
+    // if the current/last game we are checking is complete and/or this is a new account, we will add a new game object to the games array,
+    // otherwise, we will keep playing
+    console.log(data);
+    console.log(data.games.length);
+    if (data.games.length === 0 || currentGame.game_completed) {
       data.games.push({game_completed: false});
-      data.games.hands.push({hand_status: 'incomplete'})
+      console.log('fish');
+      // also adding
       data.save(function(err) {
         if (err) throw err;
         res.send(false);
       });
     }
+    // otherwise, we will resume the previous hand and simply call a get request,
+    // not doing that currently because we need to finish shuffle route,
     else {
+      console.log('tacos');
       res.send(true);
     }
   })
 });
 
+  // New game route which will be called if the previous game has ended/it is a new account
  router.put('/newGame', (req, res) => {
    Person.findById(req.user._id, function(err, data) {
      if (err) throw err;
      const currentGame = data.games.slice(-1)[0];
      currentGame.hands.push({hand_status: 'incomplete'})
      const currentHand = currentGame.hands.slice(-1)[0];
-     console.log(currentGame);
-     console.log(currentHand);
      const arr = [true, false];
      let bool = arr[Math.floor(Math.random() * (2))];
      currentHand.player_button = bool;
@@ -43,64 +51,66 @@ router.post('/checkGameStatus', (req, res) => {
 
 
 
-router.put('/shuffle', (req, res) => {
-
-  let deck = new Deck;
-  deck.shuffle();
-  let playerCard1 = '';
-  let playerCard2 = '';
-  let computerCard1 = '';
-  let computerCard2 = '';
-  let flopCard1 = '';
-  let flopCard2 = '';
-  let flopCard3 = '';
-  let turnCard1 = '';
-  let riverCard1 = '';
-
-  playerCard1 = deck.deal();
-  computerCard1 = deck.deal();
-  playerCard2 = deck.deal();
-  computerCard2 = deck.deal();
-  deck.deal();
-  flopCard1 = deck.deal();
-  flopCard2 = deck.deal();
-  flopCard3 = deck.deal();
-  deck.deal();
-  turnCard1 = deck.deal();
-  deck.deal();
-  riverCard1 = deck.deal();
-
-  Person.findById(req.user._id, function(err, data) {
-    if (err) throw err;
-    let currentHand = data.games[data.games.length-1].hands;
-     currentHand.playerCards.card1 = playerCard1;
-     currentHand.playerCards.card2 = playerCard2;
-     currentHand.computerCards.card1 = computerCard1;
-     currentHand.computerCards.card2 = computerCard2;
-
-     currentHand.player_button = !currentHand.player_button;
-     let playerMessage = '';
-     let computerMessage = '';
-
-     if (currentHand.player_button) {
-       currentHand.actions.push({player: true, type: 'SB', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15 });
-       currentHand.actions.push({player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15});
-
-     } else {
-       currentHand.actions.push({player: false, type: 'SB', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15});
-       currentHand.actions.push({player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15});
-     }
-
-     currentHand.street.push({flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1});
-
-     data.save(function(err) {
-       if (err) throw err;
-       res.send('Shuffled Cards');
-       console.log('Games array updated successfully');
-     });
-  });
-
-});
+// router.put('/shuffle', (req, res) => {
+//
+//   let deck = new Deck;
+//   deck.shuffle();
+//   let playerCard1 = '';
+//   let playerCard2 = '';
+//   let computerCard1 = '';
+//   let computerCard2 = '';
+//   let flopCard1 = '';
+//   let flopCard2 = '';
+//   let flopCard3 = '';
+//   let turnCard1 = '';
+//   let riverCard1 = '';
+//
+//   playerCard1 = deck.deal();
+//   computerCard1 = deck.deal();
+//   playerCard2 = deck.deal();
+//   computerCard2 = deck.deal();
+//   deck.deal();
+//   flopCard1 = deck.deal();
+//   flopCard2 = deck.deal();
+//   flopCard3 = deck.deal();
+//   deck.deal();
+//   turnCard1 = deck.deal();
+//   deck.deal();
+//   riverCard1 = deck.deal();
+//
+//   Person.findById(req.user._id, function(err, data) {
+//     if (err) throw err;
+//     const currentGame = data.games.slice(-1)[0];
+//     const currentHand = currentGame.hands.slice(-1)[0];
+//
+//      currentHand.playerCards.card1 = playerCard1;
+//      currentHand.playerCards.card2 = playerCard2;
+//      currentHand.computerCards.card1 = computerCard1;
+//      currentHand.computerCards.card2 = computerCard2;
+//
+//      currentHand.player_button = !currentHand.player_button;
+//      let playerMessage = '';
+//      let computerMessage = '';
+//
+//      if (currentHand.player_button) {
+//        currentHand.actions.push({player: true, type: 'SB', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0 });
+//        currentHand.actions.push({player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0 });
+//
+//      } else {
+//        currentHand.actions.push({player: false, type: 'SB', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0 });
+//        currentHand.actions.push({player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0 });
+//      }
+//
+//      currentHand.street.push({flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1});
+//
+//      data.save(function(err) {
+//        if (err) throw err;
+//        res.send('Shuffled Cards');
+//        console.log('Games array updated successfully');
+//      });
+//   });
+//
+// });
 
 router.get('/gameInfo', (req, res) => {
 

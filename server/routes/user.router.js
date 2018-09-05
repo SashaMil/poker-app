@@ -20,9 +20,9 @@ router.post('/register', (req, res, next) => {
 
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
-  const games = [{game_completed: false}];
+  // adding games array to person model, this way, we don't have to deal with
 
-  const newPerson = new Person({ username, password, games });
+  const newPerson = new Person({ username, password });
   newPerson.save()
     .then(() => { res.sendStatus(201); })
     .catch((err) => { next(err); });

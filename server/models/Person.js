@@ -19,6 +19,7 @@ const Actions = new Schema({
   player_chips: Number,
   computer_chips: Number,
   message: String,
+  raiseCounter: Number,
 });
 
 const Hands = new Schema({

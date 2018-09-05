@@ -25,6 +25,7 @@ function* checkGameStatus() {
     newGame = yield checkGameStatusRequest();
     if (newGame) {
       yield newGameRequest();
+      // yield shuffleRequest();
     }
 
     // yield shuffleRequest();
