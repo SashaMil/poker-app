@@ -8,7 +8,6 @@ const Actions = new Schema({
   player: Boolean,
   type: String,
   bet: Number,
-  street: String,
   player_act_next: Boolean,
   player_has_acted: Boolean,
   computer_has_acted: Boolean,

@@ -25,12 +25,10 @@ function* checkGameStatus() {
     newGame = yield checkGameStatusRequest();
     if (newGame) {
       yield newGameRequest();
-      // yield shuffleRequest();
+      yield shuffleRequest();
     }
-
-    // yield shuffleRequest();
-    // gameInfo = yield getGameInfoRequest();
-    // console.log(gameInfo);
+    gameInfo = yield getGameInfoRequest();
+    console.log(gameInfo);
     // yield put({
     //   type: TABLE_ACTIONS.SET_NEW_HAND_MESSAGES,
     //   payload: gameInfo.message.message,

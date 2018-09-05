@@ -12,14 +12,11 @@ router.post('/checkGameStatus', (req, res) => {
     if (err) throw err;
     // currentGame constant is the last game in game array
     const currentGame = data.games.slice(-1)[0];
-    // if the current/last game we are checking is complete and/or this is a new account, we will add a new game object to the games array,
-    // otherwise, we will keep playing
+    // if the current/last game we are checking is complete or this is a new account, we will add a new game object to the games array,
     console.log(data);
     console.log(data.games.length);
     if (data.games.length === 0 || currentGame.game_completed) {
       data.games.push({game_completed: false});
-      console.log('fish');
-      // also adding
       data.save(function(err) {
         if (err) throw err;
         res.send(false);
@@ -28,89 +25,96 @@ router.post('/checkGameStatus', (req, res) => {
     // otherwise, we will resume the previous hand and simply call a get request,
     // not doing that currently because we need to finish shuffle route,
     else {
-      console.log('tacos');
       res.send(true);
     }
   })
 });
 
-  // New game route which will be called if the previous game has ended/it is a new account
+// New game route which will be called if the previous game has ended/new user
  router.put('/newGame', (req, res) => {
    Person.findById(req.user._id, function(err, data) {
      if (err) throw err;
      const currentGame = data.games.slice(-1)[0];
-     currentGame.hands.push({hand_status: 'incomplete'})
+     // pushing a hands object into the hands array, which is a property of the games object.
+     currentGame.hands.push({hand_status: 'incomplete'});
+     // currentHand constant is the last hand in a hand array (the one we just added the line above)
      const currentHand = currentGame.hands.slice(-1)[0];
+     // Randomizing whether the player/computer will be selected as the button first
      const arr = [true, false];
      let bool = arr[Math.floor(Math.random() * (2))];
      currentHand.player_button = bool;
-     currentHand.actions.push({player_chips: 1500, computer_chips: 1500, pot: 0})
-     res.send('Success');
+     // We are pushing the actions object into the array actions which is a property of hands
+     currentHand.actions.push({player_chips: 1500, computer_chips: 1500, pot: 0, player_button: bool})
+     data.save(function(err) {
+       if (err) throw err;
+       res.send(false);
+     });
    })
  })
 
 
+// We are dealing the cards, this route is used for new game or simply the next hand in a game
+router.put('/shuffle', (req, res) => {
+  // using the Deck model to instantiate a new deck
+  let deck = new Deck;
+  // Method that shuffles deck
+  deck.shuffle();
+  let playerCard1 = '';
+  let playerCard2 = '';
+  let computerCard1 = '';
+  let computerCard2 = '';
+  let flopCard1 = '';
+  let flopCard2 = '';
+  let flopCard3 = '';
+  let turnCard1 = '';
+  let riverCard1 = '';
 
-// router.put('/shuffle', (req, res) => {
-//
-//   let deck = new Deck;
-//   deck.shuffle();
-//   let playerCard1 = '';
-//   let playerCard2 = '';
-//   let computerCard1 = '';
-//   let computerCard2 = '';
-//   let flopCard1 = '';
-//   let flopCard2 = '';
-//   let flopCard3 = '';
-//   let turnCard1 = '';
-//   let riverCard1 = '';
-//
-//   playerCard1 = deck.deal();
-//   computerCard1 = deck.deal();
-//   playerCard2 = deck.deal();
-//   computerCard2 = deck.deal();
-//   deck.deal();
-//   flopCard1 = deck.deal();
-//   flopCard2 = deck.deal();
-//   flopCard3 = deck.deal();
-//   deck.deal();
-//   turnCard1 = deck.deal();
-//   deck.deal();
-//   riverCard1 = deck.deal();
-//
-//   Person.findById(req.user._id, function(err, data) {
-//     if (err) throw err;
-//     const currentGame = data.games.slice(-1)[0];
-//     const currentHand = currentGame.hands.slice(-1)[0];
-//
-//      currentHand.playerCards.card1 = playerCard1;
-//      currentHand.playerCards.card2 = playerCard2;
-//      currentHand.computerCards.card1 = computerCard1;
-//      currentHand.computerCards.card2 = computerCard2;
-//
-//      currentHand.player_button = !currentHand.player_button;
-//      let playerMessage = '';
-//      let computerMessage = '';
-//
-//      if (currentHand.player_button) {
-//        currentHand.actions.push({player: true, type: 'SB', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0 });
-//        currentHand.actions.push({player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0 });
-//
-//      } else {
-//        currentHand.actions.push({player: false, type: 'SB', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0 });
-//        currentHand.actions.push({player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0 });
-//      }
-//
-//      currentHand.street.push({flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1});
-//
-//      data.save(function(err) {
-//        if (err) throw err;
-//        res.send('Shuffled Cards');
-//        console.log('Games array updated successfully');
-//      });
-//   });
-//
-// });
+  // Dealing cards and burning to simulate real world poker
+  playerCard1 = deck.deal();
+  computerCard1 = deck.deal();
+  playerCard2 = deck.deal();
+  computerCard2 = deck.deal();
+  deck.deal();
+  flopCard1 = deck.deal();
+  flopCard2 = deck.deal();
+  flopCard3 = deck.deal();
+  deck.deal();
+  turnCard1 = deck.deal();
+  deck.deal();
+  riverCard1 = deck.deal();
+
+  Person.findById(req.user._id, function(err, data) {
+    if (err) throw err;
+    const currentGame = data.games.slice(-1)[0];
+
+    const lastHand = currentGame.hands.slice(-1)[0];
+    // Will allow us to set values like player chip, computer chips, position to be based off the last hand
+    const lastAction = lastHand.actions.slice(-1)[0];
+
+    let actions = [];
+
+    let playerMessage = '';
+    let computerMessage = '';
+    // Setting the actions array we will be pushing to the hands object dependent on the last player position
+    // Need to add messages as well, not storing messages in a separate array anymore, they will now be attached to each action
+    if (lastHand.player_button) {
+      actions = [{player: false, type: 'SB', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0 }, {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: lastAction.pot, raiseCounter: 0 }];
+    } else {
+      actions = [{player: true, type: 'SB', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0 }, {player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.player_chips, pot: lastAction.pot, raiseCounter: 0 }];
+    }
+
+    // pushing a new hands object with new cards, position (flipping it from the last), and hand status
+    currentGame.hands.push({playerCards: {card1: playerCard1, card2: playerCard2}, computerCards: {card1: computerCard1, card2: computerCard2}, street: {flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1}, player_button: !lastHand.player_button, hand_status: 'incomplete', actions: actions});
+
+
+     data.save(function(err) {
+       if (err) throw err;
+       res.send('Shuffled Cards');
+       console.log('Games array updated successfully');
+     });
+  });
+
+});
 
 router.get('/gameInfo', (req, res) => {
 
@@ -118,7 +122,6 @@ router.get('/gameInfo', (req, res) => {
     if (err) throw err;
     const currentGame = data.games[data.games.length-1];
     const currentStreet = currentGame.street[currentGame.street.length-1];
-    const currentMessage = currentGame.messages[currentGame.messages.length-1];
     let gameInfo = {
       chips: {computerChips: currentGame.computer_chips, playerChips: currentGame.player_chips, pot: currentGame.pot},
       cards: {playerCards: currentGame.playerCards[currentGame.playerCards.length-1]},
