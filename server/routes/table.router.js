@@ -66,17 +66,20 @@ router.put('/shuffle/:newGame', (req, res) => {
 
     const lastHand = currentGame.hands.slice(-1)[0];
     // Will allow us to set values like player chip, computer chips, position to be based off the last hand
-    const lastAction = lastHand.actions.slice(-1)[0];
 
     let actions = [];
+
     // If it is a New Game, I am hardcoding starting chip amounts based on position here.
     // If it is not a new game, the computer and player will have the same chips from the last action
     if (req.params.newGame === 'newGame') {
-      if (lastHand.player_button) {
+      // determining who goes first when new game starts
+      const arr = [true, false];
+      let bool = arr[Math.floor(Math.random() * (2))];
+      if (bool) {
         actions = [
-          {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0, message: 'Computer on Button' },
+          {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0, message: 'Computer on Button' },
 
-          {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0, message: 'Player on BB'}
+          {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0, message: 'Player on BB'}
       ];
       } else {
         actions = [
@@ -86,9 +89,13 @@ router.put('/shuffle/:newGame', (req, res) => {
       ];
 
       }
+
+      currentGame.hands.push({playerCards: {card1: playerCard1, card2: playerCard2}, computerCards: {card1: computerCard1, card2: computerCard2}, street: {flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1}, player_button: bool, hand_status: 'incomplete', actions: actions});
+
     }
     else {
       if (lastHand.player_button) {
+        const lastAction = lastHand.actions.slice(-1)[0];
         actions = [
           {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0, message: 'Computer on Button' },
 
@@ -102,10 +109,13 @@ router.put('/shuffle/:newGame', (req, res) => {
         ];
 
       }
+
+      currentGame.hands.push({playerCards: {card1: playerCard1, card2: playerCard2}, computerCards: {card1: computerCard1, card2: computerCard2}, street: {flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1}, player_button: !lastHand.player_button, hand_status: 'incomplete', actions: actions});
+
     }
 
     // pushing a new hands object with new cards, position (flipping it from the last), and hand status
-    currentGame.hands.push({playerCards: {card1: playerCard1, card2: playerCard2}, computerCards: {card1: computerCard1, card2: computerCard2}, street: {flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1}, player_button: !lastHand.player_button, hand_status: 'incomplete', actions: actions});
+
 
      data.save(function(err) {
        if (err) throw err;
