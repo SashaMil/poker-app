@@ -10,18 +10,24 @@ router.post('/', (req, res) => {
 
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    const currentGame = data.games[data.games.length-1];
+    // Player Action will always be the most recent action (because i am adding two dummy actions for each street)
+    const currentGame = data.games.slice(-1)[0];
+    const currentHand = currentGame.hands.slice(-1)[0];
+    const playerAction = currentHand.actions.slice(-1)[0];
+    const computerAction = currentHand.actions.slice(-2)[0];
+    let amountToCall = 0;
 
-    const currentCards = currentGame.computerCards[currentGame.computerCards.length-1];
-    const playerAction = currentGame.actions[currentGame.actions.length - 1];
-    const computerAction = currentGame.actions[currentGame.actions.length - 2];
-    const streetCards = currentGame.street[currentGame.street.length-1];
-    let facingBet = 0;
+    console.log('waterbuffalo', playerAction);
+    console.log('frog', computerAction);
+
     if (playerAction.bet > computerAction.bet) {
-      facingBet = playerAction.bet - computerAction.bet;
+      amountToCall = playerAction.bet - computerAction.bet;
     }
-    const decision = computerLogic(facingBet, currentGame.pot, currentGame.computer_chips, currentGame.player_chips, currentCards.card1, currentCards.card2, playerAction.street, streetCards);
 
+    console.log(amountToCall);
+
+    const decision = computerLogic(amountToCall, playerAction.pot, playerAction.computer_chips, playerAction.player_chips, currentHand.computerCards.card1, currentHand.computerCards.card2, playerAction.street, currentHand.street);
+    console.log(decision);
     switch(decision[0]) {
       case 'FOLD':
         currentGame.current_hand_completed = true;
@@ -71,8 +77,7 @@ router.post('/', (req, res) => {
 
     data.save(function(err) {
       if (err) throw err;
-      res.send('Shuffled Cards');
-      console.log('Games array updated successfully');
+      res.send('Computer Action Made');
     });
 
   })

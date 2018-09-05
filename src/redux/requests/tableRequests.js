@@ -21,7 +21,7 @@ export function getGameInfoRequest(param) {
     .catch((error) => { throw error.response || error; });
 }
 
-export function computerDecisionRequest() {
+export function computerActionRequest() {
   return axios.post('/api/computerAction/', {
   })
     .then(response => response.data)

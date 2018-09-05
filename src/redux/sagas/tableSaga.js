@@ -4,20 +4,19 @@ import { TABLE_ACTIONS } from '../actions/tableActions';
 import { shuffleRequest } from '../requests/tableRequests';
 import { checkGameStatusRequest } from '../requests/tableRequests';
 import { getGameInfoRequest } from '../requests/tableRequests';
-import { computerDecisionRequest } from '../requests/tableRequests';
+import { computerActionRequest } from '../requests/tableRequests';
 import { getStreetRequest } from '../requests/tableRequests';
 import { playerFoldRequest } from '../requests/tableRequests';
 import { playerCallRequest } from '../requests/tableRequests';
 import { playerCheckRequest } from '../requests/tableRequests';
 import { playerBetRequest } from '../requests/tableRequests';
 
-
-
 let playerCards = '';
 let gameInfo = '';
 let street = '';
 let handHistory = '';
 let newGame = null;
+let amountToCall = 0;
 
 function* checkGameStatus() {
   try {
@@ -44,7 +43,7 @@ function* checkGameStatus() {
     });
     // If the player is not on the button, the computer will act first
     if (!gameInfo.actions.playerButton) {
-      yield computerDecision();
+      yield computerAction();
     }
   }
   catch (error) {
@@ -52,10 +51,10 @@ function* checkGameStatus() {
   }
 }
 
-function* computerDecision() {
+function* computerAction() {
   try {
     yield new Promise(resolve => setTimeout(resolve, 1000));
-    yield computerDecisionRequest();
+    yield computerActionRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     console.log(`Computer ${gameInfo.actions.lastAction.type}`);
@@ -75,7 +74,7 @@ function* computerDecision() {
         payload: gameInfo,
       })
       if (!gameInfo.player_sb) {
-        yield computerDecision();
+        yield computerAction();
       }
     }
     if (gameInfo.actions.lastAction.next_street) {
@@ -115,7 +114,7 @@ function* playerFold() {
       payload: gameInfo,
     })
     if (!gameInfo.player_sb) {
-      yield computerDecision();
+      yield computerAction();
     }
   }
   catch (error) {
@@ -139,7 +138,7 @@ function* playerCall() {
       yield getStreet();
     }
     else {
-      yield computerDecision();
+      yield computerAction();
     }
   }
   catch (error) {
@@ -163,7 +162,7 @@ function* playerCheck() {
       yield getStreet();
     }
     else {
-      yield computerDecision();
+      yield computerAction();
     }
   }
   catch (error) {
@@ -184,7 +183,7 @@ function* playerBet(action) {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     });
-    yield computerDecision();
+    yield computerAction();
   }
   catch(error) {
     console.log(error);
@@ -204,7 +203,7 @@ function* playerRaise(action) {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     });
-    yield computerDecision();
+    yield computerAction();
   }
   catch(error) {
     console.log(error);
@@ -231,7 +230,7 @@ function* getStreet() {
       yield checkGameStatus();
     }
     if (gameInfo.actions.playerButton) {
-      yield computerDecision();
+      yield computerAction();
     }
   }
   catch (error) {
@@ -241,7 +240,7 @@ function* getStreet() {
 
 function* tableSaga() {
   yield takeLatest(TABLE_ACTIONS.CHECK_GAME_STATUS, checkGameStatus);
-  yield takeLatest(TABLE_ACTIONS.COMPUTER_DECISION, computerDecision);
+  yield takeLatest(TABLE_ACTIONS.COMPUTER_DECISION, computerAction);
   yield takeLatest(TABLE_ACTIONS.GET_STREET, getStreet);
   yield takeLatest(TABLE_ACTIONS.PLAYER_FOLD, playerFold);
   yield takeLatest(TABLE_ACTIONS.PLAYER_CALL, playerCall);
