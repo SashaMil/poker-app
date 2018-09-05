@@ -21,24 +21,31 @@ let newGame = null;
 
 function* checkGameStatus() {
   try {
+    // Checking to see if this is a new game
     newGame = yield checkGameStatusRequest();
     console.log(newGame);
-    if (newGame || !newGame) {
-      yield shuffleRequest();
+    // If it is, we are going to pass param to shuffle request so starting chips are hardcoded
+    if (newGame) {
+      yield shuffleRequest('newGame');
     }
-    gameInfo = yield getGameInfoRequest();
+    // Whether it's a new game or not, we will be making a get request all the same to retrieve hand info,
+    gameInfo = yield getGameInfoRequest('newHand');
     console.log(gameInfo);
-    // yield put({
-    //   type: TABLE_ACTIONS.SET_NEW_HAND_MESSAGES,
-    //   payload: gameInfo.message.message,
-    // });
-    // yield put({
-    //   type: TABLE_ACTIONS.SET_GAME,
-    //   payload: gameInfo,
-    // });
-    // if (!gameInfo.actions.playerButton) {
-    //   yield computerDecision();
-    // }
+    // Setting New hand messages here, (this is for when a shuffle occurs so we get text saying
+    // who is on the button and who is on the BB)
+    yield put({
+      type: TABLE_ACTIONS.SET_NEW_HAND_MESSAGES,
+      payload: gameInfo.message,
+    });
+    // Setting all other info
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    });
+    // If the player is not on the button, the computer will act first
+    if (!gameInfo.actions.playerButton) {
+      yield computerDecision();
+    }
   }
   catch (error) {
     console.log('WHOOPS');

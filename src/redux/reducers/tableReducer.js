@@ -11,9 +11,10 @@ const actions = (state = initialActionsState, action) => {
     case TABLE_ACTIONS.SET_GAME:
       return {
         ... state,
-        lastAction: action.payload.actions.lastAction,
+        lastAction: action.payload.actions.currentAction,
         playerButton: action.payload.actions.playerButton,
       }
+    // What am I using this for??
     case TABLE_ACTIONS.SET_ACTIONS:
      return {
        ... state,
