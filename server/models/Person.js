@@ -18,11 +18,8 @@ const Actions = new Schema({
   pot: Number,
   player_chips: Number,
   computer_chips: Number,
-});
-
-const Messages = new Schema({
   message: String,
-})
+});
 
 const Hands = new Schema({
   playerCards: {card1: String, card2: String},
@@ -30,7 +27,6 @@ const Hands = new Schema({
   street: {flop1: String, flop2: String, flop3: String, turn: String, river: String},
   player_button: Boolean,
   actions: [Actions],
-  message: [Messages],
   hand_status: String,
 });
 

@@ -4,14 +4,16 @@ const Deck = require('../modules/deck.js');
 const Person = require('../models/Person');
 const messageGenerator = require('../modules/messageGenerator.js');
 const postFlopEvaluation = require('../modules/postFlopEvaluation.js');
-const evaluateShowdown = require('../modules/evaluateShowdown')
+const evaluateShowdown = require('../modules/evaluateShowdown');
+
 
 router.post('/checkGameStatus', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    const lastGame = data.games[data.games.length-1];
-    if (lastGame.game_completed) {
+    const currentGame = data.games.slice(-1)[0];
+    if (currentGame.game_completed) {
       data.games.push({game_completed: false});
+      data.games.hands.push({hand_status: 'incomplete'})
       data.save(function(err) {
         if (err) throw err;
         res.send(false);
@@ -26,11 +28,15 @@ router.post('/checkGameStatus', (req, res) => {
  router.put('/newGame', (req, res) => {
    Person.findById(req.user._id, function(err, data) {
      if (err) throw err;
-     console.log('hello',data.games.hands);
+     const currentGame = data.games.slice(-1)[0];
+     currentGame.hands.push({hand_status: 'incomplete'})
+     const currentHand = currentGame.hands.slice(-1)[0];
+     console.log(currentGame);
+     console.log(currentHand);
      const arr = [true, false];
      let bool = arr[Math.floor(Math.random() * (2))];
-     data.games.hands.push({ player_button: bool, hand_status: 'incomplete' })
-     data.games.hands.actions.push({player_chips: 1500, computer_chips: 1500, pot: 0})
+     currentHand.player_button = bool;
+     currentHand.actions.push({player_chips: 1500, computer_chips: 1500, pot: 0})
      res.send('Success');
    })
  })
@@ -76,33 +82,16 @@ router.put('/shuffle', (req, res) => {
      let playerMessage = '';
      let computerMessage = '';
 
-     if (currentGame.player_sb) {
-       currentHand.actions.push({player: true, type: 'SB', , street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false });
-       currentHand.actions.player_chips -= 5;
-       playerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-       currentGame.actions.push({player: false, type: 'BB', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
-       currentGame.computer_chips -= 10;
-       computerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-       currentGame.currentBet = 10;
-       currentHand.messages.push({message: {playerMessage: playerMessage, computerMessage: computerMessage}});
+     if (currentHand.player_button) {
+       currentHand.actions.push({player: true, type: 'SB', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15 });
+       currentHand.actions.push({player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15});
 
      } else {
-       currentGame.actions.push({player: false, type: 'SB', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
-       currentGame.computer_chips -= 5;
-       computerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-       currentGame.actions.push({player: true, type: 'BB', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, street: 'preflop'});
-       currentGame.player_chips -= 10;
-       currentGame.currentBet = 10;
-       playerMessage = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-       currentGame.messages.push({message: {playerMessage: playerMessage, computerMessage: computerMessage}});
-
+       currentHand.actions.push({player: false, type: 'SB', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15});
+       currentHand.actions.push({player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15});
      }
 
-     currentGame.street.push({flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1});
-
-     currentGame.pot = 0;
-     currentGame.pot += 15;
-     currentGame.current_hand_completed = false;
+     currentHand.street.push({flop1: flopCard1, flop2: flopCard2, flop3: flopCard3, turn: turnCard1, river: riverCard1});
 
      data.save(function(err) {
        if (err) throw err;
