@@ -75,7 +75,7 @@ router.put('/shuffle/:newGame', (req, res) => {
       // determining who goes first when new game starts
       const arr = [true, false];
       let bool = arr[Math.floor(Math.random() * (2))];
-      if (bool) {
+      if (!bool) {
         actions = [
           {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0, message: 'Computer on Button' },
 
