@@ -1,14 +1,7 @@
 import axios from 'axios';
 
-export function shuffleRequest() {
-  return axios.put('/api/table/shuffle', {
-  })
-    .then(response => response.data)
-    .catch((error) => { throw error.response || error; });
-}
-
-export function newGameRequest() {
-  return axios.put('/api/table/newGame', {
+export function shuffleRequest(param) {
+  return axios.put(`/api/table/shuffle/${param}`, {
   })
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });

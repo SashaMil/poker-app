@@ -10,7 +10,6 @@ import { playerFoldRequest } from '../requests/tableRequests';
 import { playerCallRequest } from '../requests/tableRequests';
 import { playerCheckRequest } from '../requests/tableRequests';
 import { playerBetRequest } from '../requests/tableRequests';
-import { newGameRequest } from '../requests/tableRequests';
 
 
 
@@ -23,8 +22,8 @@ let newGame = null;
 function* checkGameStatus() {
   try {
     newGame = yield checkGameStatusRequest();
-    if (newGame) {
-      yield newGameRequest();
+    console.log(newGame);
+    if (newGame || !newGame) {
       yield shuffleRequest();
     }
     gameInfo = yield getGameInfoRequest();
