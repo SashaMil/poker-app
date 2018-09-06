@@ -134,12 +134,13 @@ router.get('/gameInfo', (req, res) => {
     const currentHand = currentGame.hands.slice(-1)[0];
     const currentAction = currentHand.actions.slice(-1)[0];
     console.log(currentAction);
+    console.log(currentHand.playerButton);
     // What do I need to send when there is a new hand: chips, pot, (got that),
     // player cards everytime (from hand object), have to send the most recent and second most recent actions.
     let gameInfo = {
       chips: {computerChips: currentAction.computer_chips, playerChips: currentAction.player_chips, pot: currentAction.pot},
       cards: {playerCards: currentHand.playerCards},
-      action: {currentAction: currentAction, playerButton: currentHand.playerButton},
+      action: {currentAction: currentAction, playerButton: currentHand.player_button},
     }
 
 

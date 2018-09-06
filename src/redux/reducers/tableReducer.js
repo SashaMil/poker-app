@@ -76,7 +76,7 @@ const chips = (state = initialChipsState, action) => {
         computerChips: action.payload.computerChips,
         pot: action.payload.pot,
       }
-    case TABLE_ACTIONS.NEW_HAND:
+    case TABLE_ACTIONS.FOLD:
       return {
         ... state,
         pot: 0,
@@ -111,7 +111,7 @@ const messages = (state = initialMessagesState, action) => {
        ... state,
        playerHandValue: action.payload.playerHandValue,
      }
-    case TABLE_ACTIONS.NEW_HAND:
+    case TABLE_ACTIONS.FOLD:
       state = initialMessagesState;
     default:
       return state;

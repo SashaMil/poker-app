@@ -39,19 +39,14 @@ function* checkGameStatus() {
       type: TABLE_ACTIONS.NEW_HAND,
       payload: gameInfo,
     });
+    // Set Game is an action I will use repeatedly to set new chip amounts, bets, everything else
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
-
-    // yield put({
-    //   type: TABLE_ACTIONS.SET_GAME,
-    //   payload: gameInfo,
-    // })
-    // If the player is not on the button, the computer will act first
-    // if (!gameInfo.actions.playerButton) {
-    //   yield computerAction();
-    // }
+    if (!gameInfo.actions.playerButton) {
+      yield computerAction();
+    }
   }
   catch (error) {
     console.log('WHOOPS');
