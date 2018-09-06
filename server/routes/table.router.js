@@ -77,15 +77,15 @@ router.put('/shuffle/:newGame', (req, res) => {
       let bool = arr[Math.floor(Math.random() * (2))];
       if (!bool) {
         actions = [
-          {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0, message: 'Computer on Button' },
+          {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0 },
 
-          {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0, message: 'Player on BB'}
+          {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0, message: {playerMessage: 'Player on BB', computerMessage: 'Computer on Button'} }
       ];
       } else {
         actions = [
-          {player: true, type: 'Button', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0, message: 'Player on Button' },
+          {player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0 },
 
-          {player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1490, computer_chips: 1495, pot: 15, raiseCounter: 0, message: 'Computer on BB' }
+          {player: true, type: 'Button', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: 1495, computer_chips: 1490, pot: 15, raiseCounter: 0, message: {playerMessage: 'Player on Button', computerMessage: 'Computer on BB'}  },
       ];
 
       }
@@ -97,15 +97,15 @@ router.put('/shuffle/:newGame', (req, res) => {
       if (lastHand.player_button) {
         const lastAction = lastHand.actions.slice(-1)[0];
         actions = [
-          {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0, message: 'Computer on Button' },
+          {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0 },
 
-          {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0, message: 'Player on BB'}
+          {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0, message: {playerMessage: 'Player on BB', computerMessage: 'Computer on Button'} }
       ];
       } else {
         actions = [
-          {player: true, type: 'Button', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0, message: 'Player on Button' },
+          {player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.player_chips, pot: 15, raiseCounter: 0 },
 
-          {player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.player_chips, pot: 15, raiseCounter: 0, message: 'Computer on BB' }
+          {player: true, type: 'Button', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0, message: {playerMessage: 'Player on Button', computerMessage: 'Computer on BB'} }
         ];
 
       }
@@ -126,35 +126,23 @@ router.put('/shuffle/:newGame', (req, res) => {
 
 });
 
-router.get('/gameInfo/:newHand', (req, res) => {
+router.get('/gameInfo', (req, res) => {
 
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
     const currentGame = data.games.slice(-1)[0];
     const currentHand = currentGame.hands.slice(-1)[0];
-    // if it's a new hand, current action will always be the player action, computer action will be previous actions, this is because of the order in which I am pushing these objects into the actions array
     const currentAction = currentHand.actions.slice(-1)[0];
-    const previousAction = currentHand.actions.slice(-2)[0];
-    console.log(req.params.newHand);
-    let gameInfo = {};
+    console.log(currentAction);
     // What do I need to send when there is a new hand: chips, pot, (got that),
     // player cards everytime (from hand object), have to send the most recent and second most recent actions.
-    if (req.params.newHand === 'newHand') {
-      gameInfo = {
-        chips: {computerChips: currentAction.computer_chips, playerChips: currentAction.player_chips, pot: currentAction.pot},
-        cards: {playerCards: currentHand.playerCards},
-        actions: {currentAction: currentAction, previousAction: previousAction, playerButton: currentHand.player_button},
-        message: {playerMessage: currentAction.message, computerMessage: previousAction.message}
-      }
+    let gameInfo = {
+      chips: {computerChips: currentAction.computer_chips, playerChips: currentAction.player_chips, pot: currentAction.pot},
+      cards: {playerCards: currentHand.playerCards},
+      action: {currentAction: currentAction, playerButton: currentHand.playerButton},
     }
-    else {
-      gameInfo = {
-       chips: {computerChips: currentAction.computer_chips, playerChips: currentAction.player_chips, pot: currentAction.pot},
-       cards: {playerCards: currentHand.playerCards},
-       action: {currentAction: currentAction, playerButton: currentHand.player_button},
-       message: currentAction.message,
-     }
-    }
+
+
     res.send(gameInfo);
   })
 

@@ -28,23 +28,30 @@ function* checkGameStatus() {
       yield shuffleRequest('newGame');
     }
     // Whether it's a new game or not, we will be making a get request all the same to retrieve hand info,
-    gameInfo = yield getGameInfoRequest('newHand');
+    gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     // Setting New hand messages here, (this is for when a shuffle occurs so we get text saying
     // who is on the button and who is on the BB)
-    yield put({
-      type: TABLE_ACTIONS.SET_NEW_HAND_MESSAGES,
-      payload: gameInfo.message,
-    });
     // Setting all other info
+
+    // New Hand action will set the new cards and messages
+    yield put({
+      type: TABLE_ACTIONS.NEW_HAND,
+      payload: gameInfo,
+    });
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
-    });
+    })
+
+    // yield put({
+    //   type: TABLE_ACTIONS.SET_GAME,
+    //   payload: gameInfo,
+    // })
     // If the player is not on the button, the computer will act first
-    if (!gameInfo.actions.playerButton) {
-      yield computerAction();
-    }
+    // if (!gameInfo.actions.playerButton) {
+    //   yield computerAction();
+    // }
   }
   catch (error) {
     console.log('WHOOPS');
@@ -57,16 +64,16 @@ function* computerAction() {
     yield computerActionRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
-    console.log(`Computer ${gameInfo.actions.lastAction.type}`);
+    console.log(`Computer ${gameInfo.action.currentAction.type}`);
     yield put({
       type: TABLE_ACTIONS.SET_COMPUTER_MESSAGE,
-      payload: gameInfo.message.message,
+      payload: gameInfo.action.currentAction.message,
     })
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     });
-    if (gameInfo.actions.lastAction.type === 'FOLD') {
+    if (gameInfo.action.currentAction.type === 'FOLD') {
       yield shuffleRequest();
       gameInfo = yield getGameInfoRequest();
       yield put({

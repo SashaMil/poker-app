@@ -90,7 +90,7 @@ class Table extends Component {
 
   raise = (value) => {
     console.log(value);
-    if (value <= this.props.table.actions.lastAction.bet) {
+    if (value <= this.props.table.actions.currentAction.bet) {
       this.setState({ alertOpen: true });
     }
     else {
@@ -141,7 +141,7 @@ class Table extends Component {
                  flop={cards.flop}
                  turn={cards.turn}
                  river={cards.river}
-                 currentAction={actions.lastAction}
+                 currentAction={actions.currentAction}
                  playerHandValue={messages.playerHandValue}
                />
              </div>
@@ -149,7 +149,7 @@ class Table extends Component {
                <Pot
                  pot={chips.pot}
                  handleChange={this.handleChange}
-                 lastAction={actions.lastAction}
+                 lastAction={actions.currentAction}
                />
              </div>
              <div>
@@ -178,7 +178,7 @@ class Table extends Component {
              <div>
                <Controller
                  value={this.state.value}
-                 currentAction={actions.lastAction}
+                 currentAction={actions.currentAction}
                  playerSb={actions.playerButton}
                  handleChange={this.handleChange}
                  fold={this.fold}

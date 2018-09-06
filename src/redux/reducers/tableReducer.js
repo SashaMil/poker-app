@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { TABLE_ACTIONS } from '../actions/tableActions';
 
-let initialActionsState = {lastAction: {}, playerButton: null}
+let initialActionsState = {currentAction: {}, computerBlindAction: {}, playerBlindAction: {}, playerButton: null}
 let initialCardsState = {playerCard1: '', playerCard2: '', computerCard1: '', computerCard2: '', dealPlayerHand: false, dealComputerHand: false, showComputerHand: true, flop: [], turn: '', river: ''};
 let initialChipsState = {playerChips: 0, computerChips: 0, pot: 0};
 let initialMessagesState = {playerMessage: '', computerMessage: '', playerHandValue: ''};
@@ -11,8 +11,8 @@ const actions = (state = initialActionsState, action) => {
     case TABLE_ACTIONS.SET_GAME:
       return {
         ... state,
-        lastAction: action.payload.actions.currentAction,
-        playerButton: action.payload.actions.playerButton,
+        currentAction: action.payload.action.currentAction,
+        playerButton: action.payload.action.playerButton,
       }
     // What am I using this for??
     case TABLE_ACTIONS.SET_ACTIONS:
@@ -28,7 +28,7 @@ const actions = (state = initialActionsState, action) => {
 
 const cards = (state = initialCardsState, action) => {
   switch (action.type) {
-    case TABLE_ACTIONS.SET_GAME:
+    case TABLE_ACTIONS.NEW_HAND:
       return {
         ... state,
         playerCard1: action.payload.cards.playerCards.card1,
@@ -52,7 +52,7 @@ const cards = (state = initialCardsState, action) => {
         playerCard1: 'purple_back',
         playerCard2: 'purple_back',
       }
-    case TABLE_ACTIONS.NEW_HAND:
+    case TABLE_ACTIONS.FOLD:
       state = initialCardsState;
 
     default:
@@ -62,7 +62,7 @@ const cards = (state = initialCardsState, action) => {
 
 const chips = (state = initialChipsState, action) => {
   switch(action.type) {
-    case TABLE_ACTIONS.SET_GAME:
+    case TABLE_ACTIONS.NEW_HAND:
      return {
        ... state,
        playerChips: action.payload.chips.playerChips,
@@ -91,20 +91,20 @@ const messages = (state = initialMessagesState, action) => {
     case TABLE_ACTIONS.SET_PLAYER_MESSAGE:
       return {
         ... state,
-        playerMessage: action.payload.playerMessage,
+        playerMessage: action.payload,
         computerMessage: '',
       }
     case TABLE_ACTIONS.SET_COMPUTER_MESSAGE:
       return {
         ... state,
-        computerMessage: action.payload.computerMessage,
+        computerMessage: action.payload,
         playerMessage: '',
       }
-    case TABLE_ACTIONS.SET_NEW_HAND_MESSAGES:
+    case TABLE_ACTIONS.SET_GAME:
      return {
        ... state,
-       computerMessage: action.payload.computerMessage,
-       playerMessage: action.payload.playerMessage,
+       computerMessage: action.payload.action.currentAction.message.computerMessage,
+       playerMessage: action.payload.action.currentAction.message.playerMessage,
      }
     case TABLE_ACTIONS.SET_PLAYER_HAND_VALUE:
      return {

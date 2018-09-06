@@ -15,7 +15,7 @@ export function checkGameStatusRequest() {
 }
 
 export function getGameInfoRequest(param) {
-  return axios.get(`/api/table/gameInfo/${param}`, {
+  return axios.get(`/api/table/gameInfo`, {
   })
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });

@@ -18,7 +18,7 @@ const Actions = new Schema({
   pot: Number,
   player_chips: Number,
   computer_chips: Number,
-  message: String,
+  message: {playerMessage: String, computerMessage: String},
   raiseCounter: Number,
 });
 
