@@ -65,6 +65,8 @@ router.put('/shuffle/:newGame', (req, res) => {
     const currentGame = data.games.slice(-1)[0];
 
     const lastHand = currentGame.hands.slice(-1)[0];
+    
+
     // Will allow us to set values like player chip, computer chips, position to be based off the last hand
 
     let actions = [];
@@ -73,6 +75,7 @@ router.put('/shuffle/:newGame', (req, res) => {
     // If it is not a new game, the computer and player will have the same chips from the last action
     if (req.params.newGame === 'newGame') {
       // determining who goes first when new game starts
+      console.log('in here');
       const arr = [true, false];
       let bool = arr[Math.floor(Math.random() * (2))];
       if (!bool) {

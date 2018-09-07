@@ -30,9 +30,6 @@ function* checkGameStatus() {
     // Whether it's a new game or not, we will be making a get request all the same to retrieve hand info,
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
-    // Setting New hand messages here, (this is for when a shuffle occurs so we get text saying
-    // who is on the button and who is on the BB)
-    // Setting all other info
 
     // New Hand action will set the new cards and messages
     yield put({
@@ -44,7 +41,7 @@ function* checkGameStatus() {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
-    if (!gameInfo.actions.playerButton) {
+    if (!gameInfo.action.playerButton) {
       yield computerAction();
     }
   }
@@ -62,7 +59,7 @@ function* computerAction() {
     console.log(`Computer ${gameInfo.action.currentAction.type}`);
     yield put({
       type: TABLE_ACTIONS.SET_COMPUTER_MESSAGE,
-      payload: gameInfo.action.currentAction.message,
+      payload: gameInfo.action.currentAction.message.computerMessage,
     })
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
@@ -79,7 +76,7 @@ function* computerAction() {
         yield computerAction();
       }
     }
-    if (gameInfo.actions.lastAction.next_street) {
+    if (gameInfo.actions.currentAction.next_street) {
       yield getStreet();
     }
   }
