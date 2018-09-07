@@ -65,7 +65,7 @@ router.put('/shuffle/:newGame', (req, res) => {
     const currentGame = data.games.slice(-1)[0];
 
     const lastHand = currentGame.hands.slice(-1)[0];
-    
+
 
     // Will allow us to set values like player chip, computer chips, position to be based off the last hand
 
@@ -97,8 +97,8 @@ router.put('/shuffle/:newGame', (req, res) => {
 
     }
     else {
+      const lastAction = lastHand.actions.slice(-1)[0];
       if (lastHand.player_button) {
-        const lastAction = lastHand.actions.slice(-1)[0];
         actions = [
           {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0 },
 

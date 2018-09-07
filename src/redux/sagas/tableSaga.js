@@ -76,7 +76,7 @@ function* computerAction() {
         yield computerAction();
       }
     }
-    if (gameInfo.actions.currentAction.next_street) {
+    if (gameInfo.action.currentAction.next_street) {
       yield getStreet();
     }
   }
