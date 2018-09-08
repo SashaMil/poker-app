@@ -96,7 +96,7 @@ function* playerFold() {
     console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
-      payload: gameInfo.message.message,
+      payload: gameInfo.action.currentAction.message.playerMessage,
     })
     yield put({
       type: TABLE_ACTIONS.SET_CHIPS,
@@ -129,13 +129,13 @@ function* playerCall() {
     console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
-      payload: gameInfo.message.message,
+      payload: gameInfo.action.currentAction.message.playerMessage,
     });
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
-    if (gameInfo.actions.lastAction.next_street) {
+    if (gameInfo.action.currentAction.next_street) {
       yield getStreet();
     }
     else {
@@ -151,6 +151,7 @@ function* playerCheck() {
   try {
     yield playerCheckRequest();
     gameInfo = yield getGameInfoRequest();
+    console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
       payload: gameInfo.action.currentAction.message.playerMessage,
@@ -158,7 +159,8 @@ function* playerCheck() {
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
-    })
+    });
+    console.log(gameInfo.action.currentAction.next_street);
     if (gameInfo.action.currentAction.next_street) {
       yield getStreet();
     }
@@ -178,7 +180,7 @@ function* playerBet(action) {
     gameInfo = yield getGameInfoRequest();
     yield put({
       type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
-      payload: gameInfo.message.message,
+      payload: gameInfo.action.currentAction.message.playerMessage,
     });
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
@@ -198,7 +200,7 @@ function* playerRaise(action) {
     gameInfo = yield getGameInfoRequest();
     yield put({
       type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
-      payload: gameInfo.message.message,
+      payload: gameInfo.action.currentAction.message.playerMessage,
     });
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
@@ -214,11 +216,12 @@ function* playerRaise(action) {
 function* getStreet() {
   try {
     street = yield getStreetRequest();
+    gameInfo = yield getGameInfoRequest(street);
     console.log('street', street);
     yield put({
       type: TABLE_ACTIONS.SET_STREET,
-      payload: street.cards,
-    })
+      payload: gameInfo.cards
+    });
     yield put ({
       type: TABLE_ACTIONS.SET_PLAYER_HAND_VALUE,
       payload: street.message,
