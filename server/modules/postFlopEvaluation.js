@@ -1,45 +1,57 @@
 const postFlopEvaluation = (handAndStreet) => {
-  console.log(handAndStreet);
+  console.log('wolverinedjfkdjfkd', handAndStreet);
 
   let numberValues = extractNumberValues(handAndStreet);
+  console.log('numberValues', numberValues);
   let suitValues = extractSuitValues(handAndStreet);
+  console.log('suitValues', suitValues);
 
+  console.log(checkForFlush(suitValues, handAndStreet));
+
+  if (checkForFlush(suitValues, handAndStreet)) {
+    return checkForFlush(suitValues, handAndStreet);
+  }
+  if (checkForStraight(suitValues, handAndStreet)) {
+    return checkForStraight(suitValues, handAndStreet);
+  }
+
+  
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
-  if (!checkForFlush(suitValues, handAndStreet) && !checkForStraight(numberValues)) {
-    return [8, 'Straight Flush'];
-  }
-  else if (checkForPairs(numberValues)[0] === 7) {
-    return [7, checkForPairs(numberValues)[1]];
-  }
-  else if (checkForPairs(numberValues)[0] === 6) {
-    console.log(checkForPairs(numberValues)[1]);
-    return [6, checkForPairs(numberValues)[1]];
-  }
-  else if (checkForFlush(suitValues, handAndStreet) !== false) {
-    console.log(checkForFlush(suitValues, handAndStreet));
-    return [5, checkForFlush(suitValues, handAndStreet)];
-  }
-  else if (checkForStraight(numberValues) !== false) {
-    console.log(checkForStraight(numberValues));
-    return [4, checkForStraight(numberValues)];
-  }
-  else if (checkForPairs(numberValues)[0] === 3) {
-    console.log(checkForPairs(numberValues)[1]);
-    return [3, checkForPairs(numberValues)[1]];
-  }
-  else if (checkForPairs(numberValues)[0] === 2) {
-    console.log(checkForPairs(numberValues)[1]);
-    return [2, checkForPairs(numberValues)[1]];
-  }
-  else if (checkForPairs(numberValues)[0] === 1) {
-    console.log(checkForPairs(numberValues)[1]);
-    return [1, checkForPairs(numberValues)[1]];
-  }
-  else {
-    console.log(checkForPairs(numberValues));
-    return [0, checkForPairs(numberValues)];
-  }
+  // if (!checkForFlush(suitValues, handAndStreet) && !checkForStraight(numberValues)) {
+  //   return [0, 'Straight Flush'];
+  // }
+  // else if (checkForPairs(numberValues)[0] === 7) {
+  //   return [7, checkForPairs(numberValues)[1]];
+  // }
+  // else if (checkForPairs(numberValues)[0] === 6) {
+  //   console.log(checkForPairs(numberValues)[1]);
+  //   return [6, checkForPairs(numberValues)[1]];
+  // }
+  // else if (checkForFlush(suitValues, handAndStreet) !== false) {
+  //   console.log(checkForFlush(suitValues, handAndStreet));
+  //   return [5, checkForFlush(suitValues, handAndStreet)];
+  // }
+  // else if (checkForStraight(numberValues) !== false) {
+  //   console.log(checkForStraight(numberValues));
+  //   return [4, checkForStraight(numberValues)];
+  // }
+  // else if (checkForPairs(numberValues)[0] === 3) {
+  //   console.log(checkForPairs(numberValues)[1]);
+  //   return [3, checkForPairs(numberValues)[1]];
+  // }
+  // else if (checkForPairs(numberValues)[0] === 2) {
+  //   console.log(checkForPairs(numberValues)[1]);
+  //   return [2, checkForPairs(numberValues)[1]];
+  // }
+  // else if (checkForPairs(numberValues)[0] === 1) {
+  //   console.log(checkForPairs(numberValues)[1]);
+  //   return [1, checkForPairs(numberValues)[1]];
+  // }
+  // else {
+  //   console.log(checkForPairs(numberValues));
+  //   return [0, checkForPairs(numberValues)];
+  // }
 
 }
 
@@ -77,10 +89,12 @@ function checkForFlush(suitValues, handAndStreet) {
       suitsAndValuesSorted.push([parseInt(card[0]), card[1]]);
     }
   }
+  // Creating an array of arrays that looks like this [ [ 8, 'H' ], [ 6, 'H' ], [ 5, 'H' ], [ 5, 'D' ], [ 5, 'H' ] ]
 
   suitsAndValuesSorted = suitsAndValuesSorted.sort(function(a,b){return b[0]-a[0]});
 
   let suitOccurences = {};
+  // Counting instances of each suit
   for (suit of suitValues) {
     if (suitOccurences[suit] === undefined) {
       suitOccurences[suit] = 1;
@@ -89,13 +103,19 @@ function checkForFlush(suitValues, handAndStreet) {
       suitOccurences[suit]++;
     }
   }
+  // If there is a suit that occurs five times, we are iterating over the array of arrays we created earlier
+  // Since it is in descending order, each time we find a card that makes a flush, that creates our array of best
+  // five cards
+
   for (let key in suitOccurences) {
     if (suitOccurences[key] === 5) {
+      let flush = [];
       for (let x = 0; x < suitsAndValuesSorted.length; x++) {
-        if (suitsAndValuesSorted[x][1] === key) {
-          return `${suitsAndValuesSorted[x][0]} High Flush`;
+        if (suitsAndValuesSorted[x][1] === key && flush.length < 5) {
+          flush.push(suitsAndValuesSorted[x][0])
         }
       }
+      return {name: `${flush[0]} High flush`, bestFiveCards: flush};
     }
   }
   return false;
@@ -144,6 +164,7 @@ function checkForPairs(numberValues) {
 function checkForStraight(numberValues) {
     let sortedNumberValues = numberValues.sort(function(a,b){return b-a});
 
+
     let chance = 0;
     if (sortedNumberValues.length === 5) {
         chance = 0;
@@ -155,16 +176,31 @@ function checkForStraight(numberValues) {
         chance = 2;
     }
 
+    let possibleStraight = [];
+
     for (let x = 0; x < sortedNumberValues.length; x++) {
-        if (sortedNumberValues[x] - 1 !== sortedNumberValues[x+1] && sortedNumberValues[x+1] !== undefined) {
+        if (possibleStraight.length === 5) {
+            console.log(possibleStraight)
+            return `${possibleStraight[0]} High Straight`;
+        }
+        else if (sortedNumberValues[x] - 1 === sortedNumberValues[x + 1]) {
+            if (possibleStraight.length === 0) {
+                possibleStraight.push(sortedNumberValues[x], sortedNumberValues[x+1]);
+            }
+            else {
+                possibleStraight.push(sortedNumberValues[x+1])
+            }
+        }
+        else if (sortedNumberValues[x] - 1 !== sortedNumberValues[x + 1]) {
+            possibleStraight = [];
             chance--;
             if (chance < 0) {
-                return false;
+                return 'Not a Straight';
             }
-
         }
+
+
     }
-    return `${sortedNumberValues[0]} High Straight`;
 
 }
 
