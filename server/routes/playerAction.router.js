@@ -56,7 +56,7 @@ router.post('/check', (req, res) => {
      nextStreet = false;
    }
 
-   currentGame.actions.push({
+   currentHand.actions.push({
      player: true,
      type: 'CHECK',
      bet: 0,
@@ -71,8 +71,6 @@ router.post('/check', (req, res) => {
      message: {playerMessage: 'Player Checks'},
      raiseCounter: 0,
    });
-
-   currentGame.messages.push({message: {playerMessage: message}});
 
    data.save(function(err) {
      if (err) throw err;
@@ -111,7 +109,7 @@ router.post('/call', (req, res) => {
       amountToCall = computerAction.bet - playerAction.bet;
     }
 
-    currentGame.actions.push({
+    currentHand.actions.push({
       player: true,
       type: 'CALL',
       bet: 0,
@@ -145,7 +143,7 @@ router.post('/bet', (req, res) => {
    const playerAction = currentHand.actions.slice(-2)[0];
 
    console.log(req.body.betSize);
-   currentGame.actions.push({
+   currentHand.actions.push({
      player: true,
      type: 'BET',
      bet: req.body.betSize,
@@ -178,7 +176,7 @@ router.post('/raise', (req, res) => {
    const playerAction = currentHand.actions.slice(-2)[0];
 
    console.log(req.body.betSize);
-   currentGame.actions.push({
+   currentHand.actions.push({
      player: true,
      type: 'RAISE',
      bet: req.body.betSize,

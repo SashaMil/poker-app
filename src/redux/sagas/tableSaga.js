@@ -40,7 +40,8 @@ function* checkGameStatus() {
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
-    })
+    });
+    // If the player is not on the button, call computer action saga
     if (!gameInfo.action.playerButton) {
       yield computerAction();
     }
@@ -125,6 +126,7 @@ function* playerCall() {
   try {
     yield playerCallRequest();
     gameInfo = yield getGameInfoRequest();
+    console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
       payload: gameInfo.message.message,
@@ -151,13 +153,13 @@ function* playerCheck() {
     gameInfo = yield getGameInfoRequest();
     yield put({
       type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
-      payload: gameInfo.message.message,
+      payload: gameInfo.action.currentAction.message.playerMessage,
     });
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     })
-    if (gameInfo.actions.lastAction.next_street) {
+    if (gameInfo.action.currentAction.next_street) {
       yield getStreet();
     }
     else {
