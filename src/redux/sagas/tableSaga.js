@@ -81,6 +81,7 @@ function* computerAction() {
         yield computerAction();
       }
     }
+    console.log('computerAction ', gameInfo.action.currentAction.next_street);
     if (gameInfo.action.currentAction.next_street) {
       yield getStreet();
     }
@@ -223,9 +224,9 @@ function* playerRaise(action) {
 
 function* getStreet() {
   try {
-    street = yield getStreetRequest();
-    gameInfo = yield getGameInfoRequest(street);
-    console.log('street', street);
+    console.log('we made it');
+    yield getStreetRequest();
+    gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_STREET,

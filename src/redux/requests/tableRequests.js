@@ -14,8 +14,8 @@ export function checkGameStatusRequest() {
     .catch((error) => { throw error.response || error; });
 }
 
-export function getGameInfoRequest(street) {
-  return axios.get(`/api/table/gameInfo/${street}`, {
+export function getGameInfoRequest() {
+  return axios.get(`/api/table/gameInfo/`, {
   })
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });

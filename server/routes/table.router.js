@@ -129,7 +129,7 @@ router.put('/shuffle/:newGame', (req, res) => {
 
 });
 
-router.get('/gameInfo/:street', (req, res) => {
+router.get('/gameInfo', (req, res) => {
 
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
@@ -138,7 +138,7 @@ router.get('/gameInfo/:street', (req, res) => {
     const currentAction = currentHand.actions.slice(-1)[0];
     console.log(currentAction);
     console.log(currentHand.playerButton);
-    console.log(req.params.street);
+    console.log(currentAction);
     // What do I need to send when there is a new hand: chips, pot, (got that),
     // player cards everytime (from hand object), have to send the most recent and second most recent actions.
     let gameInfo = {
@@ -146,9 +146,9 @@ router.get('/gameInfo/:street', (req, res) => {
       pot: currentAction.pot},
       cards: {
         playerCards: currentHand.playerCards,
-        flop : req.params.street === 'flop' ? [currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3] : null,
-        turn: req.params.street === 'turn' ? currentHand.street.turn : null,
-        river: req.params.street === 'river' ? currentHand.street.river : null,
+        flop : currentAction.street === 'flop' ? [currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3] : null,
+        turn: currentAction.street === 'turn' ? currentHand.street.turn : null,
+        river: currentAction.street === 'river' ? currentHand.street.river : null,
       },
       action: {currentAction: currentAction, playerButton: currentHand.player_button},
     }
@@ -169,6 +169,8 @@ router.get('/street', (req, res) => {
 
     let gameInfo = '';
     let playerBestFiveCards = '';
+
+    console.log('streetAction', currentAction);
 
     if (currentAction.street === 'preflop') {
       playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3]);
@@ -256,7 +258,7 @@ router.get('/street', (req, res) => {
       });
     }
 
-    else if (currentHand.street === 'flop') {
+    else if (currentAction.street === 'flop') {
 
       playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
 
@@ -340,7 +342,7 @@ router.get('/street', (req, res) => {
       });
     }
 
-    else if (currentHand.street === 'turn') {
+    else if (currentAction.street === 'turn') {
 
       playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
 

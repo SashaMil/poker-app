@@ -44,7 +44,7 @@ const postFlopEvaluation = (handAndStreet) => {
   }
   // X High
   else {
-    return [0, checkForPairs(numberValues)];
+    return [0, checkForPairs(numberValues)[1]];
   }
 
 }
