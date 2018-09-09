@@ -163,6 +163,7 @@ router.get('/gameInfo', (req, res) => {
         street: street
       },
       action: {currentAction: currentAction, playerButton: currentHand.player_button},
+      currentHandCompleted: currentHand.game_completed,
     }
 
 
@@ -444,7 +445,39 @@ router.get('/street', (req, res) => {
       const playerCard2 = currentHand.playerCards.card2;
       const computerCard1 = currentHand.playerCards.card2;
       const computerCard2 = currentHand.computerCards.card2;
-      console.log(playerCard1, playerCard2, computerCard1, computerCard2);
+      const playerWon = evaluateShowdown(playerCard1, playerCard2, computerCard1, computerCard2, currentHand.street);
+
+      if (playerWon) {
+        currentHand.actions.push({
+          type: 'showdown',
+          player: false,
+          bet: 0,
+          street: 'showdown',
+          next_street: false,
+          pot: 0,
+          player_chips: currentAction.player_chips + currentAction.pot,
+          computer_chips: currentAction.computer_chips,
+          raiseCounter: 0,
+          message: `Player wins ${currentAction.player_chips + currentAction.pot}`,
+        });
+      }
+      else {
+        currentHand.actions.push({
+          type: 'showdown',
+          player: false,
+          bet: 0,
+          street: 'showdown',
+          next_street: false,
+          pot: 0,
+          computer_chips: currentAction.computer_chips + currentAction.pot,
+          player_chips: currentAction.player_chips,
+          raiseCounter: 0,
+          message: `Computer wins ${currentAction.computer_chips + currentAction.pot}`,
+        });
+      }
+
+      currentHand.game_completed = true;
+
 
       data.save(function(err) {
         if (err) throw err;

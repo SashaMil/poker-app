@@ -144,7 +144,7 @@ function computerLogic (amountToCall, pot, computerChips, playerChips, computerC
       break;
 
     case 'turn':
-    postFlopHandValue = postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]);
+    postFlopHandValue = postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3, streetCards.turn]);
 
     if (postFlopHandValue[0] === 0) {
       if (amountToCall === 0) {
@@ -210,7 +210,7 @@ function computerLogic (amountToCall, pot, computerChips, playerChips, computerC
       break;
 
     case 'river':
-    postFlopHandValue = postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]);
+    postFlopHandValue = postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3, streetCards.turn, streetCards.river]);
 
     if (postFlopHandValue[0] === 0) {
       if (amountToCall === 0) {
