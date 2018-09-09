@@ -4,14 +4,13 @@ const preflopEvaluation = require('../modules/preflopEvaluation.js');
 function computerLogic (amountToCall, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards) {
   let postFlopHandValue = 0;
   console.log([amountToCall, pot, computerChips, playerChips, computerChips, playerChips, computerCard1, computerCard2, street, streetCards]);
-  preflopEvaluation(computerCard1, computerCard2);
   switch(street) {
     case 'preflop':
       let possibleAces = formatPossibleAces(computerCard1, computerCard2);
       computerCard1 = possibleAces[0];
       computerCard2 = possibleAces[1];
       const startingHandValue = (evaluateStartingHand(computerCard1, computerCard2));
-      console.log('whatsGoingOnHere', amountToCall, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards);
+      console.log('yayyyy', startingHandValue);
 
 
       if (startingHandValue === 0) {

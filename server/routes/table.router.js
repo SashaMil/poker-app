@@ -171,7 +171,8 @@ router.get('/street', (req, res) => {
     let playerBestFiveCards = '';
 
     if (currentAction.street === 'preflop') {
-      playerplayerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3]);
+      playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3]);
+
 
     console.log('pinnochio', playerBestFiveCards);
 
@@ -189,8 +190,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[1],
-          player_best_five_cards_name: playerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
 
         currentHand.actions.push({
@@ -206,8 +207,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[1],
-          player_best_five_cards_name: playerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
 
       }
@@ -226,8 +227,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
 
         currentHand.actions.push({
@@ -243,8 +244,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
       }
 
@@ -257,7 +258,7 @@ router.get('/street', (req, res) => {
 
     else if (currentHand.street === 'flop') {
 
-      playerplayerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
+      playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
 
       if (currentGame.player_button) {
 
@@ -274,8 +275,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
 
         currentHand.actions.push({
@@ -291,8 +292,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
       }
       else {
@@ -310,8 +311,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
 
         currentHand.actions.push({
@@ -327,8 +328,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
       }
 
@@ -341,7 +342,7 @@ router.get('/street', (req, res) => {
 
     else if (currentHand.street === 'turn') {
 
-      playerplayerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
+      playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
 
       if (currentHand.player_button) {
 
@@ -358,8 +359,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
 
         currentHand.actions.push({
@@ -375,8 +376,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
       }
 
@@ -395,8 +396,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
 
         currentHand.actions.push({
@@ -412,8 +413,8 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerplayerBestFiveCards[1],
-          player_best_five_cards_name: playerplayerBestFiveCards[0],
+          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards_name: playerBestFiveCards[1],
         });
 
       }
@@ -429,12 +430,12 @@ router.get('/street', (req, res) => {
     //   const currentComputerCard = currentGame.computerCards[currentGame.computerCards.length-1];
     //   const currentMessage = currentGame.messages[currentGame.messages.length-1];
     //   console.log('look here', currentMessage);
-    //   playerplayerBestFiveCards = postFlopEvaluation([currentGame.playerCards[currentGame.playerCards.length-1].card1, currentGame.playerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river]);
+    //   playerBestFiveCards = postFlopEvaluation([currentGame.playerCards[currentGame.playerCards.length-1].card1, currentGame.playerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river]);
     //   bestFiveComputerCards = postFlopEvaluation([currentGame.computerCards[currentGame.computerCards.length-1].card1, currentGame.computerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river]);
-    //   console.log(playerplayerBestFiveCards);
+    //   console.log(playerBestFiveCards);
     //   console.log(bestFiveComputerCards);
     //
-    //   if (evaluateShowdown(currentPlayerCard.card1, currentPlayerCard.card2, currentComputerCard.card1, playerplayerBestFiveCards[0], bestFiveComputerCards[0], currentGame.street[currentGame.street.length-1])) {
+    //   if (evaluateShowdown(currentPlayerCard.card1, currentPlayerCard.card2, currentComputerCard.card1, playerBestFiveCards[0], bestFiveComputerCards[0], currentGame.street[currentGame.street.length-1])) {
     //     currentGame.player_chips += currentGame.pot;
     //     currentGame.messages.push({message: { playerMessage: `Player wins ${currentGame.pot}`}});
     //     gameInfo = {

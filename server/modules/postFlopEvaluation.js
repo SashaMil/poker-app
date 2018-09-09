@@ -8,50 +8,44 @@ const postFlopEvaluation = (handAndStreet) => {
 
   console.log(checkForFlush(suitValues, handAndStreet));
 
-  if (checkForFlush(suitValues, handAndStreet)) {
-    return checkForFlush(suitValues, handAndStreet);
-  }
-  if (checkForStraight(suitValues, handAndStreet)) {
-    return checkForStraight(suitValues, handAndStreet);
-  }
 
-  
+
+
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
-  // if (!checkForFlush(suitValues, handAndStreet) && !checkForStraight(numberValues)) {
-  //   return [0, 'Straight Flush'];
-  // }
-  // else if (checkForPairs(numberValues)[0] === 7) {
-  //   return [7, checkForPairs(numberValues)[1]];
-  // }
-  // else if (checkForPairs(numberValues)[0] === 6) {
-  //   console.log(checkForPairs(numberValues)[1]);
-  //   return [6, checkForPairs(numberValues)[1]];
-  // }
-  // else if (checkForFlush(suitValues, handAndStreet) !== false) {
-  //   console.log(checkForFlush(suitValues, handAndStreet));
-  //   return [5, checkForFlush(suitValues, handAndStreet)];
-  // }
-  // else if (checkForStraight(numberValues) !== false) {
-  //   console.log(checkForStraight(numberValues));
-  //   return [4, checkForStraight(numberValues)];
-  // }
-  // else if (checkForPairs(numberValues)[0] === 3) {
-  //   console.log(checkForPairs(numberValues)[1]);
-  //   return [3, checkForPairs(numberValues)[1]];
-  // }
-  // else if (checkForPairs(numberValues)[0] === 2) {
-  //   console.log(checkForPairs(numberValues)[1]);
-  //   return [2, checkForPairs(numberValues)[1]];
-  // }
-  // else if (checkForPairs(numberValues)[0] === 1) {
-  //   console.log(checkForPairs(numberValues)[1]);
-  //   return [1, checkForPairs(numberValues)[1]];
-  // }
-  // else {
-  //   console.log(checkForPairs(numberValues));
-  //   return [0, checkForPairs(numberValues)];
-  // }
+
+  // Four of a Kind
+  if (checkForPairs(numberValues)[0] === 7) {
+    return [7, checkForPairs(numberValues)];
+  }
+  // FullHouse
+  else if (checkForPairs(numberValues)[0] === 6) {
+    return checkForPairs(numberValues);
+  }
+  // Flush
+  else if (checkForFlush(suitValues, handAndStreet) !== false) {
+    return [5, checkForFlush(suitValues, handAndStreet)];
+  }
+  // Straight
+  else if (checkForStraight(numberValues) !== false) {
+    return [4, checkForStraight(numberValues)];
+  }
+  // Three of a Kind
+  else if (checkForPairs(numberValues)[0] === 3) {
+    return [3, checkForPairs(numberValues)[1]];
+  }
+  // Two Pair
+  else if (checkForPairs(numberValues)[0] === 2) {
+    return [2, checkForPairs(numberValues)[1]];
+  }
+  // Pair
+  else if (checkForPairs(numberValues)[0] === 1) {
+    return [1, checkForPairs(numberValues)[1]];
+  }
+  // X High
+  else {
+    return [0, checkForPairs(numberValues)];
+  }
 
 }
 
@@ -115,7 +109,7 @@ function checkForFlush(suitValues, handAndStreet) {
           flush.push(suitsAndValuesSorted[x][0])
         }
       }
-      return {name: `${flush[0]} High flush`, bestFiveCards: flush};
+      return `${flush[0]} High flush`;
     }
   }
   return false;
@@ -135,30 +129,44 @@ function checkForPairs(numberValues) {
     }
     for (let key in pairOccurences) {
         if (pairOccurences[key] === 4) {
-            return [7, `4 of a kind with ${key}s`]
+            return [4, `4 of a kind with ${key}s`];
         }
     }
     for (let key in pairOccurences) {
         if (pairOccurences[key] === 3) {
             for (let props in pairOccurences) {
                 if (pairOccurences[props] === 2) {
-                    return [6, `Full House, ${key}s full of ${props}`]
+                    return [3, `Full House, ${key}s full of ${props}`];
                 }
             }
-            return [3, `3 of a kind with ${key}s`]
+            return [3, `3 of a kind with ${key}s`];
         }
     }
     for (let key in pairOccurences) {
       if (pairOccurences[key] === 2) {
         for (let props in pairOccurences) {
           if (pairOccurences[props] === 2 && pairOccurences[key] !== pairOccurences[props]) {
-            return [2, `Two Pair, ${key}s and ${props}`]
+            return [2, `Two Pair, ${key}s and ${props}`];
           }
         }
-        return [1, `Pair of ${key}s`]
+        return [1, `Pair of ${key}s`];
       }
     }
-    return `${sortedNumberValues[0]} High`;
+    if (sortedNumberValues[0] === 11) {
+      return [0, `$Jack High`];
+    }
+    if (sortedNumberValues[0] === 12) {
+      return [0, `Queen High`];
+    }
+    if (sortedNumberValues[0] === 13) {
+      return [0, 'King High'];
+    }
+    if (sortedNumberValues[0] === 14) {
+      return [0, 'Ace High'];
+    }
+    else {
+      return [0, `${sortedNumberValues[0]} High`]
+    }
 }
 
 function checkForStraight(numberValues) {
@@ -195,7 +203,7 @@ function checkForStraight(numberValues) {
             possibleStraight = [];
             chance--;
             if (chance < 0) {
-                return 'Not a Straight';
+                return false;
             }
         }
 

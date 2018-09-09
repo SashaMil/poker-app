@@ -74,7 +74,7 @@ const chips = (state = initialChipsState, action) => {
         ... state,
         playerChips: action.payload.playerChips,
         computerChips: action.payload.computerChips,
-        pot: action.payload.chips.pot,
+        pot: action.payload.pot,
       }
     case TABLE_ACTIONS.FOLD:
       return {

@@ -233,7 +233,7 @@ function* getStreet() {
     });
     yield put ({
       type: TABLE_ACTIONS.SET_PLAYER_HAND_VALUE,
-      payload: gameInfo.action.currentAction.player_best_five_cards,
+      payload: gameInfo.action.currentAction.player_best_five_cards_name,
     })
     yield new Promise(resolve => setTimeout(resolve, 2000));
     if (street.currentHandCompleted) {

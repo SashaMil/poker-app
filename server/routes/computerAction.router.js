@@ -17,9 +17,6 @@ router.post('/', (req, res) => {
     const computerAction = currentHand.actions.slice(-2)[0];
     let amountToCall = 0;
 
-    console.log('waterbuffalo', playerAction);
-    console.log('frog', computerAction);
-
     if (playerAction.bet > computerAction.bet) {
       amountToCall = playerAction.bet - computerAction.bet;
     }
@@ -27,9 +24,7 @@ router.post('/', (req, res) => {
     console.log(amountToCall);
 
     const decision = computerLogic(amountToCall, playerAction.pot, playerAction.computer_chips, playerAction.player_chips, currentHand.computerCards.card1, currentHand.computerCards.card2, playerAction.street, currentHand.street);
-    console.log(decision);
-    console.log('boogeyman', playerAction.pot)
-    console.log(playerAction.bet, 'donald duck');
+    console.log('look here', decision);
     switch(decision[0]) {
       case 'FOLD':
         currentHand.hand_status = 'complete';
