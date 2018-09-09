@@ -139,6 +139,20 @@ router.get('/gameInfo', (req, res) => {
     console.log(currentAction);
     console.log(currentHand.playerButton);
     console.log(currentAction);
+
+    let street = {};
+    if (currentAction.street === 'flop') {
+      street.flop = [currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3]
+    }
+    else if (currentAction.street === 'turn') {
+      street.flop = [currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3];
+      street.turn = currentHand.street.turn;
+    }
+    else if (currentAction.street === 'river') {
+      street.flop = [currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3];
+      street.turn = currentHand.street.turn;
+      street.river = currentHand.street.river;
+    }
     // What do I need to send when there is a new hand: chips, pot, (got that),
     // player cards everytime (from hand object), have to send the most recent and second most recent actions.
     let gameInfo = {
@@ -146,9 +160,7 @@ router.get('/gameInfo', (req, res) => {
       pot: currentAction.pot},
       cards: {
         playerCards: currentHand.playerCards,
-        flop : currentAction.street === 'flop' ? [currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3] : null,
-        turn: currentAction.street === 'turn' ? currentHand.street.turn : null,
-        river: currentAction.street === 'river' ? currentHand.street.river : null,
+        street: street
       },
       action: {currentAction: currentAction, playerButton: currentHand.player_button},
     }
@@ -427,49 +439,22 @@ router.get('/street', (req, res) => {
       });
     }
 
-    // else if (currentHand.street === 'river') {
-    //   const currentPlayerCard = currentGame.playerCards[currentGame.playerCards.length-1];
-    //   const currentComputerCard = currentGame.computerCards[currentGame.computerCards.length-1];
-    //   const currentMessage = currentGame.messages[currentGame.messages.length-1];
-    //   console.log('look here', currentMessage);
-    //   playerBestFiveCards = postFlopEvaluation([currentGame.playerCards[currentGame.playerCards.length-1].card1, currentGame.playerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river]);
-    //   bestFiveComputerCards = postFlopEvaluation([currentGame.computerCards[currentGame.computerCards.length-1].card1, currentGame.computerCards[currentGame.playerCards.length-1].card2, currentStreet.flop1, currentStreet.flop2, currentStreet.flop3, currentStreet.turn, currentStreet.river]);
-    //   console.log(playerBestFiveCards);
-    //   console.log(bestFiveComputerCards);
-    //
-    //   if (evaluateShowdown(currentPlayerCard.card1, currentPlayerCard.card2, currentComputerCard.card1, playerBestFiveCards[0], bestFiveComputerCards[0], currentGame.street[currentGame.street.length-1])) {
-    //     currentGame.player_chips += currentGame.pot;
-    //     currentGame.messages.push({message: { playerMessage: `Player wins ${currentGame.pot}`}});
-    //     gameInfo = {
-    //       message: {playerHandValue: `Player wins ${currentGame.pot}`},
-    //       currentHandCompleted: true,
-    //     }
-    //     currentGame.pot = 0;
-    //   }
-    //   else {
-    //     currentGame.computer_chips += currentGame.pot;
-    //     currentGame.messages.push({ message: {computerMessage: `Computer wins ${currentGame.pot}`}})
-    //     gameInfo = {
-    //       message: {playerHandValue: `ComputerWins ${currentGame.pot}`},
-    //       currentHandCompleted: true,
-    //     }
-    //     currentGame.pot = 0;
-    //   }
-      // currentGame.current_hand_completed = true;
-      // data.save(function(err) {
-      //   if (err) throw err;
-      //   res.send('yay');
-      //   console.log('Games array updated successfully');
-      // });
+    else if (currentAction.street === 'river') {
+      const playerCard1 = currentHand.playerCards.card1;
+      const playerCard2 = currentHand.playerCards.card2;
+      const computerCard1 = currentHand.playerCards.card2;
+      const computerCard2 = currentHand.computerCards.card2;
+      console.log(playerCard1, playerCard2, computerCard1, computerCard2);
 
-    // Showdown Street
-
+      data.save(function(err) {
+        if (err) throw err;
+        res.send('yay');
+        console.log('Games array updated successfully');
+      });
+    }
   })
 })
 
-/**
- * POST route template
- */
 
 
 

@@ -8,9 +8,6 @@ const postFlopEvaluation = (handAndStreet) => {
 
   console.log(checkForFlush(suitValues, handAndStreet));
 
-
-
-
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
 
@@ -109,7 +106,21 @@ function checkForFlush(suitValues, handAndStreet) {
           flush.push(suitsAndValuesSorted[x][0])
         }
       }
-      return `${flush[0]} High flush`;
+      if (flush[0] === 11) {
+        return 'Jack High Flush';
+      }
+      else if (flush[0] === 12) {
+        return 'Queen High Flush';
+      }
+      else if (flush[0] === 13) {
+        return 'King High Flush';
+      }
+      else if (flush[0] === 14) {
+        return 'Ace High Flush';
+      }
+      else {
+        return `${flush[0]} High flush`;
+      }
     }
   }
   return false;
@@ -146,8 +157,44 @@ function checkForPairs(numberValues) {
       if (pairOccurences[key] === 2) {
         for (let props in pairOccurences) {
           if (pairOccurences[props] === 2 && pairOccurences[key] !== pairOccurences[props]) {
+            if (key === 11) {
+              key = 'Jacks';
+            }
+            else if (props === 11) {
+              props = 'Jacks';
+            }
+            else if (key === 12) {
+              key = 'Queens';
+            }
+            else if (props === 12) {
+              props = 'Queens';
+            }
+            else if (key === 13) {
+              key = 'Kings';
+            }
+            else if (props === 13) {
+              props = 'Kings';
+            }
+            else if (key === 14) {
+              key = 'Aces'
+            }
+            else if (props === 14) {
+              props = 'Aces';
+            }
             return [2, `Two Pair, ${key}s and ${props}`];
           }
+        }
+        if (key === 11) {
+          key = 'Jacks';
+        }
+        else if (key === 12) {
+          key = 'Queens';
+        }
+        else if (key === 13) {
+          key = 'Kings';
+        }
+        else if (key === 14) {
+          key = 'Aces'
         }
         return [1, `Pair of ${key}s`];
       }

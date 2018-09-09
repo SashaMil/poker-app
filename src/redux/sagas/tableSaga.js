@@ -26,21 +26,41 @@ function* checkGameStatus() {
     // If it is, we are going to pass param to shuffle request so starting chips are hardcoded
     if (newGame) {
       yield shuffleRequest('newGame');
+      gameInfo = yield getGameInfoRequest();
+      // New Hand action will set the new cards and messages
+      yield put({
+        type: TABLE_ACTIONS.NEW_HAND,
+        payload: gameInfo,
+      });
+      yield put({
+        type: TABLE_ACTIONS.SET_GAME,
+        payload: gameInfo,
+      });
     }
-    // Whether it's a new game or not, we will be making a get request all the same to retrieve hand info,
-    gameInfo = yield getGameInfoRequest();
-    console.log(gameInfo);
+    else {
+      gameInfo = yield getGameInfoRequest();
+      if (gameInfo.action.currentAction.street !== 'preflop') {
+        yield put({
+          type: TABLE_ACTIONS.SET_STREET,
+          payload: gameInfo.cards.street
+        });
+      }
+      gameInfo = yield getGameInfoRequest();
+      console.log(gameInfo);
 
-    // New Hand action will set the new cards and messages
-    yield put({
-      type: TABLE_ACTIONS.NEW_HAND,
-      payload: gameInfo,
-    });
-    // Set Game is an action I will use repeatedly to set new chip amounts, bets, everything else
-    yield put({
-      type: TABLE_ACTIONS.SET_GAME,
-      payload: gameInfo,
-    });
+      yield put({
+        type: TABLE_ACTIONS.SET_GAME,
+        payload: gameInfo,
+      });
+      yield put ({
+        type: TABLE_ACTIONS.RETRIEVE_HAND,
+        payload: gameInfo,
+      })
+      yield put({
+        type: TABLE_ACTIONS.SET_CHIPS,
+        payload: gameInfo.chips,
+      })
+    }
     // If the player is not on the button, call computer action saga
     if (!gameInfo.action.playerButton) {
       yield computerAction();
@@ -230,7 +250,7 @@ function* getStreet() {
     console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.SET_STREET,
-      payload: gameInfo.cards
+      payload: gameInfo.cards.street
     });
     yield put ({
       type: TABLE_ACTIONS.SET_PLAYER_HAND_VALUE,

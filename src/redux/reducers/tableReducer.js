@@ -28,6 +28,14 @@ const actions = (state = initialActionsState, action) => {
 
 const cards = (state = initialCardsState, action) => {
   switch (action.type) {
+    case TABLE_ACTIONS.RETRIEVE_HAND:
+      return {
+        ... state,
+        playerCard1: action.payload.cards.playerCards.card1,
+        playerCard2: action.payload.cards.playerCards.card2,
+        dealPlayerHand: true,
+        dealComputerHand: true,
+      }
     case TABLE_ACTIONS.NEW_HAND:
       return {
         ... state,
@@ -101,6 +109,9 @@ const messages = (state = initialMessagesState, action) => {
         playerMessage: '',
       }
     case TABLE_ACTIONS.SET_GAME:
+      if (action.payload.action.currentAction.message === undefined) {
+        return state;
+      }
      return {
        ... state,
        computerMessage: action.payload.action.currentAction.message.computerMessage,

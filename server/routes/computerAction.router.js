@@ -130,7 +130,7 @@ router.post('/', (req, res) => {
       case 'RAISE':
         currentHand.actions.push(
           { player: false,
-            bet: decision[1],
+            bet: decision[1] - computerAction.bet,
             type: decision[0],
             player_act_next: true,
             street: playerAction.street,
