@@ -158,49 +158,49 @@ function checkForPairs(numberValues) {
         for (let props in pairOccurences) {
           if (pairOccurences[props] === 2 && pairOccurences[key] !== pairOccurences[props]) {
             if (key === 11) {
-              key = 'Jacks';
+              key = 'Jack';
             }
             else if (props === 11) {
-              props = 'Jacks';
+              props = 'Jack';
             }
             else if (key === 12) {
-              key = 'Queens';
+              key = 'Queen';
             }
             else if (props === 12) {
-              props = 'Queens';
+              props = 'Queen';
             }
             else if (key === 13) {
-              key = 'Kings';
+              key = 'King';
             }
             else if (props === 13) {
-              props = 'Kings';
+              props = 'King';
             }
             else if (key === 14) {
-              key = 'Aces'
+              key = 'Ace'
             }
             else if (props === 14) {
-              props = 'Aces';
+              props = 'Ace';
             }
-            return [2, `Two Pair, ${key}s and ${props}`];
+            return [2, `Two Pair, ${key}s and ${props}s`];
           }
         }
         if (key === 11) {
-          key = 'Jacks';
+          key = 'Jack';
         }
         else if (key === 12) {
-          key = 'Queens';
+          key = 'Queen';
         }
         else if (key === 13) {
-          key = 'Kings';
+          key = 'King';
         }
         else if (key === 14) {
-          key = 'Aces'
+          key = 'Ace'
         }
         return [1, `Pair of ${key}s`];
       }
     }
     if (sortedNumberValues[0] === 11) {
-      return [0, `$Jack High`];
+      return [0, `Jack High`];
     }
     if (sortedNumberValues[0] === 12) {
       return [0, `Queen High`];

@@ -91,13 +91,21 @@ function* computerAction() {
       payload: gameInfo.chips,
     })
     if (gameInfo.action.currentAction.type === 'FOLD') {
+      yield put({
+        type: TABLE_ACTIONS.FOLD,
+      })
+      yield new Promise(resolve => setTimeout(resolve, 1000));
       yield shuffleRequest();
       gameInfo = yield getGameInfoRequest();
       yield put({
-        type: TABLE_ACTIONS.SET_GAME,
+        type: TABLE_ACTIONS.NEW_HAND,
         payload: gameInfo,
       })
-      if (!gameInfo.player_sb) {
+      yield put({
+        type: TABLE_ACTIONS.SET_GAME,
+        payload: gameInfo,
+      });
+      if (!gameInfo.action.playerButton) {
         yield computerAction();
       }
     }
@@ -257,10 +265,8 @@ function* getStreet() {
       payload: gameInfo.action.currentAction.player_best_five_cards_name,
     })
     yield new Promise(resolve => setTimeout(resolve, 2000));
+    console.log('hellloooooo')
     if (gameInfo.currentHandCompleted) {
-      yield put({
-        type: TABLE_ACTIONS.NEW_HAND,
-      })
       yield checkGameStatus();
     }
     if (gameInfo.action.currentAction.playerButton) {
