@@ -122,7 +122,9 @@ const messages = (state = initialMessagesState, action) => {
        ... state,
        playerHandValue: action.payload,
      }
-    case TABLE_ACTIONS.COMPUTER_FOLD:
+    case TABLE_ACTIONS.NEW_STREET:
+      state = initialMessagesState;
+    case TABLE_ACTIONS.FOLD:
       state = initialMessagesState;
     default:
       return state;

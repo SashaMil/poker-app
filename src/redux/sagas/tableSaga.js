@@ -90,11 +90,11 @@ function* computerAction() {
       type: TABLE_ACTIONS.SET_CHIPS,
       payload: gameInfo.chips,
     })
+    yield new Promise(resolve => setTimeout(resolve, 1000));
     if (gameInfo.action.currentAction.type === 'FOLD') {
       yield put({
         type: TABLE_ACTIONS.FOLD,
       })
-      yield new Promise(resolve => setTimeout(resolve, 1000));
       yield shuffleRequest();
       gameInfo = yield getGameInfoRequest();
       yield put({
@@ -109,7 +109,6 @@ function* computerAction() {
         yield computerAction();
       }
     }
-    console.log('computerAction ', gameInfo.action.currentAction.next_street);
     if (gameInfo.action.currentAction.next_street) {
       yield getStreet();
     }
@@ -122,31 +121,20 @@ function* computerAction() {
 function* playerFold() {
   try {
     yield put({
-      type: TABLE_ACTIONS.FOLD_PLAYER_HAND,
+      type: TABLE_ACTIONS.FOLD,
     })
-    yield playerFoldRequest();
-    gameInfo = yield getGameInfoRequest();
-    console.log(gameInfo);
-    yield put({
-      type: TABLE_ACTIONS.SET_PLAYER_MESSAGE,
-      payload: gameInfo.action.currentAction.message.playerMessage,
-    })
-    yield put({
-      type: TABLE_ACTIONS.SET_CHIPS,
-      payload: gameInfo.chips,
-    })
-    yield put({
-      type: TABLE_ACTIONS.SET_ACTIONS,
-      payload: gameInfo.actions,
-    })
-    yield new Promise(resolve => setTimeout(resolve, 2000));
+    yield new Promise(resolve => setTimeout(resolve, 1000));
     yield shuffleRequest();
     gameInfo = yield getGameInfoRequest();
     yield put({
-      type: TABLE_ACTIONS.SET_GAME,
+      type: TABLE_ACTIONS.NEW_HAND,
       payload: gameInfo,
     })
-    if (!gameInfo.player_sb) {
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
+    });
+    if (!gameInfo.action.playerButton) {
       yield computerAction();
     }
   }
@@ -172,6 +160,7 @@ function* playerCall() {
       type: TABLE_ACTIONS.SET_CHIPS,
       payload: gameInfo.chips,
     })
+    yield new Promise(resolve => setTimeout(resolve, 1000));
     if (gameInfo.action.currentAction.next_street) {
       yield getStreet();
     }
@@ -223,6 +212,10 @@ function* playerBet(action) {
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
     });
+    yield put({
+      type: TABLE_ACTIONS.SET_CHIPS,
+      payload: gameInfo.chips,
+    })
     yield computerAction();
   }
   catch(error) {
@@ -256,6 +249,10 @@ function* getStreet() {
     yield getStreetRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
+    // Resets messages when new street appears (so it doesn't say computer checks left over from previous street)
+    yield put({
+      type: TABLE_ACTIONS.NEW_STREET,
+    })
     yield put({
       type: TABLE_ACTIONS.SET_STREET,
       payload: gameInfo.cards.street
