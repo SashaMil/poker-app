@@ -52,6 +52,8 @@ function* checkGameStatus() {
         type: TABLE_ACTIONS.SET_GAME,
         payload: gameInfo,
       });
+      // Since I don't want to get new cards for every action since it will remain the same, i will call this special
+      // action to retrieve hands when page refreshes
       yield put ({
         type: TABLE_ACTIONS.RETRIEVE_HAND,
         payload: gameInfo,
@@ -82,6 +84,7 @@ function* computerAction() {
       type: TABLE_ACTIONS.SET_COMPUTER_MESSAGE,
       payload: gameInfo.action.currentAction.message.computerMessage,
     })
+    yield new Promise(resolve => setTimeout(resolve, 1000));
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
