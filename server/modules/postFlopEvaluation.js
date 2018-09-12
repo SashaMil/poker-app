@@ -46,6 +46,16 @@ const postFlopEvaluation = (handAndStreet) => {
 
 }
 
+// Function to change ace values form 1 to 14
+function changeAceValues(numberValues) {
+  for (let x = 0; x < numberValues.length; x++) {
+    if (numberValues[x] === 1) {
+      numberValues[x] = 14;
+    }
+  }
+  return numberValues;
+}
+
 // Helper function to extract just the integer values from an array of cards
 function extractNumberValues(valuesAndSuits) {
   let justValues = [];
@@ -126,9 +136,27 @@ function checkForFlush(suitValues, handAndStreet) {
   return false;
 }
 
+/**
+ * Created by sashamilenkovic on 9/12/18.
+ */
 // Used to find the occurences of all present integer values
 function checkForPairs(numberValues) {
-    let sortedNumberValues = numberValues.sort(function(a,b){return b-a});
+  changeAceValues(numberValues);
+  let sortedNumberValues = numberValues.sort(function(a,b){return b-a});
+    for (let x = 0; x < numberValues.length; x++) {
+        if (numberValues[x] === 11) {
+            numberValues[x] = 'Jack';
+        }
+        if (numberValues[x] === 12) {
+            numberValues[x] = 'Queen';
+        }
+        if (numberValues[x] === 13) {
+            numberValues[x] = 'King';
+        }
+        if (numberValues[x] === 14) {
+            numberValues[x] = 'Ace';
+        }
+    }
     let pairOccurences = {};
     for (number of sortedNumberValues) {
         if (pairOccurences[number] === undefined) {
@@ -140,7 +168,7 @@ function checkForPairs(numberValues) {
     }
     for (let key in pairOccurences) {
         if (pairOccurences[key] === 4) {
-            return [4, `4 of a kind with ${key}s`];
+            return [4, `4 of a Kind with ${key}s`];
         }
     }
     for (let key in pairOccurences) {
@@ -150,70 +178,21 @@ function checkForPairs(numberValues) {
                     return [3, `Full House, ${key}s full of ${props}`];
                 }
             }
-            return [3, `3 of a kind with ${key}s`];
+            return [3, `3 of a Kind with ${key}s`];
         }
     }
     for (let key in pairOccurences) {
       if (pairOccurences[key] === 2) {
-        for (let props in pairOccurences) {
-          if (pairOccurences[props] === 2 && pairOccurences[key] !== pairOccurences[props]) {
-            if (key === 11) {
-              key = 'Jack';
-            }
-            else if (props === 11) {
-              props = 'Jack';
-            }
-            else if (key === 12) {
-              key = 'Queen';
-            }
-            else if (props === 12) {
-              props = 'Queen';
-            }
-            else if (key === 13) {
-              key = 'King';
-            }
-            else if (props === 13) {
-              props = 'King';
-            }
-            else if (key === 14) {
-              key = 'Ace'
-            }
-            else if (props === 14) {
-              props = 'Ace';
-            }
-            return [2, `Two Pair, ${key}s and ${props}s`];
+          for (let props in pairOccurences) {
+              if (pairOccurences[props] === 2 && key !== props) {
+                  return [2, `Two Pair, ${key}s and ${props}s`];
+              }
           }
-        }
-        if (key === 11) {
-          key = 'Jack';
-        }
-        else if (key === 12) {
-          key = 'Queen';
-        }
-        else if (key === 13) {
-          key = 'King';
-        }
-        else if (key === 14) {
-          key = 'Ace'
-        }
-        return [1, `Pair of ${key}s`];
+          return [1, `Pair of ${key}s`];
       }
     }
-    if (sortedNumberValues[0] === 11) {
-      return [0, `Jack High`];
-    }
-    if (sortedNumberValues[0] === 12) {
-      return [0, `Queen High`];
-    }
-    if (sortedNumberValues[0] === 13) {
-      return [0, 'King High'];
-    }
-    if (sortedNumberValues[0] === 14) {
-      return [0, 'Ace High'];
-    }
-    else {
-      return [0, `${sortedNumberValues[0]} High`]
-    }
+    return [0, `${sortedNumberValues[0]} High`]
+
 }
 
 function checkForStraight(numberValues) {

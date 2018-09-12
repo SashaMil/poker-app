@@ -104,7 +104,7 @@ router.post('/call', (req, res) => {
     }
 
     let amountToCall = 0;
-    console.log('ladymantime', computerAction.bet, playerAction.bet);
+    console.log('walrus', computerAction.bet, playerAction.bet);
     if (computerAction.bet > playerAction.bet) {
       amountToCall = computerAction.bet - playerAction.bet;
     }

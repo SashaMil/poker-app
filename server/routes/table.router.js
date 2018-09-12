@@ -137,6 +137,7 @@ router.get('/gameInfo', (req, res) => {
     const currentGame = data.games.slice(-1)[0];
     const currentHand = currentGame.hands.slice(-1)[0];
     const currentAction = currentHand.actions.slice(-1)[0];
+    let handCompleted = null;
     console.log(currentAction);
     console.log(currentHand.playerButton);
     console.log(currentAction);
@@ -154,6 +155,9 @@ router.get('/gameInfo', (req, res) => {
       street.turn = currentHand.street.turn;
       street.river = currentHand.street.river;
     }
+    else if (currentAction.street === 'showdown') {
+      handCompleted = true;
+    }
     // What do I need to send when there is a new hand: chips, pot, (got that),
     // player cards everytime (from hand object), have to send the most recent and second most recent actions.
     let gameInfo = {
@@ -164,7 +168,7 @@ router.get('/gameInfo', (req, res) => {
         street: street
       },
       action: {currentAction: currentAction, playerButton: currentHand.player_button},
-      currentHandCompleted: currentHand.game_completed,
+      currentHandCompleted: handCompleted,
     }
 
 
@@ -275,6 +279,7 @@ router.get('/street', (req, res) => {
     else if (currentAction.street === 'flop') {
 
       playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
+      console.log('On the turn', playerBestFiveCards);
 
       if (currentGame.player_button) {
 
@@ -359,6 +364,7 @@ router.get('/street', (req, res) => {
     else if (currentAction.street === 'turn') {
 
       playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
+      console.log('On the river', playerBestFiveCards);
 
       if (currentHand.player_button) {
 
@@ -459,7 +465,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips + currentAction.pot,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          message: `Player wins ${currentAction.player_chips + currentAction.pot}`,
+          message: {playerMessage:`Player wins ${currentAction.pot}`},
         });
       }
       else {
@@ -473,7 +479,7 @@ router.get('/street', (req, res) => {
           computer_chips: currentAction.computer_chips + currentAction.pot,
           player_chips: currentAction.player_chips,
           raiseCounter: 0,
-          message: `Computer wins ${currentAction.computer_chips + currentAction.pot}`,
+          message: {computerMessage: `Computer wins ${currentAction.pot}`},
         });
       }
 

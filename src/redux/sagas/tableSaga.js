@@ -38,6 +38,10 @@ function* checkGameStatus() {
       });
     }
     else {
+      yield put({
+        type: TABLE_ACTIONS.NEW_HAND,
+        payload: gameInfo,
+      });
       gameInfo = yield getGameInfoRequest();
       if (gameInfo.action.currentAction.street !== 'preflop') {
         yield put({
@@ -272,10 +276,13 @@ function* getStreet() {
       payload: gameInfo,
     })
     yield new Promise(resolve => setTimeout(resolve, 2000));
-    console.log('hellloooooo')
+    console.log('hellloooooo');
+    console.log(gameInfo.currentHandCompleted);
     if (gameInfo.currentHandCompleted) {
+      console.log('did it do it??')
       yield checkGameStatus();
     }
+    console.log(gameInfo);
     if (gameInfo.action.playerButton) {
       console.log('doggy');
       yield computerAction();
