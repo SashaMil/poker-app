@@ -100,6 +100,7 @@ function* computerAction() {
       })
       yield shuffleRequest();
       gameInfo = yield getGameInfoRequest();
+      console.log(gameInfo);
       yield put({
         type: TABLE_ACTIONS.NEW_HAND,
         payload: gameInfo,
@@ -123,12 +124,14 @@ function* computerAction() {
 
 function* playerFold() {
   try {
+    yield playerFoldRequest();
     yield put({
       type: TABLE_ACTIONS.FOLD,
     })
     yield new Promise(resolve => setTimeout(resolve, 1000));
     yield shuffleRequest();
     gameInfo = yield getGameInfoRequest();
+    console.log(gameInfo);
     yield put({
       type: TABLE_ACTIONS.NEW_HAND,
       payload: gameInfo,
@@ -258,18 +261,23 @@ function* getStreet() {
     })
     yield put({
       type: TABLE_ACTIONS.SET_STREET,
-      payload: gameInfo.cards.street
+      payload: gameInfo.cards.street,
     });
     yield put ({
       type: TABLE_ACTIONS.SET_PLAYER_HAND_VALUE,
       payload: gameInfo.action.currentAction.player_best_five_cards_name,
+    });
+    yield put({
+      type: TABLE_ACTIONS.SET_GAME,
+      payload: gameInfo,
     })
     yield new Promise(resolve => setTimeout(resolve, 2000));
     console.log('hellloooooo')
     if (gameInfo.currentHandCompleted) {
       yield checkGameStatus();
     }
-    if (gameInfo.action.currentAction.playerButton) {
+    if (gameInfo.action.playerButton) {
+      console.log('doggy');
       yield computerAction();
     }
   }

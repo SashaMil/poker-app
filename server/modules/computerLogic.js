@@ -1,79 +1,86 @@
 const postFlopEvaluation = require('../modules/postFlopEvaluation.js');
 const preflopEvaluation = require('../modules/preflopEvaluation.js');
 
-function computerLogic (amountToCall, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards) {
+function computerLogic (amountToCall, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards, raiseCounter, playerHasActed, computerHasActed, playerButton, playerActionType) {
   let postFlopHandValue = 0;
-  console.log([amountToCall, pot, computerChips, playerChips, computerChips, playerChips, computerCard1, computerCard2, street, streetCards]);
+  console.log([amountToCall, pot, computerChips, playerChips, computerChips, playerChips, computerCard1, computerCard2, street, streetCards, raiseCounter, playerHasActed, computerHasActed, playerButton, playerActionType ]);
   switch(street) {
     case 'preflop':
-      let possibleAces = formatPossibleAces(computerCard1, computerCard2);
-      computerCard1 = possibleAces[0];
-      computerCard2 = possibleAces[1];
-      const startingHandValue = (evaluateStartingHand(computerCard1, computerCard2));
-      console.log('yayyyy', startingHandValue);
-
-
-      if (startingHandValue === 0) {
-        if (amountToCall === 0) {
-          return ['CHECK'];
-        }
-        else {
-          return ['FOLD'];
-        }
-      }
-      if (startingHandValue === 1) {
-        if (amountToCall === 0) {
-          return ['CHECK'];
-        }
-        else if (amountToCall <= 5) {
+      // Setting condition for when player calls from the button preflop
+      if (playerButton && playerHasActed && playerActionType === 'CALL' && !computerHasActed) {
+        if (preflopEvaluation(computerCard1, computerCard2, 11)) {
           return ['RAISE', 30];
         }
         else {
-          return ['FOLD'];
+          return ['CHECK'];
         }
       }
-      if (startingHandValue === 2) {
-        if (amountToCall === 0) {
-          return ['RAISE', 30]
+      // Setting condition for when player raises from the button preflop
+      if (playerButton && playerHasActed && playerActionType === 'RAISE' && !computerHasActed) {
+        // If hand is within this threshold, we will 3-bet
+        if (preflopEvaluation(computerCard1, computerCard2, 4)) {
+          return ['RAISE', amountToCall * 3];
         }
-        else if (amountToCall <= 5) {
-          return ['RAISE', 30];
-        }
-        else if (amountToCall <= 40) {
+        // If hand is withing this threshold, we will call the raise
+        if (preflopEvaluation(computerCard1, computerCard2, 11)) {
           return ['CALL'];
         }
+        // If hand is not within this range, we will fold to the player raise
         else {
-          return ['FOLD']
+          return ['FOLD'];
         }
       }
-      if (startingHandValue === 3) {
-        if (amountToCall === 0) {
-          return ['RAISE', 30];
-        }
-        else if (amountToCall <= 5) {
-          return ['RAISE', 30];
-        }
-        else if (amountToCall <= 40) {
-          return ['RAISE', 120];
-        }
-        else if (amountToCall <= 150) {
-          return ['FOLD']
-        }
-      }
-      if (startingHandValue >= 4) {
-        if (amountToCall === 0) {
-          return ['RAISE', 30];
-        }
-        else if (amountToCall <= 5) {
-          return ['RAISE', 30];
-        }
-        else if (amountToCall <= 40) {
-          return ['RAISE', 120];
-        }
-        else if (amountToCall <= 150) {
+      // Setting condition for when player 4-bets preflop on the button preflop
+      if (playerButton && playerHasActed && playerActionType === 'RAISE' && computerHasActed) {
+        // If player 4-bets and our hand is within this range, we will shove all-in
+        if (preflopEvaluation(computerCard1, computerCard2, 2)) {
           return ['RAISE', computerChips];
         }
+        // If our hand is within this range, we will call the 4-bet
+        if (preflopEvaluation(computerCard1, computerCard2, 4)) {
+          return ['CALL']
+        }
+        else {
+          return ['FOLD'];
+        }
       }
+      // Setting condition for when the computer is on the button preflop
+      if (!playerButton && !playerHasActed) {
+        if (preflopEvaluation(computerCard1, computerCard2, 11)) {
+          return ['RAISE', 30];
+        }
+        else {
+          return ['FOLD'];
+        }
+      }
+      if (!playerButton && playerActionType === 'RAISE') {
+        if (preflopEvaluation(computerCard1, computerCard2, 4)) {
+          return ['RAISE', amountToCall * 3];
+        }
+        // If hand is withing this threshold, we will call the raise
+        if (preflopEvaluation(computerCard1, computerCard2, 11)) {
+          return ['CALL'];
+        }
+        // If hand is not within this range, we will fold to the player raise
+        else {
+          return ['FOLD'];
+        }
+      }
+      // Setting condition for when the player
+      if (!playerButton && raiseCounter > 2 && playerActoinType === 'RAISE') {
+        // If player 4-bets and our hand is within this range, we will shove all-in
+        if (preflopEvaluation(computerCard1, computerCard2, 2)) {
+          return ['RAISE', computerChips];
+        }
+        // If our hand is within this range, we will call the 4-bet
+        if (preflopEvaluation(computerCard1, computerCard2, 4)) {
+          return ['CALL']
+        }
+        else {
+          return ['FOLD'];
+        }
+      }
+
       break;
 
 

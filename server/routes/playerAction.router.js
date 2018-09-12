@@ -20,7 +20,7 @@ router.post('/fold', (req, res) => {
      street: playerAction.street,
      message: {playerMessage: 'Player Folds'},
      pot: 0,
-     computer_chips: computerAction.computer_chips + playerAction.pot,
+     computer_chips: computerAction.computer_chips + computerAction.pot,
      player_chips: computerAction.player_chips,
    });
 
@@ -113,7 +113,7 @@ router.post('/call', (req, res) => {
     currentHand.actions.push({
       player: true,
       type: 'CALL',
-      bet: 0,
+      bet: amountToCall + playerAction.bet,
       player_act_next: playerActNext,
       street: computerAction.street,
       player_has_acted: true,

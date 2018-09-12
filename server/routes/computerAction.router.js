@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
 
     console.log(amountToCall);
 
-    const decision = computerLogic(amountToCall, playerAction.pot, playerAction.computer_chips, playerAction.player_chips, currentHand.computerCards.card1, currentHand.computerCards.card2, playerAction.street, currentHand.street);
+    const decision = computerLogic(amountToCall, playerAction.pot, playerAction.computer_chips, playerAction.player_chips, currentHand.computerCards.card1, currentHand.computerCards.card2, playerAction.street, currentHand.street, playerAction.raiseCounter, playerAction.player_has_acted, playerAction.computer_has_acted, currentHand.player_button, playerAction.type);
     console.log('look here', decision);
     switch(decision[0]) {
       case 'FOLD':
@@ -130,16 +130,16 @@ router.post('/', (req, res) => {
       case 'RAISE':
         currentHand.actions.push(
           { player: false,
-            bet: decision[1] - computerAction.bet,
+            bet: decision[1],
             type: decision[0],
             player_act_next: true,
             street: playerAction.street,
             player_has_acted: playerAction.player_has_acted,
             computer_has_acted: true,
             next_street: false,
-            pot: playerAction.pot + decision[1],
+            pot: playerAction.pot + (decision[1] - computerAction.bet),
             player_chips: playerAction.player_chips,
-            computer_chips: playerAction.computer_chips - decision[1],
+            computer_chips: playerAction.computer_chips - (decision[1] - computerAction.bet),
             message: {computerMessage: `Computer raises to ${decision[1]}`},
             raiseCounter: playerAction.raiseCounter + 1
           });

@@ -18,6 +18,13 @@ const mapStateToProps = state => ({
 
 class Controller extends Component {
 
+  componentDidMount = () => {
+    console.log(this.props.currentAction.bet);
+  }
+  componentDidUpdate = () => {
+    console.log(this.props.currentAction.bet);
+  }
+
   render() {
     return (
       <div>

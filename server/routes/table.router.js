@@ -100,15 +100,15 @@ router.put('/shuffle/:newGame', (req, res) => {
       const lastAction = lastHand.actions.slice(-1)[0];
       if (lastHand.player_button) {
         actions = [
-          {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0 },
+          {player: false, type: 'Button', street: 'preflop', bet: 5, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips - 10, computer_chips: lastAction.computer_chips - 5, pot: 15, raiseCounter: 0 },
 
-          {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0, message: {playerMessage: 'Player on BB', computerMessage: 'Computer on Button'} }
+          {player: true, type: 'BB', street: 'preflop', bet: 10, player_act_next: false, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips - 10, computer_chips: lastAction.computer_chips - 5, pot: 15, raiseCounter: 0, message: {playerMessage: 'Player on BB', computerMessage: 'Computer on Button'} }
       ];
       } else {
         actions = [
-          {player: true, type: 'Button', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.computer_chips, pot: 15, raiseCounter: 0},
+          {player: true, type: 'Button', street: 'preflop', bet: 5, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips - 5, computer_chips: lastAction.computer_chips - 10, pot: 15, raiseCounter: 0},
 
-          {player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips, computer_chips: lastAction.player_chips, pot: 15, raiseCounter: 0 , message: {playerMessage: 'Player on Button', computerMessage: 'Computer on BB'} },
+          {player: false, type: 'BB', street: 'preflop', bet: 10, player_act_next: true, player_has_acted: false, computer_has_acted: false, next_street: false, player_chips: lastAction.player_chips - 5, computer_chips: lastAction.computer_chips - 10, pot: 15, raiseCounter: 0 , message: {playerMessage: 'Player on Button', computerMessage: 'Computer on BB'} },
 
         ];
 
@@ -197,7 +197,7 @@ router.get('/street', (req, res) => {
           type: 'flopBB',
           player: false,
           bet: 0,
-          player_act_next: true,
+          player_act_next: false,
           player_has_acted: false,
           computer_has_acted: false,
           street: 'flop',
@@ -214,7 +214,7 @@ router.get('/street', (req, res) => {
           type: 'flopButton',
           player: true,
           bet: 0,
-          player_act_next: true,
+          player_act_next: false,
           player_has_acted: false,
           computer_has_acted: false,
           street: 'flop',
@@ -234,7 +234,7 @@ router.get('/street', (req, res) => {
           type: 'flopButton',
           player: false,
           bet: 0,
-          player_act_next: false,
+          player_act_next: true,
           player_has_acted: false,
           computer_has_acted: false,
           street: 'flop',
@@ -251,7 +251,7 @@ router.get('/street', (req, res) => {
           type: 'flopBB',
           player: true,
           bet: 0,
-          player_act_next: false,
+          player_act_next: true,
           player_has_acted: false,
           computer_has_acted: false,
           street: 'flop',

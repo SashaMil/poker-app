@@ -62,6 +62,6 @@ export const playerBet = (betSize) => ({
 });
 
 export const playerRaise = (betSize) => ({
-  type: TABLE_ACTIONS.PLAYER_BET,
+  type: TABLE_ACTIONS.PLAYER_RAISE,
   betSize,
 });
