@@ -281,7 +281,7 @@ router.get('/street', (req, res) => {
       playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
       console.log('On the turn', playerBestFiveCards);
 
-      if (currentGame.player_button) {
+      if (currentHand.player_button) {
 
         currentHand.actions.push({
           type: 'turnBB',
@@ -323,7 +323,7 @@ router.get('/street', (req, res) => {
           type: 'turnBB',
           player: true,
           bet: 0,
-          player_act_next: false,
+          player_act_next: true,
           player_has_acted: false,
           computer_has_acted: false,
           street: 'turn',
@@ -337,10 +337,10 @@ router.get('/street', (req, res) => {
         });
 
         currentHand.actions.push({
-          type: 'turnSB',
+          type: 'turnButton',
           player: false,
           bet: 0,
-          player_act_next: false,
+          player_act_next: true,
           player_has_acted: false,
           computer_has_acted: false,
           street: 'turn',
@@ -386,7 +386,7 @@ router.get('/street', (req, res) => {
         });
 
         currentHand.actions.push({
-          type: 'riverSB',
+          type: 'riverButton',
           player: true,
           bet: 0,
           player_act_next: true,
@@ -406,10 +406,10 @@ router.get('/street', (req, res) => {
       else {
 
         currentHand.actions.push({
-          type: 'riverSB',
+          type: 'riverButton',
           player: false,
           bet: 0,
-          player_act_next: false,
+          player_act_next: true,
           player_has_acted: false,
           computer_has_acted: false,
           street: 'river',
@@ -426,7 +426,7 @@ router.get('/street', (req, res) => {
           type: 'riverBB',
           player: true,
           bet: 0,
-          player_act_next: false,
+          player_act_next: true,
           player_has_acted: false,
           computer_has_acted: false,
           street: 'river',

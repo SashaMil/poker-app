@@ -109,6 +109,11 @@ router.post('/call', (req, res) => {
       amountToCall = computerAction.bet - playerAction.bet;
     }
     console.log(amountToCall);
+    // If the amountToCall is greater than the player chips, the call amount
+    // will be the equivalent of the remainder of the player chips
+    if (amountToCall > computerAction.player_chips) {
+      amountToCall = computerAction.player_chips;
+    }
 
     currentHand.actions.push({
       player: true,
@@ -144,7 +149,7 @@ router.post('/bet', (req, res) => {
    const playerAction = currentHand.actions.slice(-2)[0];
 
    if (req.body.betSize > computerAction.player_chips) {
-     
+     req.body.betSize = computerAction.player_chips;
    }
 
    console.log(req.body.betSize);
@@ -179,6 +184,10 @@ router.post('/raise', (req, res) => {
    const currentHand = currentGame.hands.slice(-1)[0];
    const computerAction = currentHand.actions.slice(-1)[0];
    const playerAction = currentHand.actions.slice(-2)[0];
+
+   if (req.body.betSize > computerAction.player_chips) {
+     req.body.betSize = computerAction.player_chips;
+   }
 
    console.log(req.body.betSize);
    currentHand.actions.push({

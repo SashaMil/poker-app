@@ -83,7 +83,15 @@ function computerLogic (amountToCall, pot, computerChips, playerChips, computerC
 
       break;
 
-
+    // Straight Flush: 8
+    // 4 of a Kind: 7
+    // FullHouse: 6
+    // Flush: 5
+    // Straight: 4
+    // Three of a Kind: 3
+    // Two Pair: 2
+    // One Pair: 1
+    // * High
     case 'flop':
     postFlopHandValue = postFlopEvaluation([computerCard1, computerCard2, streetCards.flop1, streetCards.flop2, streetCards.flop3]);
 

@@ -2,21 +2,18 @@ const postFlopEvaluation = (handAndStreet) => {
   console.log('wolverinedjfkdjfkd', handAndStreet);
 
   let numberValues = extractNumberValues(handAndStreet);
-  console.log('numberValues', numberValues);
   let suitValues = extractSuitValues(handAndStreet);
-  console.log('suitValues', suitValues);
-
-  console.log(checkForFlush(suitValues, handAndStreet));
-
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
 
   // Four of a Kind
-  if (checkForPairs(numberValues)[0] === 7) {
+  // For Check Pairs function, I am checking the first element in array
+  // to distinguish between different kinds of pairs
+  if (checkForPairs(numberValues)[0] === 5) {
     return [7, checkForPairs(numberValues)];
   }
   // FullHouse
-  else if (checkForPairs(numberValues)[0] === 6) {
+  else if (checkForPairs(numberValues)[0] === 4) {
     return checkForPairs(numberValues);
   }
   // Flush
@@ -82,17 +79,30 @@ function extractSuitValues(valuesAndSuits) {
 // Used to find  the occurences of all present suits.
 function checkForFlush(suitValues, handAndStreet) {
   let suitsAndValuesSorted = [];
+  console.log('suitValues', suitValues, 'handAndStreet', handAndStreet);
+  // going to write a quick loop to change aces to value of 14, should do this to encompass all functions later
   for (card of handAndStreet) {
     if (card.length === 3) {
       suitsAndValuesSorted.push([parseInt(card[0] + card[1]), card[2]]);
     }
     else {
-      suitsAndValuesSorted.push([parseInt(card[0]), card[1]]);
+      console.log(card[0]);
+      if (card[0] === '1') {
+        console.log('ace found?');
+        card[0] = '14';
+        suitsAndValuesSorted.push([14, card[1]]);
+      }
+      else {
+        suitsAndValuesSorted.push([parseInt(card[0]), card[1]]);
+      }
     }
   }
+  console.log('look here this time', suitsAndValuesSorted);
+
   // Creating an array of arrays that looks like this [ [ 8, 'H' ], [ 6, 'H' ], [ 5, 'H' ], [ 5, 'D' ], [ 5, 'H' ] ]
 
   suitsAndValuesSorted = suitsAndValuesSorted.sort(function(a,b){return b[0]-a[0]});
+  console.log('flush checker here!', suitsAndValuesSorted);
 
   let suitOccurences = {};
   // Counting instances of each suit
@@ -125,7 +135,7 @@ function checkForFlush(suitValues, handAndStreet) {
       else if (flush[0] === 13) {
         return 'King High Flush';
       }
-      else if (flush[0] === 14) {
+      else if (flush[0] === 1) {
         return 'Ace High Flush';
       }
       else {
@@ -168,14 +178,14 @@ function checkForPairs(numberValues) {
     }
     for (let key in pairOccurences) {
         if (pairOccurences[key] === 4) {
-            return [4, `4 of a Kind with ${key}s`];
+            return [5, `4 of a Kind with ${key}s`];
         }
     }
     for (let key in pairOccurences) {
         if (pairOccurences[key] === 3) {
             for (let props in pairOccurences) {
                 if (pairOccurences[props] === 2) {
-                    return [3, `Full House, ${key}s full of ${props}`];
+                    return [4, `Full House, ${key}s full of ${props}`];
                 }
             }
             return [3, `3 of a Kind with ${key}s`];
