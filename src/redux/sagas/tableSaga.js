@@ -39,36 +39,39 @@ function* checkGameStatus() {
     }
     else {
       yield put({
+        type: TABLE_ACTIONS.FOLD,
+        payload: gameInfo,
+      });
+      yield new Promise(resolve => setTimeout(resolve, 1000));
+      yield shuffleRequest();
+      gameInfo = yield getGameInfoRequest();
+      console.log('look here', gameInfo);
+      yield put({
         type: TABLE_ACTIONS.NEW_HAND,
         payload: gameInfo,
       });
-      gameInfo = yield getGameInfoRequest();
       if (gameInfo.action.currentAction.street !== 'preflop') {
         yield put({
           type: TABLE_ACTIONS.SET_STREET,
           payload: gameInfo.cards.street
         });
       }
-      gameInfo = yield getGameInfoRequest();
-      console.log(gameInfo);
-
       yield put({
         type: TABLE_ACTIONS.SET_GAME,
         payload: gameInfo,
       });
       // Since I don't want to get new cards for every action since it will remain the same, i will call this special
       // action to retrieve hands when page refreshes
-      yield put ({
-        type: TABLE_ACTIONS.RETRIEVE_HAND,
-        payload: gameInfo,
-      })
       yield put({
         type: TABLE_ACTIONS.SET_CHIPS,
         payload: gameInfo.chips,
       })
     }
+    console.log(gameInfo);
+    console.log(!gameInfo.action.playerButton);
     // If the player is not on the button, call computer action saga
     if (!gameInfo.action.playerButton) {
+      console.log('omg why')
       yield computerAction();
     }
   }
@@ -79,7 +82,7 @@ function* checkGameStatus() {
 
 function* computerAction() {
   try {
-    yield new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('in computer action');
     yield computerActionRequest();
     gameInfo = yield getGameInfoRequest();
     console.log(gameInfo);
@@ -88,7 +91,6 @@ function* computerAction() {
       type: TABLE_ACTIONS.SET_COMPUTER_MESSAGE,
       payload: gameInfo.action.currentAction.message.computerMessage,
     })
-    yield new Promise(resolve => setTimeout(resolve, 1000));
     yield put({
       type: TABLE_ACTIONS.SET_GAME,
       payload: gameInfo,
@@ -197,6 +199,7 @@ function* playerCheck() {
       payload: gameInfo,
     });
     console.log(gameInfo.action.currentAction.next_street);
+    yield new Promise(resolve => setTimeout(resolve, 1000));
     if (gameInfo.action.currentAction.next_street) {
       yield getStreet();
     }
@@ -282,11 +285,13 @@ function* getStreet() {
       console.log('did it do it??')
       yield checkGameStatus();
     }
-    console.log(gameInfo);
-    if (gameInfo.action.playerButton) {
-      console.log('doggy');
-      yield computerAction();
+    else {
+      if (gameInfo.action.playerButton) {
+        console.log('doggy');
+        yield computerAction();
+      }
     }
+
   }
   catch (error) {
     console.log(error);

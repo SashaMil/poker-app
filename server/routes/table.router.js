@@ -363,7 +363,7 @@ router.get('/street', (req, res) => {
 
     else if (currentAction.street === 'turn') {
 
-      playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn]);
+      playerBestFiveCards = postFlopEvaluation([currentHand.playerCards.card1, currentHand.playerCards.card2, currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3, currentHand.street.turn, currentHand.street.river]);
       console.log('On the river', playerBestFiveCards);
 
       if (currentHand.player_button) {

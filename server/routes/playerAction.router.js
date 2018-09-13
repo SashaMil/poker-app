@@ -143,6 +143,10 @@ router.post('/bet', (req, res) => {
    const computerAction = currentHand.actions.slice(-1)[0];
    const playerAction = currentHand.actions.slice(-2)[0];
 
+   if (req.body.betSize > computerAction.player_chips) {
+     
+   }
+
    console.log(req.body.betSize);
    currentHand.actions.push({
      player: true,

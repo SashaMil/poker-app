@@ -22,7 +22,7 @@ class Controller extends Component {
     console.log(this.props.currentAction.bet);
   }
   componentDidUpdate = () => {
-    console.log(this.props.currentAction.bet);
+    console.log(this.props.currentAction);
   }
 
   render() {
@@ -31,17 +31,17 @@ class Controller extends Component {
         {this.props.currentAction.bet > 0 ? (
           <div>
             <div>
-              <Button onClick={this.props.fold} variant="contained" color="secondary">
+              <Button onClick={this.props.fold} disabled={!this.props.currentAction.player_act_next} variant="contained" color="secondary">
                 Fold
               </Button>
             </div>
             <div>
-              <Button onClick={this.props.call} variant="contained" color="default">
+              <Button onClick={this.props.call} disabled={!this.props.currentAction.player_act_next} variant="contained" color="default">
                 Call
               </Button>
             </div>
             <div>
-              <Button onClick={() => this.props.raise(this.props.value)} variant="contained" color="primary">
+              <Button onClick={() => this.props.raise(this.props.value)} disabled={!this.props.currentAction.player_act_next} variant="contained" color="primary">
                 Raise
               </Button>
             </div>
@@ -49,12 +49,12 @@ class Controller extends Component {
         ) : (
           <div>
             <div>
-              <Button onClick={this.props.check} variant="contained" color="secondary">
+              <Button onClick={this.props.check} disabled={!this.props.currentAction.player_act_next} variant="contained" color="secondary">
                 Check
               </Button>
             </div>
             <div>
-              <Button onClick={() => this.props.bet(this.props.value)} variant="contained" color="secondary">
+              <Button onClick={() => this.props.bet(this.props.value)} disabled={!this.props.currentAction.player_act_next} variant="contained" color="secondary">
                 Bet
               </Button>
             </div>
