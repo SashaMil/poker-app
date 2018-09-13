@@ -455,6 +455,10 @@ router.get('/street', (req, res) => {
       const playerWon = evaluateShowdown(playerCard1, playerCard2, computerCard1, computerCard2, currentHand.street);
 
       if (playerWon) {
+        if (currentAction.computer_chips === 0) {
+          currentGame.game_completed = true;
+          currentGame.player_won = true;
+        }
         currentHand.actions.push({
           type: 'showdown',
           player: false,
@@ -467,8 +471,13 @@ router.get('/street', (req, res) => {
           raiseCounter: 0,
           message: {playerMessage:`Player wins ${currentAction.pot}`},
         });
+        currentHand.hand_status = 'Player Won';
       }
       else {
+        if (currentAction.player_chips === 0) {
+          currentGame.game_completed = true;
+          currentGame.player_won = false;
+        }
         currentHand.actions.push({
           type: 'showdown',
           player: false,
@@ -481,9 +490,8 @@ router.get('/street', (req, res) => {
           raiseCounter: 0,
           message: {computerMessage: `Computer wins ${currentAction.pot}`},
         });
+        currentHand.hand_status = 'Computer Won';
       }
-
-      currentHand.game_completed = true;
 
 
       data.save(function(err) {

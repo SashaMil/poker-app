@@ -25,6 +25,10 @@ function* checkGameStatus() {
     console.log(newGame);
     // If it is, we are going to pass param to shuffle request so starting chips are hardcoded
     if (newGame) {
+      yield put({
+        type: TABLE_ACTIONS.FOLD,
+        payload: gameInfo,
+      });
       yield shuffleRequest('newGame');
       gameInfo = yield getGameInfoRequest();
       // New Hand action will set the new cards and messages
@@ -284,6 +288,9 @@ function* getStreet() {
     if (gameInfo.currentHandCompleted) {
       console.log('did it do it??')
       yield checkGameStatus();
+    }
+    else if (gameInfo.action.currentAction.player_chips === 0 || gameInfo.action.currentAction.computer_chips === 0) {
+      yield getStreet();
     }
     else {
       if (gameInfo.action.playerButton) {

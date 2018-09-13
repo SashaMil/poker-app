@@ -36,6 +36,7 @@ const Hands = new Schema({
 const Games = new Schema({
   hands: [Hands],
   game_completed: Boolean,
+  player_won: Boolean,
 });
 
 const PersonSchema = new Schema({

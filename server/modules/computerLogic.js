@@ -1,12 +1,15 @@
 const postFlopEvaluation = require('../modules/postFlopEvaluation.js');
 const preflopEvaluation = require('../modules/preflopEvaluation.js');
 
-function computerLogic (amountToCall, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards, raiseCounter, playerHasActed, computerHasActed, playerButton, playerActionType) {
+function computerLogic (amountToCall, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards, raiseCounter, playerHasActed, computerHasActed, playerButton, playerActionType, currentComputerBet) {
   let postFlopHandValue = 0;
-  console.log([amountToCall, pot, computerChips, playerChips, computerChips, playerChips, computerCard1, computerCard2, street, streetCards, raiseCounter, playerHasActed, computerHasActed, playerButton, playerActionType ]);
+  console.log([amountToCall, pot, computerChips, playerChips, computerChips, playerChips, computerCard1, computerCard2, street, streetCards, raiseCounter, playerHasActed, computerHasActed, playerButton, playerActionType, currentComputerBet ]);
   switch(street) {
     case 'preflop':
       // Setting condition for when player calls from the button preflop
+      if (true) {
+        return ['RAISE', computerChips + currentComputerBet];
+      }
       if (playerButton && playerHasActed && playerActionType === 'CALL' && !computerHasActed) {
         if (preflopEvaluation(computerCard1, computerCard2, 11)) {
           return ['RAISE', 30];

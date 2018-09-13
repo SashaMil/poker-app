@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
 
     console.log(amountToCall);
 
-    const decision = computerLogic(amountToCall, playerAction.pot, playerAction.computer_chips, playerAction.player_chips, currentHand.computerCards.card1, currentHand.computerCards.card2, playerAction.street, currentHand.street, playerAction.raiseCounter, playerAction.player_has_acted, playerAction.computer_has_acted, currentHand.player_button, playerAction.type);
+    const decision = computerLogic(amountToCall, playerAction.pot, playerAction.computer_chips, playerAction.player_chips, currentHand.computerCards.card1, currentHand.computerCards.card2, playerAction.street, currentHand.street, playerAction.raiseCounter, playerAction.player_has_acted, playerAction.computer_has_acted, currentHand.player_button, playerAction.type, computerAction.bet);
     console.log('look here', decision);
     switch(decision[0]) {
       case 'FOLD':
