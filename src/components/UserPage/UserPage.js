@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import Nav from '../../components/Nav/Nav';
+import { Link } from 'react-router-dom';
 
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+
+import './UserPage.css';
+
 
 
 const mapStateToProps = state => ({
@@ -16,46 +18,49 @@ class UserPage extends Component {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   }
 
-  componentDidUpdate() {
-    if (!this.props.user.isLoading && this.props.user.userName === null) {
-      this.props.history.push('home');
-    }
-  }
-
   logout = () => {
     this.props.dispatch(triggerLogout());
-    this.props.history.push('home');
   }
 
-  routeToView = (viewName) => {
-    viewName = viewName.toLowerCase().replace(/\s/g, '');
-    window.location.href = `#/${viewName}`;
-  }
-
-  render() {
-    let content = null;
-
-    if (this.props.user.userName) {
-      content = (
-        <div>
-          <h1 id="welcome">
-            Welcome, { this.props.user.userName }!
-          </h1>
-          <p>Your ID is: {this.props.user.id}</p>
-          <button onClick={() => this.routeToView('game')}>New Game</button>
-          <button onClick={this.logout}>Log Out</button>
-        </div>
-      );
-    }
-
+render() {
     return (
       <div>
-        <Nav />
-        { content }
+        <div>
+          <h1 className="header">POKERBOT</h1>
+        </div>
+        <div className="grid-3">
+          <div>
+            <Link to="/game"><img className="images" src="/images/Icons/startGame.png" /></Link>
+            <p className="userPageP">Start Game</p>
+          </div>
+          <div>
+            <Link to="/statistics"><img className="images" src="/images/Icons/statistics.png" /></Link>
+            <p className="userPageP">Statistics</p>
+          </div>
+          <div>
+            <Link to="/settings"><img className ="images" src="/images/Icons/settings.png" /></Link>
+            <p className="userPageP">Settings</p>
+          </div>
+          <div>
+            <Link to="/preferences"><img className="images" src="/images/Icons/preferences.png" /></Link>
+            <p className="userPageP">Preferences</p>
+          </div>
+          <div>
+            <Link to="/account"><img className="images" src="/images/Icons/account.png" /></Link>
+            <p className="userPageP">Account Settings</p>
+          </div>
+          <div>
+            <Link onClick={this.logout} to="/"><img className="images" src="/images/Icons/logout.png" /></Link>
+            <p className="userPageP">Logout</p>
+          </div>
+        </div>
       </div>
-    );
+
+
+    )
   }
 }
+
 
 // this allows us to use <App /> in index.js
 export default connect(mapStateToProps)(UserPage);

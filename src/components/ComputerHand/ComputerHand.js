@@ -14,13 +14,12 @@ class ComputerHand extends Component {
   render() {
     return (
         <div>
-          <Slide direction="right" in={this.props.table.state !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/purple_back.png`} />
+          <Slide direction="right" in={this.props.dealComputerHand} mountOnEnter timeout={{enter: 1000, exit: this.props.playerFoldFirst ? 2000: 1000}}>
+            <img width='80px' src={`images/Cards/purple_back.png`} />
           </Slide>
-          <Slide direction="right" in={this.props.table.state !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/purple_back.png`} />
+          <Slide direction="right" in={this.props.dealComputerHand} mountOnEnter timeout={{enter: 1000, exit: this.props.playerFoldFirst ? 2000: 1000}}>
+            <img width='80px' src={`images/Cards/purple_back.png`} />
           </Slide>
-          <p style={{color: 'white'}}>Computer Action</p>
         </div>
     )
   }
@@ -28,8 +27,6 @@ class ComputerHand extends Component {
 
 Slide.defaultProps = {
   timeout: {
-    enter: 1000,
-    exit: 1000,
   },
 };
 

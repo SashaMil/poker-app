@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export function shuffleRequest() {
-  return axios.put('/api/table/shuffle', {
+export function shuffleRequest(param) {
+  return axios.put(`/api/table/shuffle/${param}`, {
   })
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });
@@ -15,13 +15,13 @@ export function checkGameStatusRequest() {
 }
 
 export function getGameInfoRequest() {
-  return axios.get('/api/table/gameInfo', {
+  return axios.get(`/api/table/gameInfo/`, {
   })
     .then(response => response.data)
     .catch((error) => { throw error.response || error; });
 }
 
-export function computerDecisionRequest() {
+export function computerActionRequest() {
   return axios.post('/api/computerAction/', {
   })
     .then(response => response.data)
@@ -72,22 +72,6 @@ export function playerRaiseRequest(betSize) {
     .then(response => response.data)
     .catch((error) => { throw error.response || error; })
 }
-
-export function getHandHistoryRequest() {
-  return axios.get('/api/table/history', {
-  })
-    .then(response => response.data)
-    .catch((error) => { throw error.response || error; });
-}
-
-export function deleteHandHistoryRequest() {
-  return axios.delete('/api/table/deleteHistory', {
-  })
-    .then(response => response.data)
-    .catch((error) => { throw error.response || error; });
-}
-
-
 
 
 

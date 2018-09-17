@@ -8,53 +8,41 @@ const Actions = new Schema({
   player: Boolean,
   type: String,
   bet: Number,
-  callAmount: Number,
-  player_act_next: Boolean,
   street: String,
+  player_act_next: Boolean,
   player_has_acted: Boolean,
   computer_has_acted: Boolean,
   next_street: Boolean,
   player_best_five_cards: String,
-  player_best_five_cards_value: Number,
+  player_best_five_cards_name: String,
   computer_best_five_cards: String,
-  computer_best_five_cards_value: Number,
-});
-
-const Cards = new Schema({
-  card1: String,
-  card2: String,
-});
-
-const Street = new Schema({
-  flop1: String,
-  flop2: String,
-  flop3: String,
-  turn: String,
-  river: String,
-});
-
-const Messages = new Schema({
-  message: String,
-})
-
-const Hands = new Schema({
-  playerCards: [Cards],
-  computerCards: [Cards],
-  street: [Street],
-  player_sb: Boolean,
+  computer_best_five_cards_name: String,
+  pot: Number,
   player_chips: Number,
   computer_chips: Number,
-  pot: Number,
+  message: {playerMessage: String, computerMessage: String},
+  raiseCounter: Number,
+});
+
+const Hands = new Schema({
+  playerCards: {card1: String, card2: String},
+  computerCards: {card1: String, card2: String},
+  street: {flop1: String, flop2: String, flop3: String, turn: String, river: String},
+  player_button: Boolean,
   actions: [Actions],
-  current_hand_completed: Boolean,
+  hand_status: String,
+});
+
+const Games = new Schema({
+  hands: [Hands],
   game_completed: Boolean,
-  messages: [Messages],
+  player_won: Boolean,
 });
 
 const PersonSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
-  games: [Hands],
+  games: [Games],
 });
 
 module.exports = mongoose.model('Person', PersonSchema);

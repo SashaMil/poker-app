@@ -8,15 +8,70 @@ const messageGenerator = require('../modules/messageGenerator.js');
 router.post('/fold', (req, res) => {
  Person.findById(req.user._id, function(err, data) {
    if (err) throw err;
-   const currentGame = data.games[data.games.length-1];
-   currentGame.actions.push({
+
+   const currentGame = data.games.slice(-1)[0];
+   const currentHand = currentGame.hands.slice(-1)[0];
+   const computerAction = currentHand.actions.slice(-1)[0];
+   const playerAction = currentHand.actions.slice(-2)[0];
+
+   currentHand.actions.push({
      player: true,
      type: 'FOLD',
+     street: playerAction.street,
+     message: {playerMessage: 'Player Folds'},
+     pot: 0,
+     computer_chips: computerAction.computer_chips + computerAction.pot,
+     player_chips: computerAction.player_chips,
    });
-   currentGame.computer_chips += currentGame.pot;
-   currentGame.pot = 0;
-   const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   currentGame.messages.push({message: message});
+
+   data.save(function(err) {
+     if (err) throw err;
+     res.send('Added new game Array');
+   });
+ });
+});
+
+router.post('/check', (req, res) => {
+ Person.findById(req.user._id, function(err, data) {
+   if (err) throw err;
+
+   const currentGame = data.games.slice(-1)[0];
+   const currentHand = currentGame.hands.slice(-1)[0];
+   const computerAction = currentHand.actions.slice(-1)[0];
+   const playerAction = currentHand.actions.slice(-2)[0];
+
+   let playerActNext = null;
+   let nextStreet = null;
+
+   if (computerAction.computer_has_acted && currentHand.player_sb) {
+     playerActNext = true;
+     nextStreet = true;
+   }
+   else if (computerAction.computer_has_acted && !currentGame.player_sb) {
+     playerActNext = false;
+     nextStreet = true;
+   }
+   else {
+     playerActNext = false;
+     nextStreet = false;
+   }
+
+   currentHand.actions.push({
+     player: true,
+     type: 'CHECK',
+     bet: 0,
+     player_act_next: playerActNext,
+     street: computerAction.street,
+     player_has_acted: true,
+     computer_has_acted: computerAction.computer_has_acted,
+     next_street: nextStreet,
+     pot: computerAction.pot,
+     player_chips: computerAction.player_chips,
+     computer_chips: computerAction.computer_chips,
+     message: {playerMessage: 'Player Checks'},
+     raiseCounter: 0,
+   });
+
    data.save(function(err) {
      if (err) throw err;
      res.send('Added new game Array');
@@ -27,42 +82,54 @@ router.post('/fold', (req, res) => {
 router.post('/call', (req, res) => {
   Person.findById(req.user._id, function(err, data) {
     if (err) throw err;
-    const currentGame = data.games[data.games.length-1];
-    const computerAction = currentGame.actions[currentGame.actions.length-1];
-    const playerAction = currentGame.actions[currentGame.actions.length-2];
-    const callAmount = computerAction.bet - playerAction.bet;
-    currentGame.pot += callAmount;
-    currentGame.player_chips -= callAmount;
+
+    const currentGame = data.games.slice(-1)[0];
+    const currentHand = currentGame.hands.slice(-1)[0];
+    const computerAction = currentHand.actions.slice(-1)[0];
+    const playerAction = currentHand.actions.slice(-2)[0];
+
     let playerActNext = null;
     let nextStreet = null;
     if (computerAction.computer_has_acted && currentGame.player_sb) {
       playerActNext = true;
       nextStreet = true;
-      currentGame.currentBet = 0;
     }
     else if (computerAction.computer_has_acted && !currentGame.player_sb) {
       playerActNext = false;
       nextStreet = true;
-      currentGame.currentBet = 0;
     }
     else {
       playerActNext = false;
       nextStreet = false;
     }
-    currentGame.actions.push({
+
+    let amountToCall = 0;
+    console.log('walrus', computerAction.bet, playerAction.bet);
+    if (computerAction.bet > playerAction.bet) {
+      amountToCall = computerAction.bet - playerAction.bet;
+    }
+    console.log(amountToCall);
+    // If the amountToCall is greater than the player chips, the call amount
+    // will be the equivalent of the remainder of the player chips
+    if (amountToCall > computerAction.player_chips) {
+      amountToCall = computerAction.player_chips;
+    }
+
+    currentHand.actions.push({
       player: true,
       type: 'CALL',
-      bet: 0,
-      callAmount: callAmount,
+      bet: amountToCall + playerAction.bet,
       player_act_next: playerActNext,
-      street: 'preflop',
+      street: computerAction.street,
       player_has_acted: true,
       computer_has_acted: computerAction.computer_has_acted,
+      pot: computerAction.pot + amountToCall,
+      player_chips: computerAction.player_chips - amountToCall,
+      computer_chips: computerAction.computer_chips,
+      message: {playerMessage: `Player calls ${amountToCall}`},
+      raiseCounter: computerAction.raiseCounter,
       next_street: nextStreet,
     });
-
-    const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-    currentGame.messages.push({message: message})
 
     data.save(function(err) {
       if (err) throw err;
@@ -72,74 +139,35 @@ router.post('/call', (req, res) => {
   })
 })
 
-router.post('/check', (req, res) => {
- Person.findById(req.user._id, function(err, data) {
-   if (err) throw err;
-   const currentGame = data.games[data.games.length-1];
-   const computerAction = currentGame.actions[currentGame.actions.length-1];
-   const playerAction = currentGame.actions[currentGame.actions.length-2];
-
-   let playerActNext = null;
-   let nextStreet = null;
-
-   if (computerAction.computer_has_acted && currentGame.player_sb) {
-     playerActNext = true;
-     nextStreet = true;
-     currentGame.currentBet = 0;
-   }
-   else if (computerAction.computer_has_acted && !currentGame.player_sb) {
-     playerActNext = false;
-     nextStreet = true;
-     currentGame.currentBet = 0;
-   }
-   else {
-     playerActNext = false;
-     nextStreet = false;
-   }
-
-   console.log('wolverine', computerAction.street);
-
-   currentGame.actions.push({
-     player: true,
-     type: 'CHECK',
-     bet: 0,
-     player_act_next: playerActNext,
-     street: computerAction.street,
-     player_has_acted: true,
-     computer_has_acted: computerAction.computer_has_acted,
-     next_street: nextStreet,
-   });
-
-   const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   currentGame.messages.push({message: message});
-
-   data.save(function(err) {
-     if (err) throw err;
-     res.send('Added new game Array');
-   });
- });
-});
-
 router.post('/bet', (req, res) => {
  Person.findById(req.user._id, function(err, data) {
    if (err) throw err;
-   const currentGame = data.games[data.games.length-1];
-   currentGame.pot += req.body.betSize;
-   currentGame.player_chips -= req.body.betSize;
+
+   const currentGame = data.games.slice(-1)[0];
+   const currentHand = currentGame.hands.slice(-1)[0];
+   const computerAction = currentHand.actions.slice(-1)[0];
+   const playerAction = currentHand.actions.slice(-2)[0];
+
+   if (req.body.betSize > computerAction.player_chips) {
+     req.body.betSize = computerAction.player_chips;
+   }
+
    console.log(req.body.betSize);
-   currentGame.actions.push({
+   currentHand.actions.push({
      player: true,
      type: 'BET',
      bet: req.body.betSize,
      player_act_next: false,
-     street: currentGame.actions[currentGame.actions.length-1].street,
+     street: computerAction.street,
      player_has_acted: true,
      computer_has_acted: false,
      next_street: false,
+     pot: computerAction.pot + req.body.betSize,
+     player_chips: computerAction.player_chips - req.body.betSize,
+     computer_chips: computerAction.computer_chips,
+     message: {playerMessage: `Player bets ${req.body.betSize}`},
+     raiseCounter: 1,
    });
-
-   const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   currentGame.messages.push({message: message});
 
    data.save(function(err) {
      if (err) throw err;
@@ -151,23 +179,32 @@ router.post('/bet', (req, res) => {
 router.post('/raise', (req, res) => {
  Person.findById(req.user._id, function(err, data) {
    if (err) throw err;
-   const currentGame = data.games[data.games.length-1];
-   currentGame.pot += req.body.betSize;
-   currentGame.player_chips -= req.body.betSize;
+
+   const currentGame = data.games.slice(-1)[0];
+   const currentHand = currentGame.hands.slice(-1)[0];
+   const computerAction = currentHand.actions.slice(-1)[0];
+   const playerAction = currentHand.actions.slice(-2)[0];
+
+   if (req.body.betSize > computerAction.player_chips) {
+     req.body.betSize = computerAction.player_chips;
+   }
+
    console.log(req.body.betSize);
-   currentGame.actions.push({
+   currentHand.actions.push({
      player: true,
      type: 'RAISE',
      bet: req.body.betSize,
      player_act_next: false,
-     street: currentGame.actions[currentGame.actions.length-1].street,
+     street: computerAction.street,
      player_has_acted: true,
      computer_has_acted: false,
      next_street: false,
+     pot: computerAction.pot + req.body.betSize,
+     player_chips: computerAction.player_chips - req.body.betSize,
+     computer_chips: computerAction.computer_chips,
+     message: {playerMessage: `Player raises to ${req.body.betSize}`},
+     raiseCounter: computerAction.raiseCounter + 1,
    });
-
-   const message = messageGenerator(currentGame.actions[currentGame.actions.length-1]);
-   currentGame.messages.push({message: message});
 
    data.save(function(err) {
      if (err) throw err;

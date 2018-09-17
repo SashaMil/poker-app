@@ -5,12 +5,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
     width: '100%',
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.black,
     position: 'relative',
     overflow: 'auto',
     maxHeight: 300,
@@ -22,7 +23,9 @@ const styles = theme => ({
     backgroundColor: 'inherit',
     padding: 0,
   },
+
 });
+
 
 class ActionsList extends Component {
 
@@ -31,11 +34,11 @@ class ActionsList extends Component {
   }
 
   componentDidMount() {
-    this.scrollToBottom();
+    // this.scrollToBottom();
   }
 
   componentDidUpdate() {
-    this.scrollToBottom();
+    // this.scrollToBottom();
   }
 
   render() {
@@ -48,7 +51,7 @@ class ActionsList extends Component {
                   <ListSubheader></ListSubheader>
                   {this.props.messages.map((message, index) =>
                     <ListItem key={index}>
-                      <ListItemText primary={message.message} />
+                      <ListItemText primary={<Typography type="body2" style={{ color: 'white' }}>{message.message}</Typography>} />
                     </ListItem>
                   )}
                 </ul>

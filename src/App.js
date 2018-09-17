@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  HashRouter as Router,
-  Route,
-  Redirect,
-  Switch,
-} from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 import LoginPage from './components/LoginPage/LoginPage';
@@ -17,35 +12,26 @@ import './styles/main.css';
 
 const App = () => (
   <div>
-    <Header title="Project Base" />
-    <Router>
-      <Switch>
-        <Redirect exact from="/" to="/home" />
-        <Route
-          path="/home"
-          component={LoginPage}
-        />
-        <Route
-          path="/register"
-          component={RegisterPage}
-        />
-        <Route
-          path="/user"
-          component={UserPage}
-        />
-        <Route
-          path="/info"
-          component={InfoPage}
-        />
-        <Route
-          path="/game"
-          component={Table}
-        />
-        {/* OTHERWISE (no path!) */}
-        <Route render={() => <h1>404</h1>} />
-
-      </Switch>
-    </Router>
+    <Route
+      path="/"
+      exact component={LoginPage}
+    />
+    <Route
+      path="/register"
+      component={RegisterPage}
+    />
+    <Route
+      path="/user"
+      component={UserPage}
+    />
+    <Route
+      path="/info"
+      component={InfoPage}
+    />
+    <Route
+      path="/game"
+      component={Table}
+    />
   </div>
 );
 

@@ -14,11 +14,11 @@ class PlayerHand extends Component {
   render() {
     return (
         <div>
-          <Slide direction="right" in={this.props.cards.card1 !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/${this.props.cards.card1}.png`} />
+          <Slide direction="right" in={this.props.dealPlayerHand} mountOnEnter timeout={{enter: 1000, exit: this.props.playerFoldFirst ? 1000: 2000}}>
+            <img width='80px' src={`images/Cards/${this.props.card1}.png`} />
           </Slide>
-          <Slide direction="right" in={this.props.cards.card1 !== undefined} mountOnEnter unmountOnExit>
-            <img width='120px' src={`images/Cards/${this.props.cards.card2}.png`} />
+          <Slide direction="right" in={this.props.dealPlayerHand} mountOnEnter timeout={{enter: 1000, exit: this.props.playerFoldFirst ? 1000: 2000}}>
+            <img width='80px' src={`images/Cards/${this.props.card2}.png`} />
           </Slide>
         </div>
     )
@@ -27,8 +27,6 @@ class PlayerHand extends Component {
 
 Slide.defaultProps = {
   timeout: {
-    enter: 1000,
-    exit: 1000,
   },
 };
 

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Slide from '@material-ui/core/Slide';
 
 import Typography from '@material-ui/core/Typography';
-
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -16,9 +14,7 @@ class ComputerBet extends Component {
   render() {
     return (
         <div>
-          <Slide direction="down" in={!this.props.lastAction.player && this.props.lastAction.bet > 0} mountOnEnter timeout={1000}>
-            <img src="/images/Table/bet.png" />
-          </Slide>
+          <Typography variant="subheading" style={{ color: 'white' }}>{this.props.computerMessage}</Typography>
         </div>
     )
   }

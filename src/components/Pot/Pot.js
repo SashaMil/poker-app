@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import Deck from '../Deck/Deck';
+import ComputerBet from '../ComputerBet/ComputerBet';
+import PlayerBet from '../PlayerBet/PlayerBet';
+
+
+import Typography from '@material-ui/core/Typography';
+import './Pot.css';
 
 
 const mapStateToProps = state => ({
@@ -15,7 +20,14 @@ class Pot extends Component {
   render() {
     return (
         <div>
-          <h2>{'Pot ' + this.props.pot}</h2>
+          <ComputerBet
+            lastAction={this.props.lastAction}
+          />
+          <Typography variant="headline" style={{ color: 'white' }}>{this.props.pot}</Typography>
+          <img src="images/Table/pot.png" />
+          <PlayerBet
+            lastAction={this.props.lastAction}
+          />
         </div>
     )
   }

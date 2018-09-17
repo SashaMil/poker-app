@@ -1,0 +1,35 @@
+.background {
+  background-color: black;
+}
+
+.header {
+  color: white;
+  font-size: 50;
+  text-align: center;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0px;
+    width: 100%;
+    margin: auto;
+}
+
+.images {
+  height: 300px;
+  width: 300px;
+  transition: .2s;
+}
+
+.images:hover {
+    transform: scale(1.2);
+}
+
+.userPageP {
+  position: relative;
+  left: 80px;
+  bottom: 50px;
+  color: white;
+  font-size: 25px;
+}

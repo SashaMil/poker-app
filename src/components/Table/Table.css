@@ -1,19 +1,9 @@
-.wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-}
 
-#paper {
-  background-color: red;
-  grid-column-start: 3;
-  grid-column-end: 3;
-}
-
-.grid-2 {
+.grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
-    width: 100%;
-    padding-top: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 30px;
+    margin: auto;
+    padding: 40px;
 }

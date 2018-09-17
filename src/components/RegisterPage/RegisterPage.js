@@ -30,7 +30,7 @@ class RegisterPage extends Component {
       axios.post('/api/user/register/', body)
         .then((response) => {
           if (response.status === 201) {
-            this.props.history.push('/home');
+            this.props.history.push('/');
           } else {
             this.setState({
               message: 'Ooops! That didn\'t work. The username might already be taken. Try again!',
@@ -99,7 +99,7 @@ class RegisterPage extends Component {
               name="submit"
               value="Register"
             />
-            <Link to="/home">Cancel</Link>
+            <Link to="/">Cancel</Link>
           </div>
         </form>
       </div>
@@ -108,4 +108,3 @@ class RegisterPage extends Component {
 }
 
 export default RegisterPage;
-
