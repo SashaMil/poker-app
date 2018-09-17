@@ -103,11 +103,13 @@ function* computerAction() {
       type: TABLE_ACTIONS.SET_CHIPS,
       payload: gameInfo.chips,
     })
-    yield new Promise(resolve => setTimeout(resolve, 1000));
+    yield new Promise(resolve => setTimeout(resolve, 2000));
+
     if (gameInfo.action.currentAction.type === 'FOLD') {
       yield put({
         type: TABLE_ACTIONS.FOLD,
-      })
+      });
+      yield new Promise(resolve => setTimeout(resolve, 2000));
       yield shuffleRequest();
       gameInfo = yield getGameInfoRequest();
       console.log(gameInfo);

@@ -7,9 +7,6 @@ function computerLogic (amountToCall, pot, computerChips, playerChips, computerC
   switch(street) {
     case 'preflop':
       // Setting condition for when player calls from the button preflop
-      if (true) {
-        return ['RAISE', computerChips + currentComputerBet];
-      }
       if (playerButton && playerHasActed && playerActionType === 'CALL' && !computerHasActed) {
         if (preflopEvaluation(computerCard1, computerCard2, 11)) {
           return ['RAISE', 30];

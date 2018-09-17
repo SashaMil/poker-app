@@ -142,6 +142,8 @@ router.get('/gameInfo', (req, res) => {
     console.log(currentHand.playerButton);
     console.log(currentAction);
 
+
+
     let street = {};
     if (currentAction.street === 'flop') {
       street.flop = [currentHand.street.flop1, currentHand.street.flop2, currentHand.street.flop3]
