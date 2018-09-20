@@ -3,7 +3,6 @@ const preflopEvaluation = require('../modules/preflopEvaluation.js');
 
 function computerLogic (amountToCall, pot, computerChips, playerChips, computerCard1, computerCard2, street, streetCards, raiseCounter, playerHasActed, computerHasActed, playerButton, playerActionType, currentComputerBet) {
   let postFlopHandValue = 0;
-  console.log([amountToCall, pot, computerChips, playerChips, computerChips, playerChips, computerCard1, computerCard2, street, streetCards, raiseCounter, playerHasActed, computerHasActed, playerButton, playerActionType, currentComputerBet ]);
   switch(street) {
     case 'preflop':
       // Setting condition for when player calls from the button preflop
@@ -79,6 +78,9 @@ function computerLogic (amountToCall, pot, computerChips, playerChips, computerC
         else {
           return ['FOLD'];
         }
+      }
+      else {
+        return ['FOLD'];
       }
 
       break;
@@ -156,6 +158,9 @@ function computerLogic (amountToCall, pot, computerChips, playerChips, computerC
         return ['RAISE', computerChips];
       }
     }
+    else {
+      return ['FOLD'];
+    }
       break;
 
     case 'turn':
@@ -221,6 +226,9 @@ function computerLogic (amountToCall, pot, computerChips, playerChips, computerC
       else if (amountToCall <= 150) {
         return ['RAISE', computerChips];
       }
+    }
+    else {
+      return ['FOLD'];
     }
       break;
 

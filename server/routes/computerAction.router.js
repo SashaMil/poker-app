@@ -15,13 +15,11 @@ router.post('/', (req, res) => {
     const currentHand = currentGame.hands.slice(-1)[0];
     const playerAction = currentHand.actions.slice(-1)[0];
     const computerAction = currentHand.actions.slice(-2)[0];
-    let amountToCall = 0;
 
+    let amountToCall = 0;
     if (playerAction.bet > computerAction.bet) {
       amountToCall = playerAction.bet - computerAction.bet;
     }
-
-    console.log(amountToCall);
 
     const decision = computerLogic(amountToCall, playerAction.pot, playerAction.computer_chips, playerAction.player_chips, currentHand.computerCards.card1, currentHand.computerCards.card2, playerAction.street, currentHand.street, playerAction.raiseCounter, playerAction.player_has_acted, playerAction.computer_has_acted, currentHand.player_button, playerAction.type, computerAction.bet);
     switch(decision[0]) {
