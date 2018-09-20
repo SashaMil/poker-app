@@ -21,6 +21,7 @@ const preflopEvaluation = (card1, card2, range) => {
         }
         allPossibleHands.push(row);
     }
+    console.log('All Possible Hands', allPossibleHands);
     // Now I am going to take that array of all possible hands and reduce it by the chosen proportion to arrive at an array of hand which I would perform an action,
     // I will also be adding an array of all pairs (because pairs are valuable)
     const allPairs = ['1414', '1313', '1212', '1111', '1010', '99', '88', '77', '66', '55', '44', '33', '22'];
@@ -31,9 +32,7 @@ const preflopEvaluation = (card1, card2, range) => {
     }
     // Here I am formatting the given cards to match the values I have produced above
     let hand = formatHand(card1, card2);
-    console.log('hellooo', hand);
 
-    console.log(possibleRange);
     // I am iterating over the formatted hand to see if it matches any two cards in the given range.
     for (let x = 0; x < possibleRange.length; x++) {
         for (let y = 0; y < possibleRange[x].length; y++) {
@@ -66,7 +65,6 @@ function formatHand(card1, card2) {
     // Slice off suit from each hand
     card1 = card1.slice(0, -1);
     card2 = card2.slice(0, -1);
-    console.log(card1, card2);
 
     // Check is either card is an ace
     if (card1.length === 1 && card1[0] === '1') {
@@ -76,7 +74,6 @@ function formatHand(card1, card2) {
         card2 = '14';
     }
     // Add both combos of hands with a suit or not a suit
-    console.log(card1, card2);
     if (suited) {
         return [card1+card2+'s', card2+card1+'s'];
     }
