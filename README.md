@@ -39,3 +39,11 @@ NODE_ENV=test
 5. Start MongoDB
 6. Run the command `npm install` to install the dependencies.
 7. Run the commands `npm run server` and `npm run client` in two separate Terminal tabs.
+
+### Instructions
+
+1. Register a new account.
+2. Login to your newly registered account.
+3. Click on 'Start Game' to begin.
+
+
