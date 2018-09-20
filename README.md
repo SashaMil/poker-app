@@ -3,7 +3,7 @@
 Visit this url: https://www.dropbox.com/s/raeimh36mdvozwt/PokerAppDemo3.mov?dl=0
 to see a brief demonstration of this application.
 
-The PokerBot Application is a full-service database application that is still under development.
+The PokerBot Application is an application that is still under development.
 
 Applicants can play games of texas hold-em poker against a computer intelligence.
 
@@ -23,7 +23,7 @@ Applicants can play games of texas hold-em poker against a computer intelligence
 ### Prerequisites
 
 1. [Node.js](http://nodejs.org/)
-2. [MongoDB]
+2. [MongoDB](https://www.mongodb.com/)
 
 ### Installing
 
@@ -36,10 +36,6 @@ Applicants can play games of texas hold-em poker against a computer intelligence
 SERVER_SESSION_SECRET=6JMTbuM6tVUkQYCyv8rQsNOLYwoMaQr0
 NODE_ENV=test
 ```
-
-5. Run the command `npm install` to install the dependencies.
-6. Run the commands `npm run server` and `npm run client` in two separate Terminal tabs.
-
-### Database Set-Up
-
-1. Have MongoDB running on a separate terminal tab.
+5. Start MongoDB
+6. Run the command `npm install` to install the dependencies.
+7. Run the commands `npm run server` and `npm run client` in two separate Terminal tabs.
