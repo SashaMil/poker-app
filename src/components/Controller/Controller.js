@@ -28,6 +28,7 @@ class Controller extends Component {
   render() {
     return (
       <div>
+        <h1>Test page</h1>
         {this.props.currentAction.bet > 0 ? (
           <div>
             <div>

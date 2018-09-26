@@ -1,5 +1,4 @@
 const postFlopEvaluation = (handAndStreet) => {
-  console.log('wolverinedjfkdjfkd', handAndStreet);
 
   let numberValues = extractNumberValues(handAndStreet);
   let suitValues = extractSuitValues(handAndStreet);
@@ -34,11 +33,11 @@ const postFlopEvaluation = (handAndStreet) => {
   }
   // Pair
   else if (checkForPairs(numberValues)[0] === 1) {
-    return [1, checkForPairs(numberValues)[1]];
+    return [1, checkForPairs(numberValues)[1], checkForPairs(numberValues)[2]];
   }
   // X High
   else {
-    return [0, checkForPairs(numberValues)[1]];
+    return [0, checkForPairs(numberValues)[1], checkForPairs(numberValues)[2]];
   }
 
 }
@@ -79,7 +78,6 @@ function extractSuitValues(valuesAndSuits) {
 // Used to find  the occurences of all present suits.
 function checkForFlush(suitValues, handAndStreet) {
   let suitsAndValuesSorted = [];
-  console.log('suitValues', suitValues, 'handAndStreet', handAndStreet);
   // going to write a quick loop to change aces to value of 14, should do this to encompass all functions later
   for (card of handAndStreet) {
     if (card.length === 3) {
@@ -97,12 +95,10 @@ function checkForFlush(suitValues, handAndStreet) {
       }
     }
   }
-  console.log('look here this time', suitsAndValuesSorted);
 
   // Creating an array of arrays that looks like this [ [ 8, 'H' ], [ 6, 'H' ], [ 5, 'H' ], [ 5, 'D' ], [ 5, 'H' ] ]
 
   suitsAndValuesSorted = suitsAndValuesSorted.sort(function(a,b){return b[0]-a[0]});
-  console.log('flush checker here!', suitsAndValuesSorted);
 
   let suitOccurences = {};
   // Counting instances of each suit
@@ -127,19 +123,19 @@ function checkForFlush(suitValues, handAndStreet) {
         }
       }
       if (flush[0] === 11) {
-        return 'Jack High Flush';
+        return ['Jack High Flush', flush];
       }
       else if (flush[0] === 12) {
-        return 'Queen High Flush';
+        return ['Queen High Flush', flush];
       }
       else if (flush[0] === 13) {
-        return 'King High Flush';
+        return ['King High Flush', flush];
       }
-      else if (flush[0] === 1) {
-        return 'Ace High Flush';
+      else if (flush[0] === 14) {
+        return ['Ace High Flush', flush];
       }
       else {
-        return `${flush[0]} High flush`;
+        return [`${flush[0]} High flush`, flush];
       }
     }
   }
@@ -153,6 +149,7 @@ function checkForFlush(suitValues, handAndStreet) {
 function checkForPairs(numberValues) {
   changeAceValues(numberValues);
   let sortedNumberValues = numberValues.sort(function(a,b){return b-a});
+  let bestFiveCards = [];
     for (let x = 0; x < numberValues.length; x++) {
         if (numberValues[x] === 11) {
             numberValues[x] = 'Jack';
@@ -195,13 +192,29 @@ function checkForPairs(numberValues) {
       if (pairOccurences[key] === 2) {
           for (let props in pairOccurences) {
               if (pairOccurences[props] === 2 && key !== props) {
-                  return [2, `Two Pair, ${key}s and ${props}s`];
+                console.log(key, props);
+                for (let x = 0; x < sortedNumberValues.length; x++) {
+                  if (sortedNumberValues[x] !== key) {
+                    bestFiveCards.push(sortedNumberValues[x]);
+                    return [2, `Two Pair, ${key}s and ${props}s`, bestFiveCards];
+                  }
+                }
               }
           }
-          return [1, `Pair of ${key}s`];
+
+          for (let x = 0; x < sortedNumberValues.length; x++) {
+            if (sortedNumberValues[x] !== key) {
+              bestFiveCards.push(sortedNumberValues[x]);
+            }
+            if (bestFiveCards.length === 3) {
+              bestFiveCards.unshift(key);
+              bestFiveCards.unshift(key);
+              return [1, `Pair of ${key}s`, bestFiveCards];
+            }
+          }
       }
     }
-    return [0, `${sortedNumberValues[0]} High`]
+    return [0, `${sortedNumberValues[0]} High`, [sortedNumberValues.slice(0,5)]]
 
 }
 

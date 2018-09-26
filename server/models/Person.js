@@ -14,6 +14,7 @@ const Actions = new Schema({
   computer_has_acted: Boolean,
   next_street: Boolean,
   player_best_five_cards: String,
+  player_best_five_cards: {rank: Number, best_five_cards: []},
   player_best_five_cards_name: String,
   computer_best_five_cards: String,
   computer_best_five_cards_name: String,

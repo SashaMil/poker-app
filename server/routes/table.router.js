@@ -142,6 +142,7 @@ router.get('/gameInfo', (req, res) => {
     console.log(currentHand.playerButton);
     console.log(currentAction);
 
+    console.log('over here!', currentHand.actions.slice(-2)[0].player_best_five_cards.best_five_cards);
 
 
     let street = {};
@@ -212,7 +213,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
 
@@ -229,7 +230,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
 
@@ -249,7 +250,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
 
@@ -266,7 +267,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
       }
@@ -298,7 +299,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
 
@@ -315,7 +316,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
       }
@@ -334,7 +335,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
 
@@ -351,7 +352,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
       }
@@ -383,7 +384,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
 
@@ -400,7 +401,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
       }
@@ -420,7 +421,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
 
@@ -437,7 +438,7 @@ router.get('/street', (req, res) => {
           player_chips: currentAction.player_chips,
           computer_chips: currentAction.computer_chips,
           raiseCounter: 0,
-          player_best_five_cards: playerBestFiveCards[0],
+          player_best_five_cards: {rank: playerBestFiveCards[0], best_five_cards: playerBestFiveCards[2]},
           player_best_five_cards_name: playerBestFiveCards[1],
         });
 
@@ -455,7 +456,7 @@ router.get('/street', (req, res) => {
       const computerCard1 = currentHand.playerCards.card2;
       const computerCard2 = currentHand.computerCards.card2;
       const playerWon = evaluateShowdown(playerCard1, playerCard2, computerCard1, computerCard2, currentHand.street);
-
+      console.log('in river router', playerWon);
       if (playerWon) {
         if (currentAction.computer_chips === 0) {
           currentGame.game_completed = true;
