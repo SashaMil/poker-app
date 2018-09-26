@@ -1,5 +1,5 @@
 const postFlopEvaluation = (handAndStreet) => {
-
+  console.log('cardObject', cardObject(handAndStreet));
   let numberValues = extractNumberValues(handAndStreet);
   let suitValues = extractSuitValues(handAndStreet);
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
@@ -41,16 +41,41 @@ const postFlopEvaluation = (handAndStreet) => {
   }
 
 }
-
-// Function to change ace values form 1 to 14
-function changeAceValues(numberValues) {
-  for (let x = 0; x < numberValues.length; x++) {
-    if (numberValues[x] === 1) {
-      numberValues[x] = 14;
+// Creating objects from string values ['14H', '3H', etc] => [{integer: 14, suit: 'H', name: 'ACE'}, {...}]
+function cardObject (handAndStreet) {
+  console.log('unicorn', handAndStreet);
+  handAndStreet = handAndStreet.map(x => {
+    let newObj = {};
+    if (x.length === 3) {
+      switch(x[0]+x[1]) {
+        case '10':
+          newObj.name = 'Tens';
+        case '11':
+          newObj.name = 'Jack';
+        break;
+        case '12':
+          newObj.name = 'Queen';
+        break;
+        case '13':
+          newObj.name = 'King';
+        break;
+        case '14':
+          newObj.name = 'Ace';
+        break;
+        default:
+          return 'error';
+      }
     }
-  }
-  return numberValues;
+    else {
+      newObj.name = x[0];
+    }
+    newObj.suit = x[x.length - 1];
+    newObj.integer = parseInt(x.slice(0, x.length-1));
+    return newObj;
+  })
+  return handAndStreet;
 }
+
 
 // Helper function to extract just the integer values from an array of cards
 function extractNumberValues(valuesAndSuits) {
@@ -147,7 +172,6 @@ function checkForFlush(suitValues, handAndStreet) {
  */
 // Used to find the occurences of all present integer values
 function checkForPairs(numberValues) {
-  changeAceValues(numberValues);
   let sortedNumberValues = numberValues.sort(function(a,b){return b-a});
   let bestFiveCards = [];
     for (let x = 0; x < numberValues.length; x++) {

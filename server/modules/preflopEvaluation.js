@@ -62,18 +62,6 @@ function formatHand(card1, card2) {
     else {
         suited = false;
     }
-    // Slice off suit from each hand
-    card1 = card1.slice(0, -1);
-    card2 = card2.slice(0, -1);
-
-    // Check is either card is an ace
-    if (card1.length === 1 && card1[0] === '1') {
-        card1 = '14'
-    }
-    if (card2.length === 1 && card2[0] === '1') {
-        card2 = '14';
-    }
-    // Add both combos of hands with a suit or not a suit
     if (suited) {
         return [card1+card2+'s', card2+card1+'s'];
     }

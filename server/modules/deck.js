@@ -4,13 +4,14 @@ class Deck {
         this.deck = [];
 
         const suits = ['H', 'S', 'C', 'D'];
-         const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+         const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
          for (let suit in suits) {
              for (let value in values) {
                  this.deck.push(`${values[value]}${suits[suit]}`);
              }
          }
+         console.log(this.deck);
     }
 
     shuffle() {
@@ -26,6 +27,7 @@ class Deck {
 
         return this;
     }
+
 
     deal(){
         return this.deck.pop();

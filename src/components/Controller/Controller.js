@@ -18,6 +18,10 @@ const mapStateToProps = state => ({
 
 class Controller extends Component {
 
+  state = {
+    bet: this.props.currentAction.bet,
+  }
+
   componentDidMount = () => {
     console.log(this.props.currentAction.bet);
   }

@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Controller should check state, which is equivalent to passed props 1`] = `<Connect(Controller) />`;
+
 exports[`Controller should render without throwing an error 1`] = `<Connect(Controller) />`;
