@@ -1,15 +1,14 @@
 const postFlopEvaluation = (handAndStreet) => {
-  console.log('cardObject', cardObject(handAndStreet));
-  let numberValues = extractNumberValues(handAndStreet);
-  let suitValues = extractSuitValues(handAndStreet);
+  let cards = cardObject(handAndStreet);
+  console.log('cardObjects', cards)
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
 
   // Four of a Kind
   // For Check Pairs function, I am checking the first element in array
   // to distinguish between different kinds of pairs
-  if (checkForPairs(numberValues)[0] === 5) {
-    return [7, checkForPairs(numberValues)];
+  if (checkForPairs(cards)[0] === 5) {
+    return [7, checkForPairs(cards)];
   }
   // FullHouse
   else if (checkForPairs(numberValues)[0] === 4) {
@@ -49,7 +48,8 @@ function cardObject (handAndStreet) {
     if (x.length === 3) {
       switch(x[0]+x[1]) {
         case '10':
-          newObj.name = 'Tens';
+          newObj.name = 'Ten';
+        break;
         case '11':
           newObj.name = 'Jack';
         break;
@@ -171,8 +171,11 @@ function checkForFlush(suitValues, handAndStreet) {
  * Created by sashamilenkovic on 9/12/18.
  */
 // Used to find the occurences of all present integer values
-function checkForPairs(numberValues) {
-  let sortedNumberValues = numberValues.sort(function(a,b){return b-a});
+function checkForPairs(cards) {
+  cards.sort(function(a,b){return b.integer-a.integer});
+  console.log(cards)
+
+  console.log('checkForPairs', cards);
   let bestFiveCards = [];
     for (let x = 0; x < numberValues.length; x++) {
         if (numberValues[x] === 11) {
