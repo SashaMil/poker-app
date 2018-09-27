@@ -1,7 +1,7 @@
 const postFlopEvaluation = (handAndStreet) => {
   let cards = cardObject(handAndStreet);
   console.log('cardObjects', cards)
-  console.log('testing 4 of a kind', checkForPairs([{integer: 6, name: '6', suit: 'D'}, {integer: 6, name: '6', suit: 'S'}, {integer: 6, name: '6', suit: 'H'}, {integer: 7, name: '7', suit: 'D'}, {integer: 6, name: '6', suit: 'C'}, {integer: 13, name: 'King', suit: 'D'}]));
+  console.log('testing three of a kind', checkForPairs([{integer: 6, name: '6', suit: 'S'}, {integer: 6, name: '6', suit: 'H'}, {integer: 13, name: 'King', suit: 'D'}, {integer: 9, name: '9', suit: 'S'}, {integer: 9, name: '9', suit: 'D'}]));
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
 
@@ -148,6 +148,7 @@ function checkForPairs(cards) {
   // Need to decide what the shape of the data is going to look like
   // Creating an object with key values being arrays of cards with matching integer
   // {'6': [{}, {}, {}], '5': [{}]}
+  // checking card.name because card.integer will actually reverse order
   let pairOccurences = {};
   for (card of cards) {
     if (pairOccurences[card.name] === undefined) {
@@ -158,9 +159,8 @@ function checkForPairs(cards) {
     }
   }
   console.log('pairOccurences', pairOccurences);
-  // In reverse order so finding the high card after the four of a kind doesn't work
   for (let key in pairOccurences) {
-    // 4 of a Kind check
+    // 4 of a Kind
     if (pairOccurences[key].length === 4) {
       console.log('made it here');
       for (let prop in pairOccurences) {
@@ -172,12 +172,33 @@ function checkForPairs(cards) {
         }
       }
     }
+    // FullHouse/Three of a Kind
+    if (pairOccurences[key].length === 3) {
+      for (let props in pairOccurences) {
+          if (pairOccurences[props].length === 2) {
+            pairOccurences[key].push(pairOccurences[props][0], pairOccurences[props][1]);
+            bestFiveCards = cardStrings(pairOccurences[key]);
+            return {rank: 6, name: `Full House, ${pairOccurences[key][0].name}s full of ${pairOccurences[props][0].name}s`, bestFiveCards: bestFiveCards};
+          }
+      }
+      return {rank: 3, name: `3 of a Kind with ${pairOccurences[key][0].name}s`, bestFiveCards: bestFiveCards};
+    }
+    if (pairOccurences[key].length === 2) {
+      for (let props in pairOccurences) {
+        if (pairOccurences[props].length === 2 && pairOccurences[props][0].integer !== pairOccurences[key][0].integer) {
+          pairOccurences[key].push(pairOccurences[props][0], pairOccurences[props][1]);
+          for (let kicker in pairOccurences) {
+            if (pairOccurences[kicker] !== pairOccurences[key] && pairOccurences[kicker] !== pairOccurences[props]) {
+              pairOccurences[key].push(pairOccurences[kicker][0]);
+            }
+          }
+          bestFiveCards = cardStrings(pairOccurences[key]);
+          return {rank: 2, name: `Two Pair with ${pairOccurences[key][0].name}s and ${pairOccurences[props][0].name}s`, bestFiveCards: bestFiveCards};
+        }
+      }
+    }
   }
-  // for (card of cards) {
-  //   if (card.count) === 4 {
-  //
-  //   }
-  // }
+
 
     // for (let key in pairOccurences) {
     //     if (pairOccurences[key] === 4) {
