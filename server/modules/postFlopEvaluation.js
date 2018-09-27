@@ -1,6 +1,7 @@
 const postFlopEvaluation = (handAndStreet) => {
   let cards = cardObject(handAndStreet);
   console.log('cardObjects', cards)
+  console.log('testing 4 of a kind', checkForPairs([{integer: 6, name: '6', suit: 'D'}, {integer: 6, name: '6', suit: 'S'}, {integer: 6, name: '6', suit: 'H'}, {integer: 6, name: '6', suit: 'C'}, {integer: 13, name: 'King', suit: 'D'}]));
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
 
@@ -135,20 +136,39 @@ function checkForPairs(cards) {
 
   console.log('checkForPairs', cards);
   let bestFiveCards = [];
+
   // Here I need to iterate over array of card objects and determine if there are matching pairs
   // I wanna keep this object data
   // Need to decide what the shape of the data is going to look like
-
+  // Creating an object with key values being arrays of cards with matching integer
+  // {'6': [{}, {}, {}], '5': [{}]}
   let pairOccurences = {};
   for (card of cards) {
     if (pairOccurences[card.integer] === undefined) {
-            pairOccurences[card.integer] = 1;
+      pairOccurences[card.integer] = [card];
     }
     else {
-      pairOccurences[card.integer]++;
+      pairOccurences[card.integer].push(card)
     }
   }
   console.log('pairOccurences', pairOccurences);
+  for (let key in pairOccurences) {
+    if (pairOccurences[key].length === 4) {
+      console.log('made it here');
+      for (let prop in pairOccurences) {
+        if (pairOccurences[prop] !== pairOccurences[key]) {
+          pairOccurences[key].push(pairOccurences[prop][0])
+          return {rank: 7, name: `Four of a Kind with ${pairOccurences[key][0].name}s`, bestFiveCards: pairOccurences[key]}
+        }
+      }
+    }
+  }
+  // for (card of cards) {
+  //   if (card.count) === 4 {
+  //
+  //   }
+  // }
+
     // for (let key in pairOccurences) {
     //     if (pairOccurences[key] === 4) {
     //       for (let x = 0; x < cards.length; x++) {
