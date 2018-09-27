@@ -76,54 +76,12 @@ function cardObject (handAndStreet) {
   return handAndStreet;
 }
 
-
-// Helper function to extract just the integer values from an array of cards
-function extractNumberValues(valuesAndSuits) {
-  let justValues = [];
-  for (card of valuesAndSuits) {
-    if (card.length === 3) {
-      justValues.push(parseInt(card[0] += card[1]));
-    }
-    else {
-      justValues.push(parseInt(card[0]));
-    }
-  }
-  return justValues;
-}
-
-// Used to extract just the suit character, getting rid of the integer values
-function extractSuitValues(valuesAndSuits) {
-  let justSuits = [];
-  for (card of valuesAndSuits) {
-    justSuits.push(card[card.length-1]);
-  }
-  return justSuits;
-}
-
 // Used to find  the occurences of all present suits.
-function checkForFlush(suitValues, handAndStreet) {
-  let suitsAndValuesSorted = [];
-  // going to write a quick loop to change aces to value of 14, should do this to encompass all functions later
-  for (card of handAndStreet) {
-    if (card.length === 3) {
-      suitsAndValuesSorted.push([parseInt(card[0] + card[1]), card[2]]);
-    }
-    else {
-      console.log(card[0]);
-      if (card[0] === '1') {
-        console.log('ace found?');
-        card[0] = '14';
-        suitsAndValuesSorted.push([14, card[1]]);
-      }
-      else {
-        suitsAndValuesSorted.push([parseInt(card[0]), card[1]]);
-      }
-    }
-  }
+function checkForFlush(cards) {
 
   // Creating an array of arrays that looks like this [ [ 8, 'H' ], [ 6, 'H' ], [ 5, 'H' ], [ 5, 'D' ], [ 5, 'H' ] ]
 
-  suitsAndValuesSorted = suitsAndValuesSorted.sort(function(a,b){return b[0]-a[0]});
+  cards = cards.sort(function(a,b){return b[0]-a[0]});
 
   let suitOccurences = {};
   // Counting instances of each suit
@@ -172,76 +130,74 @@ function checkForFlush(suitValues, handAndStreet) {
  */
 // Used to find the occurences of all present integer values
 function checkForPairs(cards) {
+  // Sorting the array of card objects by descending order by integer property
   cards.sort(function(a,b){return b.integer-a.integer});
-  console.log(cards)
 
   console.log('checkForPairs', cards);
   let bestFiveCards = [];
-    for (let x = 0; x < numberValues.length; x++) {
-        if (numberValues[x] === 11) {
-            numberValues[x] = 'Jack';
-        }
-        if (numberValues[x] === 12) {
-            numberValues[x] = 'Queen';
-        }
-        if (numberValues[x] === 13) {
-            numberValues[x] = 'King';
-        }
-        if (numberValues[x] === 14) {
-            numberValues[x] = 'Ace';
-        }
-    }
-    let pairOccurences = {};
-    for (number of sortedNumberValues) {
-        if (pairOccurences[number] === undefined) {
-            pairOccurences[number] = 1;
-        }
-        else {
-            pairOccurences[number]++;
-        }
-    }
-    for (let key in pairOccurences) {
-        if (pairOccurences[key] === 4) {
-            return [5, `4 of a Kind with ${key}s`];
-        }
-    }
-    for (let key in pairOccurences) {
-        if (pairOccurences[key] === 3) {
-            for (let props in pairOccurences) {
-                if (pairOccurences[props] === 2) {
-                    return [4, `Full House, ${key}s full of ${props}`];
-                }
-            }
-            return [3, `3 of a Kind with ${key}s`];
-        }
-    }
-    for (let key in pairOccurences) {
-      if (pairOccurences[key] === 2) {
-          for (let props in pairOccurences) {
-              if (pairOccurences[props] === 2 && key !== props) {
-                console.log(key, props);
-                for (let x = 0; x < sortedNumberValues.length; x++) {
-                  if (sortedNumberValues[x] !== key) {
-                    bestFiveCards.push(sortedNumberValues[x]);
-                    return [2, `Two Pair, ${key}s and ${props}s`, bestFiveCards];
-                  }
-                }
-              }
-          }
+  // Here I need to iterate over array of card objects and determine if there are matching pairs
+  // I wanna keep this object data
+  // Need to decide what the shape of the data is going to look like
 
-          for (let x = 0; x < sortedNumberValues.length; x++) {
-            if (sortedNumberValues[x] !== key) {
-              bestFiveCards.push(sortedNumberValues[x]);
-            }
-            if (bestFiveCards.length === 3) {
-              bestFiveCards.unshift(key);
-              bestFiveCards.unshift(key);
-              return [1, `Pair of ${key}s`, bestFiveCards];
-            }
-          }
-      }
+  let pairOccurences = {};
+  for (card of cards) {
+    if (pairOccurences[card.integer] === undefined) {
+            pairOccurences[card.integer] = 1;
     }
-    return [0, `${sortedNumberValues[0]} High`, [sortedNumberValues.slice(0,5)]]
+    else {
+      pairOccurences[card.integer]++;
+    }
+  }
+  console.log('pairOccurences', pairOccurences);
+    // for (let key in pairOccurences) {
+    //     if (pairOccurences[key] === 4) {
+    //       for (let x = 0; x < cards.length; x++) {
+    //         if (cards[x].integer !== parseInt(key)) {
+    //           bestFiveCards.push(sortedNumberValues[x]);
+    //           return [2, `Two Pair, ${key}s and ${props}s`, bestFiveCards];
+    //         }
+    //       }
+    //       return {rank: 5, name: `4 of a Kind with ${key}s`, bestFiveCards: }
+    //         return [5, `4 of a Kind with ${key}s`];
+    //     }
+    // }
+    // for (let key in pairOccurences) {
+    //     if (pairOccurences[key] === 3) {
+    //         for (let props in pairOccurences) {
+    //             if (pairOccurences[props] === 2) {
+    //                 return [4, `Full House, ${key}s full of ${props}`];
+    //             }
+    //         }
+    //         return [3, `3 of a Kind with ${key}s`];
+    //     }
+    // }
+    // for (let key in pairOccurences) {
+    //   if (pairOccurences[key] === 2) {
+    //       for (let props in pairOccurences) {
+    //           if (pairOccurences[props] === 2 && key !== props) {
+    //             console.log(key, props);
+    //             for (let x = 0; x < sortedNumberValues.length; x++) {
+    //               if (sortedNumberValues[x] !== key) {
+    //                 bestFiveCards.push(sortedNumberValues[x]);
+    //                 return [2, `Two Pair, ${key}s and ${props}s`, bestFiveCards];
+    //               }
+    //             }
+    //           }
+    //       }
+    //
+    //       for (let x = 0; x < sortedNumberValues.length; x++) {
+    //         if (sortedNumberValues[x] !== key) {
+    //           bestFiveCards.push(sortedNumberValues[x]);
+    //         }
+    //         if (bestFiveCards.length === 3) {
+    //           bestFiveCards.unshift(key);
+    //           bestFiveCards.unshift(key);
+    //           return [1, `Pair of ${key}s`, bestFiveCards];
+    //         }
+    //       }
+    //   }
+    // }
+    // return [0, `${sortedNumberValues[0]} High`, [sortedNumberValues.slice(0,5)]]
 
 }
 
