@@ -1,15 +1,15 @@
 const postFlopEvaluation = (handAndStreet) => {
   let cards = cardObject(handAndStreet);
   console.log('cardObjects', cards)
-  console.log('testing 4 of a kind', checkForPairs([{integer: 6, name: '6', suit: 'D'}, {integer: 6, name: '6', suit: 'S'}, {integer: 6, name: '6', suit: 'H'}, {integer: 6, name: '6', suit: 'C'}, {integer: 13, name: 'King', suit: 'D'}]));
+  console.log('testing 4 of a kind', checkForPairs([{integer: 6, name: '6', suit: 'D'}, {integer: 6, name: '6', suit: 'S'}, {integer: 6, name: '6', suit: 'H'}, {integer: 6, name: '6', suit: 'C'}, {integer: 13, name: 'King', suit: 'D'}, {integer: 7, name: '7', suit: 'D'}]));
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
 
   // Four of a Kind
   // For Check Pairs function, I am checking the first element in array
   // to distinguish between different kinds of pairs
-  if (checkForPairs(cards)[0] === 5) {
-    return [7, checkForPairs(cards)];
+  if (checkForPairs(cards).rank === 7) {
+    return checkForPairs;
   }
   // FullHouse
   else if (checkForPairs(numberValues)[0] === 4) {
@@ -75,6 +75,12 @@ function cardObject (handAndStreet) {
     return newObj;
   })
   return handAndStreet;
+}
+
+// Converting cardObjects back to strings
+function cardStrings(cards) {
+  cards = cards.map(x => x.integer + x.suit);
+  return cards;
 }
 
 // Used to find  the occurences of all present suits.
@@ -152,13 +158,17 @@ function checkForPairs(cards) {
     }
   }
   console.log('pairOccurences', pairOccurences);
+  // In reverse order so finding the high card after the four of a kind doesn't work
   for (let key in pairOccurences) {
+    // 4 of a Kind check
     if (pairOccurences[key].length === 4) {
       console.log('made it here');
       for (let prop in pairOccurences) {
         if (pairOccurences[prop] !== pairOccurences[key]) {
-          pairOccurences[key].push(pairOccurences[prop][0])
-          return {rank: 7, name: `Four of a Kind with ${pairOccurences[key][0].name}s`, bestFiveCards: pairOccurences[key]}
+          pairOccurences[key].push(pairOccurences[prop][0]);
+          // Converting card objects back to cardStrings
+          bestFiveCards = cardStrings(pairOccurences[key])
+          return {rank: 7, name: `Four of a Kind with ${pairOccurences[key][0].name}s`, bestFiveCards: bestFiveCards}
         }
       }
     }
