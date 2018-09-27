@@ -1,7 +1,7 @@
 const postFlopEvaluation = (handAndStreet) => {
   let cards = cardObject(handAndStreet);
   console.log('cardObjects', cards)
-  console.log('testing 4 of a kind', checkForPairs([{integer: 6, name: '6', suit: 'D'}, {integer: 6, name: '6', suit: 'S'}, {integer: 6, name: '6', suit: 'H'}, {integer: 6, name: '6', suit: 'C'}, {integer: 13, name: 'King', suit: 'D'}, {integer: 7, name: '7', suit: 'D'}]));
+  console.log('testing 4 of a kind', checkForPairs([{integer: 6, name: '6', suit: 'D'}, {integer: 6, name: '6', suit: 'S'}, {integer: 6, name: '6', suit: 'H'}, {integer: 7, name: '7', suit: 'D'}, {integer: 6, name: '6', suit: 'C'}, {integer: 13, name: 'King', suit: 'D'}]));
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
 
@@ -150,11 +150,11 @@ function checkForPairs(cards) {
   // {'6': [{}, {}, {}], '5': [{}]}
   let pairOccurences = {};
   for (card of cards) {
-    if (pairOccurences[card.integer] === undefined) {
-      pairOccurences[card.integer] = [card];
+    if (pairOccurences[card.name] === undefined) {
+      pairOccurences[card.name] = [card];
     }
     else {
-      pairOccurences[card.integer].push(card)
+      pairOccurences[card.name].push(card)
     }
   }
   console.log('pairOccurences', pairOccurences);
