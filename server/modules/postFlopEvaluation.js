@@ -1,7 +1,7 @@
 const postFlopEvaluation = (handAndStreet) => {
   let cards = cardObject(handAndStreet);
   console.log('cardObjects', cards)
-  console.log('testing three of a kind', checkForPairs([{integer: 6, name: '6', suit: 'S'}, {integer: 6, name: '6', suit: 'H'}, {integer: 13, name: 'King', suit: 'D'}, {integer: 9, name: '9', suit: 'S'}, {integer: 9, name: '9', suit: 'D'}]));
+  console.log('testing three of a kind', checkForPairs([{integer: 6, name: '6', suit: 'S'}, {integer: 13, name: 'King', suit: 'H'}, {integer: 6, name: '6', suit: 'H'}, {integer: 6, name: '6', suit: 'D'}, {integer: 5, name: '5', suit: 'S'}, {integer: 10, name: '10', suit: 'D'}]));
   // Case for each potential hand ranking, starting at the strongest hand possible (straight flush),
   // then works its way down
 
@@ -181,7 +181,18 @@ function checkForPairs(cards) {
             return {rank: 6, name: `Full House, ${pairOccurences[key][0].name}s full of ${pairOccurences[props][0].name}s`, bestFiveCards: bestFiveCards};
           }
       }
-      return {rank: 3, name: `3 of a Kind with ${pairOccurences[key][0].name}s`, bestFiveCards: bestFiveCards};
+      for (let firstKicker in pairOccurences) {
+        if (pairOccurences[firstKicker] !== pairOccurences[key]) {
+          pairOccurences[key].push(pairOccurences[firstKicker][0]);
+          for (let secondKicker in pairOccurences) {
+            if (pairOccurences[secondKicker] !== pairOccurences[key] && pairOccurences[secondKicker] !== pairOccurences[firstKicker]) {
+              pairOccurences[key].push(pairOccurences[secondKicker][0]);
+              bestFiveCards = cardStrings(pairOccurences[key]);
+              return {rank: 3, name: `3 of a Kind with ${pairOccurences[key][0].name}s`, bestFiveCards: bestFiveCards};
+            }
+          }
+        }
+      }
     }
     if (pairOccurences[key].length === 2) {
       for (let props in pairOccurences) {
