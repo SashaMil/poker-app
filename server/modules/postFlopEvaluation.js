@@ -132,14 +132,21 @@ function checkForFlush(cards) {
   return false;
 }
 
+// Sort object
+function compare(a,b) {
+   if (a < b )
+     return -1;
+   if (a  > b )
+    return 1;
+   return 0;
+}
+
 /**
  * Created by sashamilenkovic on 9/12/18.
  */
 // Used to find the occurences of all present integer values
 function checkForPairs(cards) {
   // Sorting the array of card objects by descending order by integer property
-  cards.sort(function(a,b){return b.integer-a.integer});
-
   console.log('checkForPairs', cards);
   let bestFiveCards = [];
 
@@ -159,6 +166,9 @@ function checkForPairs(cards) {
     }
   }
   console.log('pairOccurences', pairOccurences);
+
+  console.log(compare(pairOccurences));
+
   for (let key in pairOccurences) {
     // 4 of a Kind
     if (pairOccurences[key].length === 4) {
